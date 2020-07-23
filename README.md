@@ -1,3 +1,15 @@
+# Pathfinder Visualisation
+
+## Documentation Links
+
+[Project Specification](https://github.com/Nurou/pathfinder-vis/blob/master/documentation/specification.md)
+
+### Weekly Reports
+
+[Week 01](https://github.com/Nurou/pathfinder-vis/blob/master/documentation/reports/week01.md)
+
+---
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

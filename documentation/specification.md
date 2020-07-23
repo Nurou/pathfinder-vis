@@ -47,7 +47,7 @@ where:
 
 ## Sources
 
-https://www.redblobgames.com/pathfinding/a-star/introduction.html
-https://en.wikipedia.org/wiki/Breadth-first_search#Time_and_space_complexity
-https://stackoverflow.com/questions/19204682/time-complexity-of-uniform-cost-search
-https://en.wikipedia.org/wiki/A*_search_algorithm#Complexity
+- https://www.redblobgames.com/pathfinding/a-star/introduction.html
+- https://en.wikipedia.org/wiki/Breadth-first_search#Time_and_space_complexity
+- https://stackoverflow.com/questions/19204682/time-complexity-of-uniform-cost-search
+- https://en.wikipedia.org/wiki/A*_search_algorithm#Complexity
