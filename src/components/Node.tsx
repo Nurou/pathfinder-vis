@@ -1,4 +1,4 @@
-import React, { memo, useContext } from 'react';
+import React, { memo } from 'react';
 import { NodeWrapper } from '../styles';
 
 type TNodeProps = {
