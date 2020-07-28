@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import Visualiser from './components/Visualiser';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Visualiser />
   </React.StrictMode>,
   document.getElementById('root')
 );
