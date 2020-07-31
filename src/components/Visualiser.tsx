@@ -32,7 +32,6 @@ const Visualiser = () => {
       for (let col = 0; col < GRID_COLS; col++) {
         // add a node for each row column
         let newNode = new Node(row, col);
-        console.log({ newNode });
         currentRow.push(newNode);
       }
       // add the whole row
@@ -71,10 +70,28 @@ const Visualiser = () => {
         domNode.classList.add('start');
       }
 
-      console.log(domNode.classList);
+      return;
+    }
+
+    if (conversionType === 'end') {
+      // if end node already set, move it
+      if (endNodeCoords) {
+        // get current end node and remove class
+        myRefs.current[
+          `node-${endNodeCoords.row}-${endNodeCoords.col}`
+        ].classList.remove('end');
+        // add new coordinates
+        setEndNodeCoords({ row: row, col: col });
+        domNode.classList.add('end');
+      } else {
+        setEndNodeCoords({ row: row, col: col });
+        domNode.classList.add('end');
+      }
 
       return;
     }
+
+    domNode.classList.add(conversionType);
   };
 
   /**
@@ -148,10 +165,22 @@ const Visualiser = () => {
               </GridRow>
             ))}
         </Grid>
+        <Spacer my={3} />
+        <Box display='flex' justifyContent='center' alignItems='center'>
+          <Button onClick={() => setConversionType('start')}>Start </Button>
+          <Button onClick={() => setConversionType('end')}>Finish</Button>
+          <Button onClick={() => setConversionType('wall')}>Add Walls </Button>
+          <Button onClick={() => setConversionType('grass')}>Add Grass</Button>
+        </Box>
         <pre>
+          <p>Start Node Coords</p>
           {JSON.stringify(startNodeCoords)}
           <br />
+          <p>End Node Coords</p>
           {JSON.stringify(endNodeCoords)}
+          <br />
+          <p>Conversion Type:</p>
+          {JSON.stringify(conversionType)}
         </pre>
       </Box>
     </>
