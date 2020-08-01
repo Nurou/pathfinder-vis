@@ -66,8 +66,11 @@ export const reconstructPath = (
  * @param myRefs
  */
 export const isWall = (node: Node, myRefs: any) => {
-  return (
-    myRefs.current[`node-${node.row}-${node.col}`].classList.contains('wall') ||
-    myRefs.current[`node-${node.row}-${node.col}`].type === 'wall'
-  );
+  if (myRefs.size > 0) {
+    return (
+      myRefs.current[`node-${node.row}-${node.col}`].classList.contains(
+        'wall'
+      ) || myRefs.current[`node-${node.row}-${node.col}`].type === 'wall'
+    );
+  }
 };

@@ -15,7 +15,7 @@ export const bfs = (
   grid: Node[][],
   startNodeCoords: Coordinates,
   endNodeCoords: Coordinates,
-  myRefs: any
+  myRefs?: any
 ) => {
   checkArgs(grid, startNodeCoords, endNodeCoords);
 
@@ -32,6 +32,7 @@ export const bfs = (
   // queue for traversing the grid
   let frontier: Node[] = [];
   frontier.push(startNode);
+  // map preceding node to each node.
   let cameFrom = new Map<Node, Node>();
   cameFrom.set(startNode, null!);
 
