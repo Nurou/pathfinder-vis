@@ -9,10 +9,6 @@
 [Week 01](https://github.com/Nurou/pathfinder-vis/blob/master/documentation/reports/week01.md)
 [Week 02](https://github.com/Nurou/pathfinder-vis/blob/master/documentation/reports/week02.md)
 
----
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
 ## Available Scripts
 
 In the project directory, you can run:
@@ -29,6 +25,12 @@ You will also see any lint errors in the console.
 
 Launches the test runner in the interactive watch mode.<br />
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+
+### `yarn coverage`
+
+Generates a **test coverage report**.
+
+To view the generated report in a browser, navigate to **coverage/lcov-report/index.html**.
 
 ### `yarn build`
 
