@@ -4,9 +4,13 @@ import { Box, Spacer } from './Shared';
 import { Button, Grid, GridRow } from '../styles';
 import { GridNode } from './Node';
 import { Coordinates } from '../types';
+import { bfs } from '../algorithms/BFS';
+import Stats from './Stats';
+import { animateBFS as animateBfs } from './animate';
 
 const Visualiser = () => {
   console.log('Rendered: Visualiser');
+
   const [grid, setGrid] = useState<Node[][] | null>([]);
 
   const [startNodeCoords, setStartNodeCoords] = useState<Coordinates | null>(
@@ -20,6 +24,19 @@ const Visualiser = () => {
   // globals - setState not used due to avoid re-rendering
   let mouseIsPressed = false;
   let myRefs: React.MutableRefObject<any> = useRef({});
+
+  /* Stats State */
+
+  const availablePathfinders = [{ value: 'Bfs', label: 'Bfs' }];
+
+  const [currentPathFinder, setCurrentPathFinder] = useState<string | null>(
+    availablePathfinders[0].value
+  );
+
+  const [timeTaken, setTimeTaken] = useState<number | null>(null);
+  const [shortestPathLength, setShortestPathLength] = useState<number | null>(
+    null
+  );
 
   // grid initialised after visual is rendered
   useLayoutEffect(() => {
@@ -162,8 +179,88 @@ const Visualiser = () => {
     }
   };
 
+  /**
+   * runs BFS algorithm and animation
+   */
+  const runBfs = () => {
+    if (grid && startNodeCoords && endNodeCoords) {
+      const { visitedNodesInOrder, shortestPath, timer } = bfs(
+        grid,
+        startNodeCoords,
+        endNodeCoords,
+        myRefs
+      );
+      setCurrentPathFinder('BFS');
+      setTimeTaken(timer);
+      setShortestPathLength(shortestPath.length);
+      animateBfs(visitedNodesInOrder, shortestPath, myRefs);
+    }
+  };
+
+  const visualiseAlgo = () => {
+    switch (currentPathFinder) {
+      case 'Bfs':
+        runBfs();
+        break;
+
+      default:
+        break;
+    }
+  };
+
+  /**
+   * algorithm can be run again or a different one run instead
+   */
+  /**
+   *
+   * @param {object} grid - 2D array of the logical grid nodes in their current state (after algorithm has run)
+   * @param {object} myRefs
+   */
+  const clear = (grid: Node[][], all?: boolean) => {
+    for (const row of grid) {
+      for (const node of row) {
+        node.resetState();
+        let domNode = myRefs.current[`node-${node.row}-${node.col}`];
+        domNode.classList.remove(
+          'node-visited',
+          'node-shortest-path',
+          'wall',
+          'grass'
+        );
+      }
+    }
+    // clear stats
+    setShortestPathLength(null);
+    setTimeTaken(null);
+    setCurrentPathFinder(availablePathfinders[0].value);
+  };
+
   return (
     <>
+      <Stats
+        timeTaken={timeTaken}
+        shortestPathLength={shortestPathLength}
+        pathFinder={currentPathFinder}
+      >
+        <Box display="flex" justifyContent="center" alignItems="center">
+          <Button onClick={() => visualiseAlgo()}>Visualize</Button>
+          <Button onClick={() => clear(grid!)}>Reset Pathfinder</Button>
+          <Button onClick={() => clear(grid!)}>Clear All</Button>
+        </Box>
+        <select
+          value={currentPathFinder!}
+          onChange={(e) => {
+            setCurrentPathFinder(e.target.value);
+          }}
+        >
+          <option disabled>Choose pathfinder</option>
+          {availablePathfinders.map((o) => (
+            <option value={o.value} key={o.label}>
+              {o.label}
+            </option>
+          ))}
+        </select>
+      </Stats>
       <Box
         as="main"
         display="flex"
