@@ -1,4 +1,4 @@
-import React, { useState, useRef, useLayoutEffect } from 'react';
+import React, { useState, useRef, useLayoutEffect, useEffect } from 'react';
 import Node from '../data_structures/Node';
 import { Box, Spacer } from './Shared';
 import { Button, Grid, GridRow } from '../styles';
@@ -6,6 +6,7 @@ import { GridNode } from './Node';
 import { Coordinates } from '../types';
 
 const Visualiser = () => {
+  console.log('Rendered: Visualiser');
   const [grid, setGrid] = useState<Node[][] | null>([]);
 
   const [startNodeCoords, setStartNodeCoords] = useState<Coordinates | null>(
@@ -20,7 +21,7 @@ const Visualiser = () => {
   let mouseIsPressed = false;
   let myRefs: React.MutableRefObject<any> = useRef({});
 
-  // init grid on render
+  // grid initialised after visual is rendered
   useLayoutEffect(() => {
     // grid dimensions
     const GRID_ROWS: number = 10;
@@ -37,11 +38,17 @@ const Visualiser = () => {
       // add the whole row
       grid.push(currentRow);
     }
+
     // update state
     setGrid(grid);
     // neighbors can be set once grid has been filled
     setNodeNeighbors(grid);
   }, []);
+
+  // runs last
+  useEffect(() => {
+    coverInTerrain();
+  });
 
   /**
    * Converts a node into wall or grass type by modifying
@@ -50,24 +57,30 @@ const Visualiser = () => {
    * @param {number} col
    */
   const convertToType = (row: number, col: number) => {
+    console.log(conversionType);
     // target node
-    let domNode = myRefs.current[`node-${row}-${col}`];
-    // no longer regular
+    let domNode = myRefs!.current[`node-${row}-${col}`];
+
     domNode.classList.remove('regular');
 
     if (conversionType === 'start') {
       // if start node already set, move it
       if (startNodeCoords) {
-        // get current start node and remove class
-        myRefs.current[
+        // get current start node and convert back to regular
+        let currentStartNode = myRefs!.current[
           `node-${startNodeCoords.row}-${startNodeCoords.col}`
-        ].classList.remove('start');
+        ];
+        currentStartNode.classList.remove('start');
+        currentStartNode.classList.add('regular');
+
+        // new start node
+        domNode.classList.add('start');
+        setStartNodeCoords({ row: row, col: col });
+
         // add new coordinates
-        setStartNodeCoords({ row: row, col: col });
-        domNode.classList.add('start');
       } else {
-        setStartNodeCoords({ row: row, col: col });
         domNode.classList.add('start');
+        setStartNodeCoords({ row: row, col: col });
       }
 
       return;
@@ -77,12 +90,18 @@ const Visualiser = () => {
       // if end node already set, move it
       if (endNodeCoords) {
         // get current end node and remove class
-        myRefs.current[
+        let currentEndNode = myRefs!.current[
           `node-${endNodeCoords.row}-${endNodeCoords.col}`
         ].classList.remove('end');
+
+        if (currentEndNode) {
+          currentEndNode.classList.remove('end');
+          currentEndNode.classList.add('regular');
+        }
+
         // add new coordinates
-        setEndNodeCoords({ row: row, col: col });
         domNode.classList.add('end');
+        setEndNodeCoords({ row: row, col: col });
       } else {
         setEndNodeCoords({ row: row, col: col });
         domNode.classList.add('end');
@@ -92,6 +111,15 @@ const Visualiser = () => {
     }
 
     domNode.classList.add(conversionType);
+    console.log(domNode.classList);
+  };
+
+  const coverInTerrain = () => {
+    Object.values(myRefs!.current).forEach((el: any) => {
+      if (!el.classList.contains('start') && !el.classList.contains('end')) {
+        el.classList.add('regular');
+      }
+    });
   };
 
   /**
@@ -137,11 +165,11 @@ const Visualiser = () => {
   return (
     <>
       <Box
-        as='main'
-        display='flex'
-        flexDirection='column'
-        alignItems='center'
-        justifyContent='center'
+        as="main"
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
         pt={4}
       >
         <Grid>
@@ -166,12 +194,15 @@ const Visualiser = () => {
             ))}
         </Grid>
         <Spacer my={3} />
-        <Box display='flex' justifyContent='center' alignItems='center'>
+        <Box display="flex" justifyContent="center" alignItems="center">
+          {/* TODO: consider if state update necessary  */}
           <Button onClick={() => setConversionType('start')}>Start </Button>
           <Button onClick={() => setConversionType('end')}>Finish</Button>
           <Button onClick={() => setConversionType('wall')}>Add Walls </Button>
           <Button onClick={() => setConversionType('grass')}>Add Grass</Button>
+          <Button onClick={coverInTerrain}>Init</Button>
         </Box>
+
         <pre>
           <p>Start Node Coords</p>
           {JSON.stringify(startNodeCoords)}

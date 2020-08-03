@@ -30,8 +30,6 @@ export const NodeWrapper = styled('div')`
   height: 2vmin;
   outline: 0.02rem solid gray;
   border-collapse: collapse;
-  /* background-color: #2c5282; */
-  /* background-color: rgba(169, 158, 147); */
 
   background: ${({ variant }) =>
     variant === 'start' ? 'black' : variant === 'end' ? 'red' : null};

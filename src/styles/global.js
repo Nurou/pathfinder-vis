@@ -7,6 +7,10 @@ export const GlobalStyle = createGlobalStyle`
     margin: 0;
   }
 
+  pre {
+    color: white;
+  }
+
   .start{
     background-color: blue;
   }
@@ -20,10 +24,12 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   .wall {
-    background-color: lightgray;
+    background-color: gray;
   }
   .grass {
     background-color: green;
   }
+
+
 
 `;
