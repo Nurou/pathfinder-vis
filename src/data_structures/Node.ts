@@ -5,7 +5,6 @@
 export class Node {
   row: number;
   col: number;
-  // type: string;
   distance: number;
   neighbors: Node[] | null;
 

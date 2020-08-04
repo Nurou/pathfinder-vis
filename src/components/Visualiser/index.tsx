@@ -144,10 +144,7 @@ const Visualiser = () => {
   };
 
   /**
-   * algorithm can be run again or a different one run instead
-   */
-  /**
-   *
+   * clears the graph/grid so algorithm can be run again or a different one
    * @param {object} grid - 2D array of the logical grid nodes in their current state (after algorithm has run)
    * @param {object} myRefs
    */
@@ -162,6 +159,7 @@ const Visualiser = () => {
           'wall',
           'grass'
         );
+        domNode.classList.add('regular');
       }
     }
     // clear stats
@@ -227,12 +225,10 @@ const Visualiser = () => {
         </Grid>
         <Spacer my={3} />
         <Box display="flex" justifyContent="center" alignItems="center">
-          {/* TODO: consider if state update necessary  */}
           <Button onClick={() => setConversionType('start')}>Start </Button>
           <Button onClick={() => setConversionType('end')}>Finish</Button>
           <Button onClick={() => setConversionType('wall')}>Add Walls </Button>
           <Button onClick={() => setConversionType('grass')}>Add Grass</Button>
-          <Button onClick={coverInTerrain}>Init</Button>
         </Box>
       </Box>
     </>
