@@ -12,7 +12,9 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   .start{
-    background-color: blue;
+    /* background-color: blue; */
+    background-color: rgba(169, 158, 147);
+
   }
 
   .end{
@@ -24,7 +26,7 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   .wall {
-    background-color: gray;
+    background-color: #868678;
   }
   .grass {
     background-color: green;
