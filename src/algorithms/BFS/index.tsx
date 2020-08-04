@@ -15,7 +15,7 @@ export const bfs = (
   grid: Node[][],
   startNodeCoords: Coordinates,
   endNodeCoords: Coordinates,
-  myRefs?: any
+  myRefs?: React.MutableRefObject<any> | object
 ) => {
   checkArgs(grid, startNodeCoords, endNodeCoords);
 

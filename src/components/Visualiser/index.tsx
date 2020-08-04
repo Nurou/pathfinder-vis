@@ -12,32 +12,27 @@ import { convertToType, coverInTerrain, setNodeNeighbors } from './util';
 const Visualiser = () => {
   console.log('Rendered: Visualiser');
 
+  /**
+   * Grid State
+   */
   const [grid, setGrid] = useState<Node[][] | null>([]);
-
-  const [startNodeCoords, setStartNodeCoords] = useState<Coordinates | null>(
-    null
-  );
+  const [startNodeCoords, setStartNodeCoords] = useState<Coordinates | null>(null);
   const [endNodeCoords, setEndNodeCoords] = useState<Coordinates | null>(null);
-
-  // what the node will be converted to
   const [conversionType, setConversionType] = useState('start');
 
-  // globals - setState not used due to avoid re-rendering
-  let mouseIsPressed = false;
-  let myRefs: React.MutableRefObject<any> = useRef({});
-
-  /* Stats State */
-
+  /**
+   * Algorithm Stats State
+   */
   const availablePathfinders = [{ value: 'Bfs', label: 'Bfs' }];
-
   const [currentPathFinder, setCurrentPathFinder] = useState<string | null>(
     availablePathfinders[0].value
   );
-
   const [timeTaken, setTimeTaken] = useState<number | null>(null);
-  const [shortestPathLength, setShortestPathLength] = useState<number | null>(
-    null
-  );
+  const [shortestPathLength, setShortestPathLength] = useState<number | null>(null);
+
+  // other component globals - setState not used due to avoid re-rendering
+  let mouseIsPressed = false;
+  let myRefs: React.MutableRefObject<any> = useRef({});
 
   // grid initialised after visual is rendered
   useLayoutEffect(() => {
@@ -59,17 +54,18 @@ const Visualiser = () => {
 
     // update state
     setGrid(grid);
-    // neighbors can be set once grid has been filled
+
+    // neighbors can be set once grid has been populated
     setNodeNeighbors(grid);
   }, []);
 
-  // runs last
+  // runs last after render and useEffects above
   useEffect(() => {
     coverInTerrain(myRefs);
   });
 
   /**
-   * mousedown is fired the moment the button is initially pressed.
+   * mousedown is fired the moment the button is initially pressed
    * @param {number} row
    * @param {number} col
    */
@@ -88,7 +84,7 @@ const Visualiser = () => {
   };
 
   /**
-   *   fired when a button on a pointing device is released while the pointer is located inside it - counterpoint to mousedown
+   *  fired when a button on a pointing device is released while the pointer is located inside it - counterpoint to mousedown
    */
   const handleMouseUp = () => {
     mouseIsPressed = false;
@@ -132,7 +128,10 @@ const Visualiser = () => {
     }
   };
 
-  const visualiseAlgo = () => {
+  /**
+   * determines which algorithm to run based on user selection
+   */
+  const runAlgo = () => {
     switch (currentPathFinder) {
       case 'Bfs':
         runBfs();
@@ -153,12 +152,7 @@ const Visualiser = () => {
       for (const node of row) {
         node.resetState();
         let domNode = myRefs.current[`node-${node.row}-${node.col}`];
-        domNode.classList.remove(
-          'node-visited',
-          'node-shortest-path',
-          'wall',
-          'grass'
-        );
+        domNode.classList.remove('node-visited', 'node-shortest-path', 'wall', 'grass');
         domNode.classList.add('regular');
       }
     }
@@ -176,7 +170,7 @@ const Visualiser = () => {
         pathFinder={currentPathFinder}
       >
         <Box display="flex" justifyContent="center" alignItems="center">
-          <Button onClick={() => visualiseAlgo()}>Visualize</Button>
+          <Button onClick={() => runAlgo()}>Visualize</Button>
           <Button onClick={() => clear(grid!)}>Reset Pathfinder</Button>
           <Button onClick={() => clear(grid!)}>Clear All</Button>
         </Box>

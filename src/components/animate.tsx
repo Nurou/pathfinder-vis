@@ -7,11 +7,7 @@ import Node from '../data_structures/Node';
  * @param {object} shortestPath - array of nodes also from algorithm
  * @param {object} myRefs - array of references to dom nodes for adding style classes
  */
-export const animateBfs = (
-  nodesVisitedInOrder: Node[],
-  shortestPath: Node[],
-  myRefs: any
-) => {
+export const animateBfs = (nodesVisitedInOrder: Node[], shortestPath: Node[], myRefs: any) => {
   const ANIMATION_TIMEOUT = 15;
 
   nodesVisitedInOrder.forEach((node, index) => {
@@ -36,7 +32,7 @@ export const animateBfs = (
  * @param {object} shortestPath
  * @param {object} myRefs
  */
-const animateShortestPath = (shortestPath: Node[], myRefs: any) => {
+const animateShortestPath = (shortestPath: Node[], myRefs: React.MutableRefObject<any>) => {
   shortestPath.forEach((node, index) => {
     const ANIMATION_TIMEOUT = 50;
     setTimeout(() => {

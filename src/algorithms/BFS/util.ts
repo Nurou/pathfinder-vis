@@ -40,11 +40,7 @@ const between = (x: number, min: number, max: number) => {
  * @param {number} startNode
  * @param {number} endNode
  */
-export const reconstructPath = (
-  startNode: Node,
-  endNode: Node,
-  cameFrom?: Map<Node, Node>
-) => {
+export const reconstructPath = (startNode: Node, endNode: Node, cameFrom?: Map<Node, Node>) => {
   // start from goal
   let current = endNode;
   // path starts out empty
@@ -68,8 +64,6 @@ export const reconstructPath = (
  * @param node - for coordinates
  * @param myRefs
  */
-export const isWall = (node: Node, myRefs: any) => {
-  return myRefs.current[`node-${node.row}-${node.col}`].classList.contains(
-    'wall'
-  );
+export const isWall = (node: Node, myRefs: React.MutableRefObject<any> | undefined) => {
+  return myRefs!.current[`node-${node.row}-${node.col}`].classList.contains('wall');
 };

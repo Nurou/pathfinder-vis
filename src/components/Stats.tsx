@@ -29,9 +29,7 @@ const Stats = (props: StatProps) => {
       <Span color="white">
         Time:{' '}
         {props.timeTaken && (
-          <Span style={{ color: 'gold' }}>
-            {(props.timeTaken! / 1000).toFixed(5)} sec
-          </Span>
+          <Span style={{ color: 'gold' }}>{(props.timeTaken! / 1000).toFixed(5)} sec</Span>
         )}
       </Span>{' '}
       <br />
