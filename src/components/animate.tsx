@@ -7,7 +7,7 @@ import Node from '../data_structures/Node';
  * @param {object} shortestPath - array of nodes also from algorithm
  * @param {object} myRefs - array of references to dom nodes for adding style classes
  */
-export const animateBFS = (
+export const animateBfs = (
   nodesVisitedInOrder: Node[],
   shortestPath: Node[],
   myRefs: any
@@ -24,11 +24,7 @@ export const animateBFS = (
     setTimeout(() => {
       // exclude walls and end nodes
       let domNode: any = myRefs.current[`node-${node.row}-${node.col}`];
-      if (
-        !domNode.classList.contains('wall') &&
-        !domNode.classList.contains('start') &&
-        !domNode.classList.contains('end')
-      ) {
+      if (!domNode.classList.contains('wall')) {
         domNode.classList.add('node-visited');
       }
     }, ANIMATION_TIMEOUT * index);
@@ -46,11 +42,7 @@ const animateShortestPath = (shortestPath: Node[], myRefs: any) => {
     setTimeout(() => {
       // exclude walls and end nodes
       let domNode = myRefs.current[`node-${node.row}-${node.col}`];
-      if (
-        !domNode.classList.contains('wall') &&
-        !domNode.classList.contains('start') &&
-        !domNode.classList.contains('end')
-      ) {
+      if (!domNode.classList.contains('wall')) {
         domNode.classList.add('node-shortest-path');
       }
     }, ANIMATION_TIMEOUT * index);

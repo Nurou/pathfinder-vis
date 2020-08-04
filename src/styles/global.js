@@ -12,24 +12,25 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   .start{
-    /* background-color: blue; */
-    background-color: rgba(169, 158, 147);
+    background-color: hsl(0, 11%, 88%);
 
   }
 
   .end{
-    background-color: red;
+    background-color: hsl(0, 11%, 88%);
+
   }
 
   .regular {
-    background-color: rgba(169, 158, 147);
+    background-color: hsl(0, 11%, 88%);
   }
 
   .wall {
-    background-color: #868678;
+    background-color: hsl(60, 5%, 50%);
   }
+
   .grass {
-    background-color: green;
+    background-color: hsl(111, 20%, 60%);
   }
 
 
@@ -45,17 +46,17 @@ export const GlobalStyle = createGlobalStyle`
 
 @keyframes visitedAnimation {
   0% {
-    border-radius: 100%;
+    transform: scale(0.6);
   }
 
   50% {
-  }
+    transform: scale(0.8);
 
-  75% {
   }
 
   100% {
-    background-color: rgba(61, 133, 161, 1);
+    transform: scale(1);
+    background-color: hsl(30, 20%, 75%);
   }
 }
 
@@ -72,19 +73,15 @@ export const GlobalStyle = createGlobalStyle`
 
 @keyframes shortestPath {
   0% {
-    transform: scale(0.6);
   }
 
   50% {
-    transform: scale(1.2);
   }
 
   100% {
-    background-color: rgb(165, 114, 64);
-    transform: scale(1);
+    background-color: hsl(0, 0%, 96%);
   }
+
 }
-
-
 
 `;

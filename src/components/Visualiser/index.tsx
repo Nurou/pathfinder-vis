@@ -1,13 +1,13 @@
 import React, { useState, useRef, useLayoutEffect, useEffect } from 'react';
-import Node from '../data_structures/Node';
-import { Box, Spacer } from './Shared';
-import { Button, Grid, GridRow } from '../styles';
-import { GridNode } from './Node';
-import { Coordinates } from '../types';
-import { bfs } from '../algorithms/BFS';
-import Stats from './Stats';
-import { animateBFS as animateBfs } from './animate';
-import { start } from 'repl';
+import Node from '../../data_structures/Node';
+import { Box, Spacer } from '.././Shared';
+import { Button, Grid, GridRow } from '../../styles';
+import { GridNode } from '.././Node';
+import { Coordinates } from '../../types';
+import { bfs } from '../../algorithms/BFS';
+import Stats from '.././Stats';
+import { animateBfs } from '.././animate';
+import { convertToType, coverInTerrain, setNodeNeighbors } from './util';
 
 const Visualiser = () => {
   console.log('Rendered: Visualiser');
@@ -42,8 +42,8 @@ const Visualiser = () => {
   // grid initialised after visual is rendered
   useLayoutEffect(() => {
     // grid dimensions
-    const GRID_ROWS: number = 10;
-    const GRID_COLS: number = 30;
+    const GRID_ROWS: number = 20;
+    const GRID_COLS: number = 40;
 
     let grid: Node[][] = [];
     for (let row = 0; row < GRID_ROWS; row++) {
@@ -65,100 +65,8 @@ const Visualiser = () => {
 
   // runs last
   useEffect(() => {
-    coverInTerrain();
+    coverInTerrain(myRefs);
   });
-
-  /**
-   * Converts a node into wall or grass type by modifying
-   * the actual node object stored in the grid
-   * @param {number} row
-   * @param {number} col
-   */
-  const convertToType = (row: number, col: number) => {
-    console.log(conversionType);
-    // target node
-    let domNode = myRefs!.current[`node-${row}-${col}`];
-
-    domNode.classList.remove('regular');
-
-    if (conversionType === 'start') {
-      // if start node already set, move it
-      if (startNodeCoords) {
-        // get current start node and convert back to regular
-        let currentStartNode = myRefs!.current[
-          `node-${startNodeCoords.row}-${startNodeCoords.col}`
-        ];
-        currentStartNode.classList.remove('start');
-        currentStartNode.classList.add('regular');
-
-        var starSpan = document.createElement('span');
-        starSpan.innerHTML = '☆';
-
-        domNode.appendChild(starSpan);
-
-        // new start node
-        domNode.classList.add('start');
-        setStartNodeCoords({ row: row, col: col });
-
-        // add new coordinates
-      } else {
-        domNode.classList.add('start');
-        setStartNodeCoords({ row: row, col: col });
-      }
-
-      var starSpan = document.createElement('span');
-      starSpan.innerHTML = '☆';
-      domNode.appendChild(starSpan);
-
-      return;
-    }
-
-    if (conversionType === 'end') {
-      // if end node already set, move it
-      if (endNodeCoords) {
-        // get current end node and remove class
-        let currentEndNode = myRefs!.current[
-          `node-${endNodeCoords.row}-${endNodeCoords.col}`
-        ].classList.remove('end');
-
-        if (currentEndNode) {
-          currentEndNode.classList.remove('end');
-          currentEndNode.classList.add('regular');
-        }
-
-        // add new coordinates
-        domNode.classList.add('end');
-        setEndNodeCoords({ row: row, col: col });
-      } else {
-        setEndNodeCoords({ row: row, col: col });
-        domNode.classList.add('end');
-      }
-
-      return;
-    }
-
-    domNode.classList.add(conversionType);
-  };
-
-  const coverInTerrain = () => {
-    Object.values(myRefs!.current).forEach((el: any) => {
-      if (!el.classList.contains('start') && !el.classList.contains('end')) {
-        el.classList.add('regular');
-      }
-    });
-  };
-
-  /**
-   * register neighbors for each node
-   * @param {Node[][]} grid
-   */
-  const setNodeNeighbors = (grid: Node[][]) => {
-    for (const row of grid) {
-      for (const node of row) {
-        node.setNeighbors(grid);
-      }
-    }
-  };
 
   /**
    * mousedown is fired the moment the button is initially pressed.
@@ -167,7 +75,16 @@ const Visualiser = () => {
    */
   const handleMouseDown = (row: number, col: number): void => {
     mouseIsPressed = true;
-    convertToType(row, col);
+    convertToType(
+      row,
+      col,
+      conversionType,
+      startNodeCoords,
+      endNodeCoords,
+      setStartNodeCoords,
+      setEndNodeCoords,
+      myRefs
+    );
   };
 
   /**
@@ -184,7 +101,16 @@ const Visualiser = () => {
    */
   const handleMouseEnter = (row: number, col: number) => {
     if (mouseIsPressed) {
-      convertToType(row, col);
+      convertToType(
+        row,
+        col,
+        conversionType,
+        startNodeCoords,
+        endNodeCoords,
+        setStartNodeCoords,
+        setEndNodeCoords,
+        myRefs
+      );
     }
   };
 
@@ -201,7 +127,7 @@ const Visualiser = () => {
       );
       setCurrentPathFinder('BFS');
       setTimeTaken(timer);
-      setShortestPathLength(shortestPath.length);
+      shortestPath && setShortestPathLength(shortestPath.length);
       animateBfs(visitedNodesInOrder, shortestPath, myRefs);
     }
   };
@@ -308,17 +234,6 @@ const Visualiser = () => {
           <Button onClick={() => setConversionType('grass')}>Add Grass</Button>
           <Button onClick={coverInTerrain}>Init</Button>
         </Box>
-
-        <pre>
-          <p>Start Node Coords</p>
-          {JSON.stringify(startNodeCoords)}
-          <br />
-          <p>End Node Coords</p>
-          {JSON.stringify(endNodeCoords)}
-          <br />
-          <p>Conversion Type:</p>
-          {JSON.stringify(conversionType)}
-        </pre>
       </Box>
     </>
   );

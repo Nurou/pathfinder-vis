@@ -57,6 +57,9 @@ export const reconstructPath = (
     }
   }
 
+  // include start node for visualisation
+  path.push(startNode);
+
   return path;
 };
 
