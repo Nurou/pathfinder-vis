@@ -7,6 +7,7 @@ import { Coordinates } from '../types';
 import { bfs } from '../algorithms/BFS';
 import Stats from './Stats';
 import { animateBFS as animateBfs } from './animate';
+import { start } from 'repl';
 
 const Visualiser = () => {
   console.log('Rendered: Visualiser');
@@ -90,6 +91,11 @@ const Visualiser = () => {
         currentStartNode.classList.remove('start');
         currentStartNode.classList.add('regular');
 
+        var starSpan = document.createElement('span');
+        starSpan.innerHTML = '☆';
+
+        domNode.appendChild(starSpan);
+
         // new start node
         domNode.classList.add('start');
         setStartNodeCoords({ row: row, col: col });
@@ -99,6 +105,10 @@ const Visualiser = () => {
         domNode.classList.add('start');
         setStartNodeCoords({ row: row, col: col });
       }
+
+      var starSpan = document.createElement('span');
+      starSpan.innerHTML = '☆';
+      domNode.appendChild(starSpan);
 
       return;
     }
@@ -128,7 +138,6 @@ const Visualiser = () => {
     }
 
     domNode.classList.add(conversionType);
-    console.log(domNode.classList);
   };
 
   const coverInTerrain = () => {

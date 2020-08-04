@@ -24,7 +24,11 @@ export const animateBFS = (
     setTimeout(() => {
       // exclude walls and end nodes
       let domNode: any = myRefs.current[`node-${node.row}-${node.col}`];
-      if (!domNode.classList.contains('wall')) {
+      if (
+        !domNode.classList.contains('wall') &&
+        !domNode.classList.contains('start') &&
+        !domNode.classList.contains('end')
+      ) {
         domNode.classList.add('node-visited');
       }
     }, ANIMATION_TIMEOUT * index);
@@ -42,7 +46,11 @@ const animateShortestPath = (shortestPath: Node[], myRefs: any) => {
     setTimeout(() => {
       // exclude walls and end nodes
       let domNode = myRefs.current[`node-${node.row}-${node.col}`];
-      if (!domNode.classList.contains('wall')) {
+      if (
+        !domNode.classList.contains('wall') &&
+        !domNode.classList.contains('start') &&
+        !domNode.classList.contains('end')
+      ) {
         domNode.classList.add('node-shortest-path');
       }
     }, ANIMATION_TIMEOUT * index);

@@ -26,6 +26,7 @@ export const Button = styled.button`
 `;
 
 export const NodeWrapper = styled('div')`
+  position: relative;
   width: 2vmin;
   height: 2vmin;
   outline: 0.02rem solid gray;
@@ -33,4 +34,10 @@ export const NodeWrapper = styled('div')`
 
   background: ${({ variant }) =>
     variant === 'start' ? 'black' : variant === 'end' ? 'red' : null};
+
+  span {
+    /* margin: auto; */
+    position: absolute;
+    top: 50%;
+  }
 `;

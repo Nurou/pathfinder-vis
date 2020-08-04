@@ -47,6 +47,8 @@ export const bfs = (
 
     if (current?.neighbors) {
       for (const neighbor of current.neighbors) {
+        console.log(`wall: `);
+        console.log(isWall(neighbor, myRefs));
         if (!cameFrom.get(neighbor) && !isWall(neighbor, myRefs)) {
           visitedNodesInOrder.push(neighbor);
           frontier.push(neighbor);
@@ -65,6 +67,6 @@ export const bfs = (
   return {
     visitedNodesInOrder,
     shortestPath,
-    timer,
+    timer
   };
 };
