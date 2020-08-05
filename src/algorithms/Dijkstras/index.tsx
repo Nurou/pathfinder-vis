@@ -1,6 +1,6 @@
 import { Coordinates } from '../../types';
 import { PriorityQueue } from '../../data_structures/PriorityQueue';
-import { checkArgs, reconstructPath, isWall } from '../util';
+import { checkArgs, reconstructPath, isWall, getMovementCost } from '../util';
 import Node from '../../data_structures/Node';
 
 /**
@@ -62,7 +62,6 @@ export const dijkstras = (
           visitedNodesInOrder.push(neighbor);
           frontier.push([neighbor, priority]);
           cameFrom.set(neighbor, current);
-          // perhaps keep track of previous in a map rather than inside node ?
         }
       }
     }
@@ -77,11 +76,7 @@ export const dijkstras = (
   return {
     visitedNodesInOrder,
     shortestPath,
-    timer
+    timer,
+    costSoFar
   };
-};
-
-const getMovementCost = (node: Node, myRefs: any) => {
-  // grass costs 3 to traverse, 1 for regular
-  return myRefs.current[`node-${node.row}-${node.col}`].classList.contains('grass') ? 3 : 1;
 };

@@ -26,9 +26,7 @@ export const convertToType = (
     // if start node already set, move it
     if (startNodeCoords) {
       // get current start node and convert back to regular
-      let currentStartNode = myRefs!.current[
-        `node-${startNodeCoords.row}-${startNodeCoords.col}`
-      ];
+      let currentStartNode = myRefs!.current[`node-${startNodeCoords.row}-${startNodeCoords.col}`];
       currentStartNode.classList.remove('start');
       currentStartNode.classList.add('regular');
       currentStartNode.innerHTML = null;
@@ -52,9 +50,7 @@ export const convertToType = (
     // if end node already set, move it
     if (endNodeCoords) {
       // get current end node and remove class
-      let currentEndNode = myRefs!.current[
-        `node-${endNodeCoords.row}-${endNodeCoords.col}`
-      ];
+      let currentEndNode = myRefs!.current[`node-${endNodeCoords.row}-${endNodeCoords.col}`];
 
       currentEndNode.classList.remove('end');
       currentEndNode.classList.add('regular');

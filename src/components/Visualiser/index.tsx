@@ -6,8 +6,9 @@ import { GridNode } from '.././Node';
 import { Coordinates } from '../../types';
 import { bfs } from '../../algorithms/Bfs';
 import Stats from '.././Stats';
-import { animateBfs } from '.././animate';
+import { animatePathFinding } from '.././animate';
 import { convertToType, coverInTerrain, setNodeNeighbors } from './util';
+import { dijkstras } from '../../algorithms/Dijkstras';
 
 const Visualiser = () => {
   console.log('Rendered: Visualiser');
@@ -23,12 +24,16 @@ const Visualiser = () => {
   /**
    * Algorithm Stats State
    */
-  const availablePathfinders = [{ value: 'Bfs', label: 'Bfs' }];
+  const availablePathfinders = [
+    { value: 'Bfs', label: 'Breadth-first Search' },
+    { value: 'Ucs', label: 'Dijkstras (Uniform-Cost Search)' }
+  ];
   const [currentPathFinder, setCurrentPathFinder] = useState<string | null>(
     availablePathfinders[0].value
   );
   const [timeTaken, setTimeTaken] = useState<number | null>(null);
   const [shortestPathLength, setShortestPathLength] = useState<number | null>(null);
+  const [totalMovementCost, setTotalMovementCost] = useState<number | null>(null);
 
   // other component globals - setState not used due to avoid re-rendering
   let mouseIsPressed = false;
@@ -115,16 +120,37 @@ const Visualiser = () => {
    */
   const runBfs = () => {
     if (grid && startNodeCoords && endNodeCoords) {
-      const { visitedNodesInOrder, shortestPath, timer } = bfs(
+      const { visitedNodesInOrder, shortestPath, timer, costSoFar } = bfs(
         grid,
         startNodeCoords,
         endNodeCoords,
         myRefs
       );
-      setCurrentPathFinder('BFS');
+      setTotalMovementCost(costSoFar.get(grid[endNodeCoords.row][endNodeCoords.col])!);
+      // setCurrentPathFinder('BFS');
       setTimeTaken(timer);
       shortestPath && setShortestPathLength(shortestPath.length);
-      animateBfs(visitedNodesInOrder, shortestPath, myRefs);
+      animatePathFinding(visitedNodesInOrder, shortestPath, myRefs);
+    }
+  };
+
+  /**
+   * runs Dijkstra's algorithm and animation
+   */
+  const runDijkstras = () => {
+    if (grid && startNodeCoords && endNodeCoords) {
+      const { visitedNodesInOrder, shortestPath, timer, costSoFar } = dijkstras(
+        grid,
+        startNodeCoords,
+        endNodeCoords,
+        myRefs
+      );
+      setTotalMovementCost(costSoFar.get(grid[endNodeCoords.row][endNodeCoords.col])!);
+      // setCurrentPathFinder('Ucs');
+      setTimeTaken(timer);
+      // deduct two since start and end nodes included in the array
+      setShortestPathLength(shortestPath.length - 2);
+      animatePathFinding(visitedNodesInOrder, shortestPath, myRefs);
     }
   };
 
@@ -136,7 +162,9 @@ const Visualiser = () => {
       case 'Bfs':
         runBfs();
         break;
-
+      case 'Ucs':
+        runDijkstras();
+        break;
       default:
         break;
     }
@@ -152,14 +180,24 @@ const Visualiser = () => {
       for (const node of row) {
         node.resetState();
         let domNode = myRefs.current[`node-${node.row}-${node.col}`];
-        domNode.classList.remove('node-visited', 'node-shortest-path', 'wall', 'grass');
-        domNode.classList.add('regular');
+        // when clearing the whole graph
+        if (all) {
+          domNode.classList.remove('node-visited', 'node-shortest-path', 'wall', 'grass');
+          domNode.classList.add('regular');
+        } else if (
+          domNode.classList.contains('node-visited') ||
+          domNode.classList.contains('node-shortest-path')
+        ) {
+          domNode.classList.remove('node-visited', 'node-shortest-path');
+          domNode.classList.add('regular');
+        }
       }
     }
     // clear stats
     setShortestPathLength(null);
     setTimeTaken(null);
-    setCurrentPathFinder(availablePathfinders[0].value);
+    setTotalMovementCost(null);
+    // setCurrentPathFinder(availablePathfinders[0].value);
   };
 
   return (
@@ -168,12 +206,23 @@ const Visualiser = () => {
         timeTaken={timeTaken}
         shortestPathLength={shortestPathLength}
         pathFinder={currentPathFinder}
+        totalCost={totalMovementCost}
       >
+        <Spacer my={5} />
         <Box display="flex" justifyContent="center" alignItems="center">
           <Button onClick={() => runAlgo()}>Visualize</Button>
           <Button onClick={() => clear(grid!)}>Reset Pathfinder</Button>
-          <Button onClick={() => clear(grid!)}>Clear All</Button>
+          <Button onClick={() => clear(grid!, true)}>Clear All</Button>
         </Box>
+      </Stats>
+      <Box
+        as="main"
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
+        pt={4}
+      >
         <select
           value={currentPathFinder!}
           onChange={(e) => {
@@ -187,15 +236,7 @@ const Visualiser = () => {
             </option>
           ))}
         </select>
-      </Stats>
-      <Box
-        as="main"
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        justifyContent="center"
-        pt={4}
-      >
+        <Spacer my={3} />
         <Grid>
           {grid &&
             grid.map((row, rowIdx) => (

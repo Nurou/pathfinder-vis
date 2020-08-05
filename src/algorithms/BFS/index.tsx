@@ -1,5 +1,5 @@
 import { Node } from '../../data_structures/Node';
-import { reconstructPath, checkArgs, isWall } from '../util';
+import { reconstructPath, checkArgs, isWall, getMovementCost } from '../util';
 import { Coordinates } from '../../types';
 
 /* logical implementation of BFS
@@ -36,6 +36,9 @@ export const bfs = (
   let cameFrom = new Map<Node, Node>();
   cameFrom.set(startNode, null!);
 
+  let costSoFar = new Map<Node, number>();
+  costSoFar.set(startNode, 0);
+
   // keep on checking the queue until it's empty
   while (frontier && frontier.length) {
     // pop queue
@@ -48,6 +51,9 @@ export const bfs = (
     if (current?.neighbors) {
       for (const neighbor of current.neighbors) {
         if (!cameFrom.get(neighbor) && !isWall(neighbor, myRefs)) {
+          // movement costs not accounted for by Bfs - tracked for comparison purposes
+          let newCost = costSoFar.get(current)! + getMovementCost(neighbor, myRefs);
+          costSoFar.set(neighbor, newCost);
           visitedNodesInOrder.push(neighbor);
           frontier.push(neighbor);
           cameFrom.set(neighbor, current);
@@ -65,6 +71,7 @@ export const bfs = (
   return {
     visitedNodesInOrder,
     shortestPath,
-    timer
+    timer,
+    costSoFar
   };
 };

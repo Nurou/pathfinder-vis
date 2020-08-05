@@ -9,6 +9,7 @@ interface StatProps {
   timeTaken?: number | null;
   shortestPathLength?: number | null;
   pathFinder?: string | null;
+  totalCost?: number | null;
   children?: any;
 }
 
@@ -27,9 +28,9 @@ const Stats = (props: StatProps) => {
       <br />
       <Spacer my={3} />
       <Span color="white">
-        Time:{' '}
+        Time (sec):{' '}
         {props.timeTaken && (
-          <Span style={{ color: 'gold' }}>{(props.timeTaken! / 1000).toFixed(5)} sec</Span>
+          <Span style={{ color: 'gold' }}>{(props.timeTaken! / 1000).toFixed(5)} </Span>
         )}
       </Span>{' '}
       <br />
@@ -40,7 +41,11 @@ const Stats = (props: StatProps) => {
           {props.shortestPathLength} {props.shortestPathLength && 'nodes'}
         </Span>
       </Span>
-      {/* TODO: add total cost */}
+      <br />
+      <Spacer my={3} />
+      <Span color="white">
+        Total Movement Cost: <Span style={{ color: 'gold' }}>{props.totalCost}</Span>
+      </Span>
       {props.children}
     </Box>
   );

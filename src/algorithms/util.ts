@@ -73,3 +73,13 @@ export const isWall = (node: Node, myRefs: any) => {
   // proper check
   return myRefs!.current[`node-${node.row}-${node.col}`].classList.contains('wall');
 };
+
+/**
+ * returns the cost of traversing the potential neighbor
+ * @param node
+ * @param myRefs
+ */
+export const getMovementCost = (node: Node, myRefs: any) => {
+  // grass costs 3 to traverse, 1 for regular
+  return myRefs.current[`node-${node.row}-${node.col}`].classList.contains('grass') ? 5 : 1;
+};
