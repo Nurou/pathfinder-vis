@@ -64,6 +64,12 @@ export const reconstructPath = (startNode: Node, endNode: Node, cameFrom?: Map<N
  * @param node - for coordinates
  * @param myRefs
  */
-export const isWall = (node: Node, myRefs: React.MutableRefObject<any> | undefined) => {
+
+export const isWall = (node: Node, myRefs: any) => {
+  // for test/mocking purpose
+  if (myRefs!.current[`node-${node.row}-${node.col}`].classList.length === 0) {
+    return false;
+  }
+  // proper check
   return myRefs!.current[`node-${node.row}-${node.col}`].classList.contains('wall');
 };

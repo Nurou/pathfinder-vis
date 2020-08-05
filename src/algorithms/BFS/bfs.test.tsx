@@ -1,5 +1,5 @@
 import { bfs } from './index';
-import { Node } from './../../data_structures/Node';
+import { Node } from '../../data_structures/Node';
 
 const setNodeNeighbors = (grid: any) => {
   for (const row of grid) {
@@ -10,6 +10,7 @@ const setNodeNeighbors = (grid: any) => {
 };
 
 let grid: any = [];
+let mockRefs: any = { current: {} };
 
 describe('verify initial state of grid', () => {
   /* Runs before all tests */
@@ -22,6 +23,7 @@ describe('verify initial state of grid', () => {
         // add a node for each row column
         let newNode = new Node(row, col);
         currentRow.push(newNode);
+        mockRefs.current[`node-${row}-${col}`] = { classList: [] };
       }
       grid.push(currentRow);
     }
@@ -34,11 +36,23 @@ describe('verify initial state of grid', () => {
   });
 
   test('throw if nodes are outside grid boundaries', () => {
-    expect(() => bfs(grid, { row: -3, col: 400 }, { row: 10, col: 10 }, {})).toThrow();
+    expect(() =>
+      bfs(
+        grid,
+        { row: -3, col: 400 },
+        { row: 10, col: 10 },
+        {
+          current: {
+            'node--3-400': { classList: [] },
+            'node-10-10': { classList: [] }
+          }
+        }
+      )
+    ).toThrow();
   });
 
   test('number of traversed nodes one when start and end adjacent to one another', () => {
-    const { shortestPath } = bfs(grid, { row: 1, col: 1 }, { row: 1, col: 2 }, {});
-    expect(shortestPath.length).toBe(1);
+    const { shortestPath } = bfs(grid, { row: 1, col: 1 }, { row: 1, col: 2 }, mockRefs);
+    expect(shortestPath.length).toBe(2);
   });
 });
