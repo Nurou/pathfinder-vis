@@ -197,7 +197,6 @@ const Visualiser = () => {
     setShortestPathLength(null);
     setTimeTaken(null);
     setTotalMovementCost(null);
-    // setCurrentPathFinder(availablePathfinders[0].value);
   };
 
   return (
@@ -265,6 +264,7 @@ const Visualiser = () => {
           <Button onClick={() => setConversionType('wall')}>Add Walls </Button>
           <Button onClick={() => setConversionType('grass')}>Add Grass</Button>
         </Box>
+        <Spacer my={3} />
       </Box>
     </>
   );

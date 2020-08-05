@@ -44,7 +44,6 @@ export const dijkstras = (
 
     // early exit conditional
     if (current === endNode) {
-      console.log('End reached!!!');
       break;
     }
 

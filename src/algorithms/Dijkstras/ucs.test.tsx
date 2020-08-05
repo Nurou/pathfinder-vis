@@ -1,5 +1,5 @@
+import { dijkstras } from '.';
 import { Node } from '../../data_structures/Node';
-import { bfs } from '.';
 
 const setNodeNeighbors = (grid: any) => {
   for (const row of grid) {
@@ -32,12 +32,12 @@ describe('verify initial state of grid', () => {
   });
 
   test('throw if no arguments provided', () => {
-    expect(bfs).toThrow();
+    expect(dijkstras).toThrow();
   });
 
   test('throw if nodes are outside grid boundaries', () => {
     expect(() =>
-      bfs(
+      dijkstras(
         grid,
         { row: -3, col: 400 },
         { row: 10, col: 10 },
@@ -52,12 +52,7 @@ describe('verify initial state of grid', () => {
   });
 
   test('number of traversed nodes one when start and end adjacent to one another', () => {
-    const { shortestPath } = bfs(grid, { row: 1, col: 1 }, { row: 1, col: 2 }, mockRefs);
+    const { shortestPath } = dijkstras(grid, { row: 1, col: 1 }, { row: 1, col: 2 }, mockRefs);
     expect(shortestPath.length).toBe(2);
   });
-
-  // test('pathfinder runs gracefully when no path available', () => {
-  //   const { shortestPath } = bfs(grid, { row: 1, col: 1 }, { row: 1, col: 2 }, mockRefs);
-  //   expect(shortestPath.length).toBe(2);
-  // });
 });

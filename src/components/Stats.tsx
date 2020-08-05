@@ -36,10 +36,7 @@ const Stats = (props: StatProps) => {
       <br />
       <Spacer my={3} />
       <Span color="white">
-        Shortest path:{' '}
-        <Span style={{ color: 'gold' }}>
-          {props.shortestPathLength} {props.shortestPathLength && 'nodes'}
-        </Span>
+        Number of steps: <Span style={{ color: 'gold' }}>{props.shortestPathLength}</Span>
       </Span>
       <br />
       <Spacer my={3} />

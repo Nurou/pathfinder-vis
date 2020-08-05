@@ -65,13 +65,13 @@ export const reconstructPath = (startNode: Node, endNode: Node, cameFrom?: Map<N
  * @param myRefs
  */
 
-export const isWall = (node: Node, myRefs: any) => {
+export const isWall = (node: Node, myRefs: any): boolean => {
+  let nodeClassList = myRefs!.current[`node-${node.row}-${node.col}`].classList;
+
   // for test/mocking purpose
-  if (myRefs!.current[`node-${node.row}-${node.col}`].classList.length === 0) {
-    return false;
-  }
-  // proper check
-  return myRefs!.current[`node-${node.row}-${node.col}`].classList.contains('wall');
+  if (typeof nodeClassList.contains == undefined || nodeClassList.length === 0) return false;
+
+  return nodeClassList.contains('wall');
 };
 
 /**
@@ -79,7 +79,14 @@ export const isWall = (node: Node, myRefs: any) => {
  * @param node
  * @param myRefs
  */
-export const getMovementCost = (node: Node, myRefs: any) => {
-  // grass costs 3 to traverse, 1 for regular
-  return myRefs.current[`node-${node.row}-${node.col}`].classList.contains('grass') ? 5 : 1;
+export const getMovementCost = (node: Node, myRefs: any): number => {
+  const GRASS_COST = 5;
+  const TERRAIN_COST = 1;
+
+  let nodeClassList = myRefs!.current[`node-${node.row}-${node.col}`].classList;
+
+  // for test/mocking purpose
+  if (typeof nodeClassList.contains == undefined || nodeClassList.length === 0) return 0;
+
+  return nodeClassList.contains('grass') ? GRASS_COST : TERRAIN_COST;
 };
