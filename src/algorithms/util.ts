@@ -1,5 +1,5 @@
-import { Coordinates } from './../../types/index.d';
-import { Node } from './../../data_structures/Node';
+import { Coordinates } from '../types';
+import { Node } from '../data_structures/Node';
 
 /**
  *

@@ -8,6 +8,7 @@ export const Grid = memo(styled.div`
   justify-content: center;
   white-space: nowrap;
   border-collapse: collapse;
+  border: 0.3rem hsl(55, 30%, 80%) solid;
 `);
 
 export const GridRow = styled.div`

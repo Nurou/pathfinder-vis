@@ -4,7 +4,7 @@ import { Box, Spacer } from '.././Shared';
 import { Button, Grid, GridRow } from '../../styles';
 import { GridNode } from '.././Node';
 import { Coordinates } from '../../types';
-import { bfs } from '../../algorithms/BFS';
+import { bfs } from '../../algorithms/Bfs';
 import Stats from '.././Stats';
 import { animateBfs } from '.././animate';
 import { convertToType, coverInTerrain, setNodeNeighbors } from './util';

@@ -1,5 +1,5 @@
 import { Node } from '../../data_structures/Node';
-import { reconstructPath, checkArgs, isWall } from './util';
+import { reconstructPath, checkArgs, isWall } from '../util';
 import { Coordinates } from '../../types';
 
 /* logical implementation of BFS
