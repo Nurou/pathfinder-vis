@@ -1,6 +1,6 @@
 import { Node } from '../../data_structures/Node';
 import { reconstructPath, checkArgs, isWall, getMovementCost } from '../util';
-import { Coordinates } from '../../types';
+import { ICoordinates } from '../../types';
 
 /* logical implementation of BFS
  */
@@ -13,8 +13,8 @@ import { Coordinates } from '../../types';
  */
 export const bfs = (
   grid: Node[][],
-  startNodeCoords: Coordinates,
-  endNodeCoords: Coordinates,
+  startNodeCoords: ICoordinates,
+  endNodeCoords: ICoordinates,
   myRefs?: React.MutableRefObject<any> | object
 ) => {
   checkArgs(grid, startNodeCoords, endNodeCoords);
@@ -41,6 +41,7 @@ export const bfs = (
 
   // keep on checking the queue until it's empty
   while (frontier && frontier.length) {
+    console.log('Looped');
     // pop queue
     let current: Node | undefined = frontier.shift();
     // early exit conditional
@@ -57,6 +58,7 @@ export const bfs = (
           visitedNodesInOrder.push(neighbor);
           frontier.push(neighbor);
           cameFrom.set(neighbor, current);
+          console.log('💩: visitedNodesInOrder', visitedNodesInOrder);
         }
       }
     }

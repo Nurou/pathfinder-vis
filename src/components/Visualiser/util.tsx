@@ -1,4 +1,4 @@
-import { Coordinates } from '../../types';
+import { ICoordinates } from '../../types';
 import Node from '../../data_structures/Node';
 
 /**
@@ -11,10 +11,10 @@ export const convertToType = (
   row: number,
   col: number,
   conversionType: string,
-  startNodeCoords: Coordinates | null,
-  endNodeCoords: Coordinates | null,
-  setStartNodeCoords: React.Dispatch<React.SetStateAction<Coordinates | null>>,
-  setEndNodeCoords: React.Dispatch<React.SetStateAction<Coordinates | null>>,
+  startNodeCoords: ICoordinates | null,
+  endNodeCoords: ICoordinates | null,
+  setStartNodeCoords: React.Dispatch<React.SetStateAction<ICoordinates | null>>,
+  setEndNodeCoords: React.Dispatch<React.SetStateAction<ICoordinates | null>>,
   myRefs: any
 ) => {
   // target node
@@ -96,4 +96,12 @@ export const setNodeNeighbors = (grid: Node[][]) => {
       node.setNeighbors(grid);
     }
   }
+};
+
+export const isStartNode = (row: number, col: number, myRefs: any): boolean => {
+  return myRefs.current[`node-${row}-${col}`].classList.contains('start');
+};
+
+export const isEndNode = (row: number, col: number, myRefs: any): boolean => {
+  return myRefs.current[`node-${row}-${col}`].classList.contains('end');
 };

@@ -1,4 +1,4 @@
-import { Coordinates } from '../../types';
+import { ICoordinates } from '../../types';
 import { PriorityQueue } from '../../data_structures/PriorityQueue';
 import { checkArgs, reconstructPath, isWall, getMovementCost } from '../util';
 import Node from '../../data_structures/Node';
@@ -12,8 +12,8 @@ import Node from '../../data_structures/Node';
  */
 export const dijkstras = (
   grid: Node[][],
-  startNodeCoords: Coordinates,
-  endNodeCoords: Coordinates,
+  startNodeCoords: ICoordinates,
+  endNodeCoords: ICoordinates,
   myRefs: any
 ) => {
   checkArgs(grid, startNodeCoords, endNodeCoords);

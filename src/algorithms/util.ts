@@ -1,4 +1,4 @@
-import { Coordinates } from '../types';
+import { ICoordinates } from '../types';
 import { Node } from '../data_structures/Node';
 
 /**
@@ -9,8 +9,8 @@ import { Node } from '../data_structures/Node';
  */
 export const checkArgs = (
   grid: Node[][],
-  startNodeCoords: Coordinates,
-  endNodeCoords: Coordinates
+  startNodeCoords: ICoordinates,
+  endNodeCoords: ICoordinates
 ) => {
   if (!grid || !startNodeCoords || !endNodeCoords) {
     throw new Error('Missing arguments!');

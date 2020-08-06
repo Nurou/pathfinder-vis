@@ -3,11 +3,11 @@ import Node from '../../data_structures/Node';
 import { Box, Spacer } from '.././Shared';
 import { Button, Grid, GridRow } from '../../styles';
 import { GridNode } from '.././Node';
-import { Coordinates } from '../../types';
+import { ICoordinates, IGridDimensions } from '../../types';
 import { bfs } from '../../algorithms/Bfs';
 import Stats from '.././Stats';
 import { animatePathFinding } from '.././animate';
-import { convertToType, coverInTerrain, setNodeNeighbors } from './util';
+import { convertToType, coverInTerrain, setNodeNeighbors, isStartNode, isEndNode } from './util';
 import { dijkstras } from '../../algorithms/Dijkstras';
 
 const Visualiser = () => {
@@ -17,9 +17,11 @@ const Visualiser = () => {
    * Grid State
    */
   const [grid, setGrid] = useState<Node[][] | null>([]);
-  const [startNodeCoords, setStartNodeCoords] = useState<Coordinates | null>(null);
-  const [endNodeCoords, setEndNodeCoords] = useState<Coordinates | null>(null);
-  const [conversionType, setConversionType] = useState('start');
+  const [startNodeCoords, setStartNodeCoords] = useState<ICoordinates | null>({ row: 5, col: 5 });
+  const [endNodeCoords, setEndNodeCoords] = useState<ICoordinates | null>({ row: 10, col: 20 });
+  const [conversionType, setConversionType] = useState<string>('start');
+  const [gridDimensions, setGridDimensions] = useState<IGridDimensions>({ rows: 20, cols: 40 });
+  const [mazeGenerated, setMazeGenerated] = useState<boolean>(false);
 
   /**
    * Algorithm Stats State
@@ -41,14 +43,10 @@ const Visualiser = () => {
 
   // grid initialised after visual is rendered
   useLayoutEffect(() => {
-    // grid dimensions
-    const GRID_ROWS: number = 20;
-    const GRID_COLS: number = 40;
-
     let grid: Node[][] = [];
-    for (let row = 0; row < GRID_ROWS; row++) {
+    for (let row = 0; row < gridDimensions.rows; row++) {
       const currentRow: Node[] = [];
-      for (let col = 0; col < GRID_COLS; col++) {
+      for (let col = 0; col < gridDimensions.cols; col++) {
         // add a node for each row column
         let newNode = new Node(row, col);
         currentRow.push(newNode);
@@ -126,8 +124,12 @@ const Visualiser = () => {
         endNodeCoords,
         myRefs
       );
+      console.log('💩: runBfs -> costSoFar', costSoFar);
+      console.log('💩: runBfs -> timer', timer);
+      console.log('💩: runBfs -> shortestPath', shortestPath);
+      console.log('💩: runBfs -> visitedNodesInOrder', visitedNodesInOrder);
+
       setTotalMovementCost(costSoFar.get(grid[endNodeCoords.row][endNodeCoords.col])!);
-      // setCurrentPathFinder('BFS');
       setTimeTaken(timer);
       shortestPath && setShortestPathLength(shortestPath.length);
       animatePathFinding(visitedNodesInOrder, shortestPath, myRefs);
@@ -175,7 +177,9 @@ const Visualiser = () => {
    * @param {object} grid - 2D array of the logical grid nodes in their current state (after algorithm has run)
    * @param {object} myRefs
    */
-  const clear = (grid: Node[][], all?: boolean) => {
+  const clear = (all?: boolean) => {
+    if (!grid) return;
+
     for (const row of grid) {
       for (const node of row) {
         node.resetState();
@@ -199,6 +203,50 @@ const Visualiser = () => {
     setTotalMovementCost(null);
   };
 
+  /**
+   * Generates a random maze using walls and positions both the start and end nodes on the grid
+   */
+  const createMaze = () => {
+    // if maze already generated, clear previous
+    if (mazeGenerated) {
+      clear(true);
+    }
+    // add start and end nodes
+    if (startNodeCoords && endNodeCoords) {
+      convertToType(
+        startNodeCoords.row,
+        startNodeCoords.col,
+        'start',
+        startNodeCoords,
+        endNodeCoords,
+        setStartNodeCoords,
+        setEndNodeCoords,
+        myRefs
+      );
+      convertToType(
+        endNodeCoords.row,
+        endNodeCoords.col,
+        'end',
+        startNodeCoords,
+        endNodeCoords,
+        setStartNodeCoords,
+        setEndNodeCoords,
+        myRefs
+      );
+    }
+
+    for (let row = 0; row < grid!.length; row++) {
+      for (let col = 0; col < grid![row].length; col++) {
+        let randomBoolean = Math.random() >= 0.75;
+        if (randomBoolean && !isStartNode(row, col, myRefs) && !isEndNode(row, col, myRefs)) {
+          myRefs.current[`node-${row}-${col}`].classList.add('wall');
+        }
+      }
+    }
+
+    setMazeGenerated(true);
+  };
+
   return (
     <>
       <Stats
@@ -210,8 +258,8 @@ const Visualiser = () => {
         <Spacer my={5} />
         <Box display="flex" justifyContent="center" alignItems="center">
           <Button onClick={() => runAlgo()}>Visualize</Button>
-          <Button onClick={() => clear(grid!)}>Reset Pathfinder</Button>
-          <Button onClick={() => clear(grid!, true)}>Clear All</Button>
+          <Button onClick={() => clear()}>Reset Pathfinder</Button>
+          <Button onClick={() => clear(true)}>Clear All</Button>
         </Box>
       </Stats>
       <Box
@@ -259,6 +307,7 @@ const Visualiser = () => {
         </Grid>
         <Spacer my={3} />
         <Box display="flex" justifyContent="center" alignItems="center">
+          <Button onClick={createMaze}>Generate Maze </Button>
           <Button onClick={() => setConversionType('start')}>Start </Button>
           <Button onClick={() => setConversionType('end')}>Finish</Button>
           <Button onClick={() => setConversionType('wall')}>Add Walls </Button>
