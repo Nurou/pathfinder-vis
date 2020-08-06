@@ -10,6 +10,8 @@ I also added a random maze generator.
 
 # Problems/Issues
 
-The biggest challenge was dealing with the case in which there was no shortest path due to walls blocking the route.
+There was a bug in the pathfinder where an infinite loop was run when no path was available. That was fixed.
 
 # What next?
+
+Add A\* algorithm, along with its test and start working on custom implementations of any ready-made data structures used.

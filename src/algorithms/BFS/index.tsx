@@ -41,7 +41,6 @@ export const bfs = (
 
   // keep on checking the queue until it's empty
   while (frontier && frontier.length) {
-    console.log('Looped');
     // pop queue
     let current: Node | undefined = frontier.shift();
     // early exit conditional
@@ -55,10 +54,11 @@ export const bfs = (
           // movement costs not accounted for by Bfs - tracked for comparison purposes
           let newCost = costSoFar.get(current)! + getMovementCost(neighbor, myRefs);
           costSoFar.set(neighbor, newCost);
+
           visitedNodesInOrder.push(neighbor);
           frontier.push(neighbor);
+
           cameFrom.set(neighbor, current);
-          console.log('💩: visitedNodesInOrder', visitedNodesInOrder);
         }
       }
     }

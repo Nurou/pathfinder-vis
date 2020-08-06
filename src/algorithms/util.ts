@@ -36,25 +36,30 @@ const between = (x: number, min: number, max: number) => {
 };
 
 /**
- *
+ * Reconstructs the path from end node to start node if it exists
  * @param {number} startNode
  * @param {number} endNode
  */
 export const reconstructPath = (startNode: Node, endNode: Node, cameFrom?: Map<Node, Node>) => {
-  // start from goal
-  let current = endNode;
   // path starts out empty
   let path: Node[] = [];
-  // ends when start reached
-  while (current !== startNode) {
-    path.push(current);
-    if (current) {
-      current = cameFrom!.get(current)!;
-    }
-  }
 
-  // include start node for visualisation
-  path.push(startNode);
+  // end node was reached
+  if (cameFrom?.get(endNode) !== undefined) {
+    // start from goal
+    let current = endNode;
+
+    // ends when start reached
+    while (current !== startNode) {
+      path.push(current);
+      if (current) {
+        current = cameFrom!.get(current)!;
+      }
+    }
+
+    // include start node for visualisation
+    path.push(startNode);
+  }
 
   return path;
 };
