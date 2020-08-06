@@ -29,8 +29,8 @@ export const dijkstras = (
 
   let frontier = new PriorityQueue((a, b) => a[1] < b[1]);
   frontier.push([startNode, 0]);
-  console.log('\nInitial contents:');
-  console.log(frontier.peek()[0]); //=>
+  // console.log('\nInitial contents:');
+  // console.log(frontier.peek()[0]); //=>
 
   let cameFrom = new Map<Node, Node>();
   cameFrom.set(startNode, null!);

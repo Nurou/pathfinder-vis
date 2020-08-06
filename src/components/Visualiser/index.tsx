@@ -4,15 +4,13 @@ import { Box, Spacer } from '.././Shared';
 import { Button, Grid, GridRow } from '../../styles';
 import { GridNode } from '.././Node';
 import { ICoordinates, IGridDimensions } from '../../types';
-import { bfs } from '../../algorithms/Bfs';
 import Stats from '.././Stats';
-import { animatePathFinding } from '.././animate';
+import { animatePathFinding } from '../Animate';
 import { convertToType, coverInTerrain, setNodeNeighbors, isStartNode, isEndNode } from './util';
+import { bfs } from '../../algorithms/Bfs';
 import { dijkstras } from '../../algorithms/Dijkstras';
 
 const Visualiser = () => {
-  console.log('Rendered: Visualiser');
-
   /**
    * Grid State
    */

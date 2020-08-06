@@ -4,6 +4,10 @@ I added Dijkstra's uniform-cost search algorithm to the project, along with adde
 
 I also added a random maze generator.
 
+Added tests for:
+
+- PriorityQueue
+
 # Progress
 
 # What I learned?

@@ -73,10 +73,13 @@ export class PriorityQueue {
       node = maxChild;
     }
   }
+  clear() {
+    this.heap = [];
+  }
 
   toString() {
     this.heap.forEach((el) => {
-      console.log(el[0]);
+      console.log(el);
     });
   }
 }

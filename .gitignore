@@ -25,3 +25,6 @@ yarn-error.log*
 
 Project.md
 react-app-env.d.ts
+
+
+.vscode
