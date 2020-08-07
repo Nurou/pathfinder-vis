@@ -30,7 +30,7 @@ export const NodeWrapper = styled('div')`
   position: relative;
   width: 2vmin;
   height: 2vmin;
-  outline: 0.02rem solid gray;
+  /* outline: 0.02rem solid gray; */
   border-collapse: collapse;
 
   background: ${({ variant }) =>

@@ -136,8 +136,8 @@ const Visualiser = () => {
         endNodeCoords,
         myRefs
       );
+      console.log('💩: runDijkstras -> costSoFar', costSoFar);
       setTotalMovementCost(costSoFar.get(grid[endNodeCoords.row][endNodeCoords.col])!);
-      // setCurrentPathFinder('Ucs');
       setTimeTaken(timer);
       // deduct two since start and end nodes included in the array
       setShortestPathLength(shortestPath.length - 2);
