@@ -1,3 +1,3 @@
-export * from './Bfs';
-export * from './Dijkstras';
-export * from './Greedy_Bfs';
+export { bfs } from './Bfs';
+export { dijkstras } from './Dijkstras';
+export { gbfs } from './Greedy_Bfs';

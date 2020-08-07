@@ -13,9 +13,7 @@ import {
   isEndNode,
   populateGrid
 } from './util';
-import { bfs } from '../../algorithms/Bfs';
-import { dijkstras } from '../../algorithms/Dijkstras';
-import { gbfs } from '../../algorithms/Greedy_Bfs';
+import { bfs, dijkstras, gbfs } from '../../algorithms';
 import { animatePathFinding } from './Animate';
 
 const Visualiser = () => {
