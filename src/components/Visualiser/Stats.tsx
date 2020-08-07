@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Span, Spacer } from './Shared';
+import { Box, Span, Spacer } from '../Shared';
 
 /**
  * Component for displaying pathfinder algorithm run statistics

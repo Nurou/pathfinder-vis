@@ -2,10 +2,9 @@ import React, { useState, useRef, useLayoutEffect, useEffect } from 'react';
 import Node from '../../data_structures/Node';
 import { Box, Spacer } from '.././Shared';
 import { Button, Grid, GridRow } from '../../styles';
-import { GridNode } from '.././Node';
+import { GridNode } from './Node';
 import { ICoordinates, IGridDimensions } from '../../types';
-import Stats from '.././Stats';
-import { animatePathFinding } from '../Animate';
+import Stats from './Stats';
 import {
   convertToType,
   coverInTerrain,
@@ -16,6 +15,8 @@ import {
 } from './util';
 import { bfs } from '../../algorithms/Bfs';
 import { dijkstras } from '../../algorithms/Dijkstras';
+import { gbfs } from '../../algorithms/Greedy_Bfs';
+import { animatePathFinding } from './Animate';
 
 const Visualiser = () => {
   /**
@@ -32,8 +33,9 @@ const Visualiser = () => {
    * Algorithm Stats State
    */
   const availablePathfinders = [
-    { value: 'Bfs', label: 'Breadth-first Search' },
-    { value: 'Ucs', label: 'Dijkstras (Uniform-Cost Search)' }
+    { value: 'Bfs', label: 'Breadth-First Search' },
+    { value: 'Ucs', label: 'Dijkstras (Uniform-Cost Search)' },
+    { value: 'Gbfs', label: 'Greedy Best-First Search' }
   ];
   const [currentPathFinder, setCurrentPathFinder] = useState<string | null>(
     availablePathfinders[0].value
@@ -107,9 +109,6 @@ const Visualiser = () => {
     }
   };
 
-  /**
-   * runs BFS algorithm and animation
-   */
   const runBfs = () => {
     if (grid && startNodeCoords && endNodeCoords) {
       const { visitedNodesInOrder, shortestPath, timer, costSoFar } = bfs(
@@ -120,14 +119,11 @@ const Visualiser = () => {
       );
       setTotalMovementCost(costSoFar.get(grid[endNodeCoords.row][endNodeCoords.col])!);
       setTimeTaken(timer);
-      shortestPath && setShortestPathLength(shortestPath.length);
+      shortestPath && setShortestPathLength(shortestPath.length - 2);
       animatePathFinding(visitedNodesInOrder, shortestPath, myRefs);
     }
   };
 
-  /**
-   * runs Dijkstra's algorithm and animation
-   */
   const runDijkstras = () => {
     if (grid && startNodeCoords && endNodeCoords) {
       const { visitedNodesInOrder, shortestPath, timer, costSoFar } = dijkstras(
@@ -136,8 +132,24 @@ const Visualiser = () => {
         endNodeCoords,
         myRefs
       );
-      console.log('💩: runDijkstras -> costSoFar', costSoFar);
+
       setTotalMovementCost(costSoFar.get(grid[endNodeCoords.row][endNodeCoords.col])!);
+      setTimeTaken(timer);
+      // deduct two since start and end nodes included in the array
+      setShortestPathLength(shortestPath.length - 2);
+      animatePathFinding(visitedNodesInOrder, shortestPath, myRefs);
+    }
+  };
+
+  const runGbfs = () => {
+    if (grid && startNodeCoords && endNodeCoords) {
+      const { visitedNodesInOrder, shortestPath, timer } = gbfs(
+        grid,
+        startNodeCoords,
+        endNodeCoords,
+        myRefs
+      );
+
       setTimeTaken(timer);
       // deduct two since start and end nodes included in the array
       setShortestPathLength(shortestPath.length - 2);
@@ -155,6 +167,9 @@ const Visualiser = () => {
         break;
       case 'Ucs':
         runDijkstras();
+        break;
+      case 'Gbfs':
+        runGbfs();
         break;
       default:
         break;

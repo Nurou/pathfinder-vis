@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { NodeWrapper } from '../styles';
+import { NodeWrapper } from '../../styles';
 
 type TNodeProps = {
   row: number;
@@ -34,12 +34,7 @@ interface HTMLDivElement {
  * @param {number} row
  * @param {number} col
  */
-const handleRef = (
-  el: HTMLDivElement,
-  row: number,
-  col: number,
-  myRefs: any
-) => {
+const handleRef = (el: HTMLDivElement, row: number, col: number, myRefs: any) => {
   // get existing refs
   let newRefs = { ...myRefs.current };
 

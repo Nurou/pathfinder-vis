@@ -1,5 +1,4 @@
-import Node from '../data_structures/Node';
-
+import { Node } from '../../data_structures/Node';
 /**
  *  Animates the progression of the breadth-first search algorithm after the algorithm has concluded its work
  *

@@ -1,6 +1,8 @@
 # How is the program executed. How do different features work
 
-The program has a deployed version, but can also be ran locally. The UI is simple and intuitive for the most part, and will contain instructions where necessary.
+The is deployed and accessible at: http://pathfinder-vis.surge.sh/
+
+It can alternatively be ran locally. The UI is simple and intuitive for the most part, and will contain instructions where necessary.
 
 TODO: add instructions
 
