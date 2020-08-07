@@ -6,7 +6,14 @@ import { GridNode } from '.././Node';
 import { ICoordinates, IGridDimensions } from '../../types';
 import Stats from '.././Stats';
 import { animatePathFinding } from '../Animate';
-import { convertToType, coverInTerrain, setNodeNeighbors, isStartNode, isEndNode } from './util';
+import {
+  convertToType,
+  coverInTerrain,
+  setNodeNeighbors,
+  isStartNode,
+  isEndNode,
+  populateGrid
+} from './util';
 import { bfs } from '../../algorithms/Bfs';
 import { dijkstras } from '../../algorithms/Dijkstras';
 
@@ -42,20 +49,9 @@ const Visualiser = () => {
   // grid initialised after visual is rendered
   useLayoutEffect(() => {
     let grid: Node[][] = [];
-    for (let row = 0; row < gridDimensions.rows; row++) {
-      const currentRow: Node[] = [];
-      for (let col = 0; col < gridDimensions.cols; col++) {
-        // add a node for each row column
-        let newNode = new Node(row, col);
-        currentRow.push(newNode);
-      }
-      // add the whole row
-      grid.push(currentRow);
-    }
-
+    populateGrid(grid, gridDimensions);
     // update state
     setGrid(grid);
-
     // neighbors can be set once grid has been populated
     setNodeNeighbors(grid);
   }, []);
@@ -122,11 +118,6 @@ const Visualiser = () => {
         endNodeCoords,
         myRefs
       );
-      console.log('💩: runBfs -> costSoFar', costSoFar);
-      console.log('💩: runBfs -> timer', timer);
-      console.log('💩: runBfs -> shortestPath', shortestPath);
-      console.log('💩: runBfs -> visitedNodesInOrder', visitedNodesInOrder);
-
       setTotalMovementCost(costSoFar.get(grid[endNodeCoords.row][endNodeCoords.col])!);
       setTimeTaken(timer);
       shortestPath && setShortestPathLength(shortestPath.length);

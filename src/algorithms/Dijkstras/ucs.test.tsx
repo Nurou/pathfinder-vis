@@ -1,21 +1,14 @@
 import { dijkstras } from '.';
 import { Node } from '../../data_structures/Node';
-
-const setNodeNeighbors = (grid: any) => {
-  for (const row of grid) {
-    for (const node of row) {
-      node.setNeighbors(grid);
-    }
-  }
-};
+import { setNodeNeighbors } from '../../components/Visualiser/util';
 
 let grid: any = [];
 let mockRefs: any = { current: {} };
+const GRID_ROWS = 20;
+const GRID_COLS = 30;
 
 /* Runs before all tests */
 beforeAll(() => {
-  const GRID_ROWS = 20;
-  const GRID_COLS = 30;
   for (let row = 0; row < GRID_ROWS; row++) {
     const currentRow = [];
     for (let col = 0; col < GRID_COLS; col++) {

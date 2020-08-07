@@ -16,8 +16,6 @@ export class Node {
   constructor(row: number, col: number) {
     this.row = row;
     this.col = col;
-    // this.type = 'regular';
-    // perhaps get rid of this property
     this.distance = Infinity;
     this.neighbors = [];
   }
@@ -34,15 +32,17 @@ export class Node {
    * Neighbor nodes are those that are located directly to the right, left, above, or below the node in the grid
    * @param {object} grid
    */
-  setNeighbors(grid: Node[][]) {
+  setNeighbors(grid: Node[][]): void {
     const neighbors = [];
     if (this.row > 0) neighbors.push(grid[this.row - 1][this.col]);
-    if (this.row < grid.length - 1)
-      neighbors.push(grid[this.row + 1][this.col]);
+    if (this.row < grid.length - 1) neighbors.push(grid[this.row + 1][this.col]);
     if (this.col > 0) neighbors.push(grid[this.row][this.col - 1]);
-    if (this.col < grid[0].length - 1)
-      neighbors.push(grid[this.row][this.col + 1]);
+    if (this.col < grid[0].length - 1) neighbors.push(grid[this.row][this.col + 1]);
     this.neighbors = neighbors;
+  }
+
+  getNeighbors(): Node[] | null {
+    return this.neighbors;
   }
 
   toString() {

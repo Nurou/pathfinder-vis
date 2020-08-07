@@ -1,13 +1,6 @@
 import { Node } from '../../data_structures/Node';
 import { bfs } from '.';
-
-const setNodeNeighbors = (grid: any) => {
-  for (const row of grid) {
-    for (const node of row) {
-      node.setNeighbors(grid);
-    }
-  }
-};
+import { setNodeNeighbors } from '../../components/Visualiser/util';
 
 let grid: any = [];
 let mockRefs: any = { current: {} };

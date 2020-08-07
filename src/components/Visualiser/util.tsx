@@ -1,4 +1,4 @@
-import { ICoordinates } from '../../types';
+import { ICoordinates, IGridDimensions } from '../../types';
 import Node from '../../data_structures/Node';
 
 const END_NODE_SVG =
@@ -87,6 +87,19 @@ export const coverInTerrain = (myRefs: React.MutableRefObject<any>): void => {
       el.classList.add('regular');
     }
   });
+};
+
+export const populateGrid = (grid: Node[][] | null, gridDimensions: IGridDimensions): void => {
+  for (let row = 0; row < gridDimensions.rows; row++) {
+    const currentRow: Node[] = [];
+    for (let col = 0; col < gridDimensions.cols; col++) {
+      // add a node for each row column
+      let newNode = new Node(row, col);
+      currentRow.push(newNode);
+    }
+    // add the whole row
+    grid!.push(currentRow);
+  }
 };
 
 /**
