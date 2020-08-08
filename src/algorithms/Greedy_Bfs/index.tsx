@@ -1,6 +1,6 @@
 import { ICoordinates } from '../../types';
 import { PriorityQueue } from '../../data_structures/PriorityQueue';
-import { checkArgs, reconstructPath, isWall } from '../util';
+import { checkArgs, reconstructPath, isWall, getMovementCost } from '../util';
 import Node from '../../data_structures/Node';
 
 /**
@@ -33,6 +33,10 @@ export const gbfs = (
   let cameFrom = new Map<Node, Node>();
   cameFrom.set(startNode, null!);
 
+  // cost tracked comparison purposes only - does not affect heuristic
+  let costSoFar = new Map<Node, number>();
+  costSoFar.set(startNode, 0);
+
   // keep on checking the queue until it's empty
   while (frontier && frontier.size()) {
     // pop queue
@@ -52,6 +56,10 @@ export const gbfs = (
         let priority = heuristic(endNode, neighbor);
         frontier.push([neighbor, priority]);
         cameFrom.set(neighbor, current);
+
+        // movement costs not accounted for by Bfs - tracked for comparison purposes
+        let newCost = costSoFar.get(current)! + getMovementCost(neighbor, myRefs);
+        costSoFar.set(neighbor, newCost);
       }
     }
   }
@@ -65,7 +73,8 @@ export const gbfs = (
   return {
     visitedNodesInOrder,
     shortestPath,
-    timer
+    timer,
+    costSoFar
   };
 };
 
@@ -75,10 +84,12 @@ export const gbfs = (
  * @param b
  */
 const heuristic = (a: Node, b: Node): number => {
-  let xDist = a.row - b.row;
-  let yDist = a.col - b.col;
+  let xDist = a.col - b.col;
+  let yDist = a.row - b.row;
+
   // equivalent to abs function
   xDist = xDist > 0 ? xDist : -xDist;
   yDist = yDist > 0 ? yDist : -yDist;
+
   return xDist + yDist;
 };

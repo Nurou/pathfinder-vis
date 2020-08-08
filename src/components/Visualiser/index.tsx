@@ -3,14 +3,13 @@ import Node from '../../data_structures/Node';
 import { Box, Spacer } from '.././Shared';
 import { Button, Grid, GridRow } from '../../styles';
 import { GridNode } from './Node';
-import { ICoordinates, IGridDimensions } from '../../types';
+import { ICoordinates, IGridDimensions, IDynFunctions } from '../../types';
 import Stats from './Stats';
 import {
   convertToType,
   coverInTerrain,
   setNodeNeighbors,
-  isStartNode,
-  isEndNode,
+  addWallsRandomly,
   populateGrid
 } from './util';
 import { bfs, dijkstras, gbfs } from '../../algorithms';
@@ -22,9 +21,9 @@ const Visualiser = () => {
    */
   const [grid, setGrid] = useState<Node[][] | null>([]);
   const [startNodeCoords, setStartNodeCoords] = useState<ICoordinates | null>({ row: 5, col: 5 });
-  const [endNodeCoords, setEndNodeCoords] = useState<ICoordinates | null>({ row: 10, col: 20 });
+  const [endNodeCoords, setEndNodeCoords] = useState<ICoordinates | null>({ row: 9, col: 10 });
   const [conversionType, setConversionType] = useState<string>('start');
-  const [gridDimensions, setGridDimensions] = useState<IGridDimensions>({ rows: 20, cols: 40 });
+  const [gridDimensions, setGridDimensions] = useState<IGridDimensions>({ rows: 10, cols: 20 });
   const [mazeGenerated, setMazeGenerated] = useState<boolean>(false);
 
   /**
@@ -36,7 +35,7 @@ const Visualiser = () => {
     { value: 'Gbfs', label: 'Greedy Best-First Search' }
   ];
   const [currentPathFinder, setCurrentPathFinder] = useState<string | null>(
-    availablePathfinders[0].value
+    availablePathfinders[2].value
   );
   const [timeTaken, setTimeTaken] = useState<number | null>(null);
   const [shortestPathLength, setShortestPathLength] = useState<number | null>(null);
@@ -107,70 +106,27 @@ const Visualiser = () => {
     }
   };
 
-  const runBfs = () => {
-    if (grid && startNodeCoords && endNodeCoords) {
-      const { visitedNodesInOrder, shortestPath, timer, costSoFar } = bfs(
-        grid,
-        startNodeCoords,
-        endNodeCoords,
-        myRefs
-      );
-      setTotalMovementCost(costSoFar.get(grid[endNodeCoords.row][endNodeCoords.col])!);
-      setTimeTaken(timer);
-      shortestPath && setShortestPathLength(shortestPath.length - 2);
-      animatePathFinding(visitedNodesInOrder, shortestPath, myRefs);
-    }
-  };
-
-  const runDijkstras = () => {
-    if (grid && startNodeCoords && endNodeCoords) {
-      const { visitedNodesInOrder, shortestPath, timer, costSoFar } = dijkstras(
-        grid,
-        startNodeCoords,
-        endNodeCoords,
-        myRefs
-      );
-
-      setTotalMovementCost(costSoFar.get(grid[endNodeCoords.row][endNodeCoords.col])!);
-      setTimeTaken(timer);
-      // deduct two since start and end nodes included in the array
-      setShortestPathLength(shortestPath.length - 2);
-      animatePathFinding(visitedNodesInOrder, shortestPath, myRefs);
-    }
-  };
-
-  const runGbfs = () => {
-    if (grid && startNodeCoords && endNodeCoords) {
-      const { visitedNodesInOrder, shortestPath, timer } = gbfs(
-        grid,
-        startNodeCoords,
-        endNodeCoords,
-        myRefs
-      );
-
-      setTimeTaken(timer);
-      // deduct two since start and end nodes included in the array
-      setShortestPathLength(shortestPath.length - 2);
-      animatePathFinding(visitedNodesInOrder, shortestPath, myRefs);
-    }
+  let dynFunctions: IDynFunctions = {
+    Bfs: () => bfs(grid!, startNodeCoords!, endNodeCoords!, myRefs),
+    Ucs: () => dijkstras(grid!, startNodeCoords!, endNodeCoords!, myRefs),
+    Gbfs: () => gbfs(grid!, startNodeCoords!, endNodeCoords!, myRefs)
   };
 
   /**
    * determines which algorithm to run based on user selection
    */
-  const runAlgo = () => {
-    switch (currentPathFinder) {
-      case 'Bfs':
-        runBfs();
-        break;
-      case 'Ucs':
-        runDijkstras();
-        break;
-      case 'Gbfs':
-        runGbfs();
-        break;
-      default:
-        break;
+  const visualise = () => {
+    // given we have what we need
+    if (grid && startNodeCoords && endNodeCoords) {
+      // call the selected algorithm
+      const { visitedNodesInOrder, shortestPath, timer, costSoFar } = dynFunctions[
+        currentPathFinder!
+      ]();
+      // update stats
+      setTotalMovementCost(costSoFar.get(grid[endNodeCoords.row][endNodeCoords.col])!);
+      setTimeTaken(timer);
+      setShortestPathLength(shortestPath.length - 2);
+      animatePathFinding(visitedNodesInOrder, shortestPath, myRefs);
     }
   };
 
@@ -237,14 +193,7 @@ const Visualiser = () => {
       );
     }
 
-    for (let row = 0; row < grid!.length; row++) {
-      for (let col = 0; col < grid![row].length; col++) {
-        let randomBoolean = Math.random() >= 0.75;
-        if (randomBoolean && !isStartNode(row, col, myRefs) && !isEndNode(row, col, myRefs)) {
-          myRefs.current[`node-${row}-${col}`].classList.add('wall');
-        }
-      }
-    }
+    addWallsRandomly(grid, myRefs);
 
     setMazeGenerated(true);
   };
@@ -259,7 +208,7 @@ const Visualiser = () => {
       >
         <Spacer my={5} />
         <Box display="flex" justifyContent="center" alignItems="center">
-          <Button onClick={() => runAlgo()}>Visualize</Button>
+          <Button onClick={() => visualise()}>Visualize</Button>
           <Button onClick={() => clear()}>Reset Pathfinder</Button>
           <Button onClick={() => clear(true)}>Clear All</Button>
         </Box>
