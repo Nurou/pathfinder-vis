@@ -2,15 +2,16 @@
 
 I added Dijkstra's uniform-cost search algorithm to the project, along with added features to the UI that allow comparisons between the different algorithms to be shows. More specifically, the comparison of total number of nodes traversed and total movement cost.
 
-I also added a random maze generator.
+I also added a random maze generator, and improved overall code readability and structure.
 
-Added tests for:
+In addition, tests were added for the following data structures:
 
 - PriorityQueue
-
-# Progress
+- Node
 
 # What I learned?
+
+I mainly learned about heuristic search as it applies to pathfinders.
 
 # Problems/Issues
 
