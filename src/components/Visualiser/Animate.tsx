@@ -1,4 +1,5 @@
 import { Node } from '../../data_structures/Node';
+import { isWall, isStartNode, isEndNode, isGrass } from '../../algorithms/util';
 /**
  *  Animates the progression of the breadth-first search algorithm after the algorithm has concluded its work
  *
@@ -6,10 +7,11 @@ import { Node } from '../../data_structures/Node';
  * @param {object} shortestPath - array of nodes also from algorithm
  * @param {object} myRefs - array of references to dom nodes for adding style classes
  */
-export const animatePathFinding = (
+export const animateVisits = (
   nodesVisitedInOrder: Node[],
   shortestPath: Node[],
-  myRefs: any
+  myRefs: React.MutableRefObject<any>,
+  costSoFar?: Map<Node, number>
 ) => {
   // const ANIMATION_TIMEOUT = 15;
   const ANIMATION_TIMEOUT = 5;
@@ -22,9 +24,12 @@ export const animatePathFinding = (
       return;
     }
     setTimeout(() => {
-      // exclude walls and end nodes
       let domNode: any = myRefs.current[`node-${node.row}-${node.col}`];
-      if (!domNode.classList.contains('wall') && !domNode.classList.contains('grass')) {
+      if (isWall(node, myRefs)) return;
+      if (!isStartNode(node.row, node.col, myRefs) && !isEndNode(node.row, node.col, myRefs)) {
+        domNode.innerHTML = costSoFar!.get(node);
+      }
+      if (!isGrass(node.row, node.col, myRefs)) {
         domNode.classList.add('node-visited');
       }
     }, ANIMATION_TIMEOUT * index);
@@ -43,9 +48,24 @@ const animateShortestPath = (shortestPath: Node[], myRefs: React.MutableRefObjec
     setTimeout(() => {
       // exclude walls and end nodes
       let domNode = myRefs.current[`node-${node.row}-${node.col}`];
-      if (!domNode.classList.contains('wall')) {
+      if (!isWall(node, myRefs)) {
         domNode.classList.add('node-shortest-path');
       }
     }, ANIMATION_TIMEOUT * index);
   });
 };
+
+// export const animateDistance = (
+//   costSoFar: Map<Node, number>,
+//   myRefs: React.MutableRefObject<any>
+// ) => {
+//   const ANIMATION_TIMEOUT = 20;
+//   [...costSoFar].map((mapping, index) => {
+//     let domNode = myRefs.current[`node-${mapping[0].row}-${mapping[0].col}`];
+//     if (!domNode.classList.contains('start') && !domNode.classList.contains('end')) {
+//       setTimeout(() => {
+//         myRefs.current[`node-${mapping[0].row}-${mapping[0].col}`].innerHTML = mapping[1];
+//       }, ANIMATION_TIMEOUT * index);
+//     }
+//   });
+// };

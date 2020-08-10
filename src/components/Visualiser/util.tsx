@@ -1,6 +1,6 @@
 import { ICoordinates, IGridDimensions } from '../../types';
 import Node from '../../data_structures/Node';
-import { MutableRefObject } from 'react';
+import { isStartNode, isEndNode } from '../../algorithms/util';
 
 const END_NODE_SVG =
   '<svg version="1.1" id="Icons" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 32 32" style="enable-background:new 0 0 32 32;" xml:space="preserve"><style type="text/css">.st0{fill:none;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}.st1{fill:none;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}.st2{fill:none;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:5.2066,0;}</style><polyline class="st0" points="3,29 5,29 16,18 27,29 29,29 "/><path class="st0" d="M11,23L11,23c3.1,1.8,6.9,1.8,10,0l0,0"/><line class="st0" x1="16" y1="4" x2="16" y2="18"/><rect x="16" y="4" class="st0" width="10" height="9"/><polyline class="st0" points="26,7 30,7 30,16 21,16 26,13 "/></svg>';
@@ -126,16 +126,13 @@ export const setNodeNeighbors = (grid: Node[][]): void => {
   }
 };
 
-export const isStartNode = (row: number, col: number, myRefs: any): boolean => {
-  let nodeClassList = myRefs.current[`node-${row}-${col}`].classList;
-  return nodeClassList.contains('start');
-};
-
-export const isEndNode = (row: number, col: number, myRefs: any): boolean => {
-  let nodeClassList = myRefs.current[`node-${row}-${col}`].classList;
-  return nodeClassList.contains('end');
-};
-
 const addIcon = (domNode: HTMLDivElement, type: string) => {
   domNode.innerHTML = type === 'start' ? START_NODE_SVG : type === 'end' ? END_NODE_SVG : '';
+};
+
+/**
+ * Returns a random number between min (inclusive) and max (exclusive)
+ */
+export const getRandomArbitrary = (min: number, max: number): number => {
+  return Math.floor(Math.random() * (max - min) + min);
 };

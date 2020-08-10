@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { NodeWrapper } from '../../styles';
+import { NodeWrapper } from './styles';
 
 type TNodeProps = {
   row: number;

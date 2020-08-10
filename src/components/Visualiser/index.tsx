@@ -1,7 +1,7 @@
 import React, { useState, useRef, useLayoutEffect, useEffect } from 'react';
 import Node from '../../data_structures/Node';
 import { Box, Spacer } from '.././Shared';
-import { Button, Grid, GridRow } from '../../styles';
+import { Button, Grid, GridRow } from './styles';
 import { GridNode } from './Node';
 import { ICoordinates, IGridDimensions, IDynFunctions } from '../../types';
 import Stats from './Stats';
@@ -12,8 +12,8 @@ import {
   addWallsRandomly,
   populateGrid
 } from './util';
-import { bfs, dijkstras, gbfs } from '../../algorithms';
-import { animatePathFinding } from './Animate';
+import { bfs, dijkstras, gbfs, aStar } from '../../algorithms';
+import { animateVisits } from './Animate';
 
 const Visualiser = () => {
   /**
@@ -23,7 +23,7 @@ const Visualiser = () => {
   const [startNodeCoords, setStartNodeCoords] = useState<ICoordinates | null>({ row: 5, col: 5 });
   const [endNodeCoords, setEndNodeCoords] = useState<ICoordinates | null>({ row: 9, col: 10 });
   const [conversionType, setConversionType] = useState<string>('start');
-  const [gridDimensions, setGridDimensions] = useState<IGridDimensions>({ rows: 10, cols: 20 });
+  const [gridDimensions, _] = useState<IGridDimensions>({ rows: 20, cols: 40 });
   const [mazeGenerated, setMazeGenerated] = useState<boolean>(false);
 
   /**
@@ -32,10 +32,11 @@ const Visualiser = () => {
   const availablePathfinders = [
     { value: 'Bfs', label: 'Breadth-First Search' },
     { value: 'Ucs', label: 'Dijkstras (Uniform-Cost Search)' },
-    { value: 'Gbfs', label: 'Greedy Best-First Search' }
+    { value: 'Gbfs', label: 'Greedy Best-First Search' },
+    { value: 'aStar', label: 'A*' }
   ];
   const [currentPathFinder, setCurrentPathFinder] = useState<string | null>(
-    availablePathfinders[2].value
+    availablePathfinders[0].value
   );
   const [timeTaken, setTimeTaken] = useState<number | null>(null);
   const [shortestPathLength, setShortestPathLength] = useState<number | null>(null);
@@ -106,10 +107,11 @@ const Visualiser = () => {
     }
   };
 
-  let dynFunctions: IDynFunctions = {
+  let mapAlgoNameToAlgo: IDynFunctions = {
     Bfs: () => bfs(grid!, startNodeCoords!, endNodeCoords!, myRefs),
     Ucs: () => dijkstras(grid!, startNodeCoords!, endNodeCoords!, myRefs),
-    Gbfs: () => gbfs(grid!, startNodeCoords!, endNodeCoords!, myRefs)
+    Gbfs: () => gbfs(grid!, startNodeCoords!, endNodeCoords!, myRefs),
+    aStar: () => aStar(grid!, startNodeCoords!, endNodeCoords!, myRefs)
   };
 
   /**
@@ -119,14 +121,16 @@ const Visualiser = () => {
     // given we have what we need
     if (grid && startNodeCoords && endNodeCoords) {
       // call the selected algorithm
-      const { visitedNodesInOrder, shortestPath, timer, costSoFar } = dynFunctions[
+      const { visitedNodesInOrder, shortestPath, timer, costSoFar } = mapAlgoNameToAlgo[
         currentPathFinder!
       ]();
+
       // update stats
       setTotalMovementCost(costSoFar.get(grid[endNodeCoords.row][endNodeCoords.col])!);
       setTimeTaken(timer);
       setShortestPathLength(shortestPath.length - 2);
-      animatePathFinding(visitedNodesInOrder, shortestPath, myRefs);
+      animateVisits(visitedNodesInOrder, shortestPath, myRefs, costSoFar);
+      // animateDistance(costSoFar, myRefs);
     }
   };
 
@@ -140,8 +144,11 @@ const Visualiser = () => {
 
     for (const row of grid) {
       for (const node of row) {
-        node.resetState();
         let domNode = myRefs.current[`node-${node.row}-${node.col}`];
+
+        if (!isNaN(domNode.innerHTML)) {
+          domNode.innerHTML = null;
+        }
         // when clearing the whole graph
         if (all) {
           domNode.classList.remove('node-visited', 'node-shortest-path', 'wall', 'grass');
@@ -169,6 +176,12 @@ const Visualiser = () => {
     if (mazeGenerated) {
       clear(true);
     }
+
+    // const SN_ROW = getRandomArbitrary(0, gridDimensions!.rows);
+    // const SN_COL = getRandomArbitrary(0, gridDimensions!.cols);
+    // const EN_ROW = getRandomArbitrary(0, gridDimensions!.rows);
+    // const EN_COL = getRandomArbitrary(0, gridDimensions!.cols);
+
     // add start and end nodes
     if (startNodeCoords && endNodeCoords) {
       convertToType(

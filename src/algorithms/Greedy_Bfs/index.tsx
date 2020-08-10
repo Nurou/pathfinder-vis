@@ -1,6 +1,6 @@
 import { ICoordinates } from '../../types';
 import { PriorityQueue } from '../../data_structures/PriorityQueue';
-import { checkArgs, reconstructPath, isWall, getMovementCost } from '../util';
+import { checkArgs, reconstructPath, isWall, getMovementCost, heuristic } from '../util';
 import Node from '../../data_structures/Node';
 
 /**
@@ -64,7 +64,7 @@ export const gbfs = (
     }
   }
 
-  console.log("Dijkstra's Complete!");
+  console.log('Greedy Bfs Complete!');
   timer += performance.now();
   console.log('Time: ' + (timer / 1000).toFixed(5) + ' sec.');
 
@@ -76,20 +76,4 @@ export const gbfs = (
     timer,
     costSoFar
   };
-};
-
-/**
- * Calculates Manhattan distance between two nodes on a square grid
- * @param a
- * @param b
- */
-const heuristic = (a: Node, b: Node): number => {
-  let xDist = a.col - b.col;
-  let yDist = a.row - b.row;
-
-  // equivalent to abs function
-  xDist = xDist > 0 ? xDist : -xDist;
-  yDist = yDist > 0 ? yDist : -yDist;
-
-  return xDist + yDist;
 };

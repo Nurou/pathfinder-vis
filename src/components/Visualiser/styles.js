@@ -30,14 +30,18 @@ export const NodeWrapper = styled('div')`
   position: relative;
   width: 2vmin;
   height: 2vmin;
-  outline: 0.02rem solid gray;
+  /* outline: 0.02rem solid gray; */
   border-collapse: collapse;
 
   background: ${({ variant }) =>
     variant === 'start' ? 'black' : variant === 'end' ? 'red' : null};
 
+  /* center text */
+  text-align: center;
+  vertical-align: middle;
+  line-height: 2vmin;
+
   span {
-    /* margin: auto; */
     position: absolute;
     top: 50%;
   }

@@ -73,13 +73,15 @@ export const GlobalStyle = createGlobalStyle`
 
 @keyframes shortestPath {
   0% {
+    background-color: hsl(0, 0%, 96%);
+
   }
 
   50% {
   }
 
   100% {
-    background-color: hsl(0, 0%, 96%);
+    background-color: hsl(51, 100%, 50%);
   }
 
 }

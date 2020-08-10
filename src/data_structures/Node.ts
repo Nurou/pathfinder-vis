@@ -5,7 +5,6 @@
 export class Node {
   row: number;
   col: number;
-  distance: number;
   neighbors: Node[] | null;
 
   /**
@@ -16,15 +15,7 @@ export class Node {
   constructor(row: number, col: number) {
     this.row = row;
     this.col = col;
-    this.distance = Infinity;
     this.neighbors = [];
-  }
-
-  /**
-   * this is useful for clearing the grid after an algorithm has run its course
-   */
-  resetState() {
-    this.distance = Infinity;
   }
 
   /**

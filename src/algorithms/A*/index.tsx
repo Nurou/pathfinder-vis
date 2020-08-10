@@ -1,16 +1,16 @@
 import { ICoordinates } from '../../types';
 import { PriorityQueue } from '../../data_structures/PriorityQueue';
-import { checkArgs, reconstructPath, isWall, getMovementCost } from '../util';
+import { checkArgs, reconstructPath, isWall, getMovementCost, heuristic } from '../util';
 import Node from '../../data_structures/Node';
 
 /**
- *  An implementation of Dijkstra's algorithm for path finding that accounts for the movement costs of nodes
+ *  An implementation of the A* algorithm, which uses the actual distance from the start and the estimated distance to the goal.
  *
  * @param {array} grid grid holding all the logical nodes
  * @param {object} startNodeCoords
  * @param {object} endNodeCoords
  */
-export const dijkstras = (
+export const aStar = (
   grid: Node[][],
   startNodeCoords: ICoordinates,
   endNodeCoords: ICoordinates,
@@ -29,8 +29,8 @@ export const dijkstras = (
 
   let frontier = new PriorityQueue((a, b) => a[1] < b[1]);
   frontier.push([startNode, 0]);
-  // console.log('\nInitial contents:');
-  // console.log(frontier.peek()[0]); //=>
+  console.log('\nInitial contents:');
+  console.log(frontier.peek()[0]); //=>
 
   let cameFrom = new Map<Node, Node>();
   cameFrom.set(startNode, null!);
@@ -59,7 +59,7 @@ export const dijkstras = (
         if (!costSoFar.has(neighbor) || newCost < costSoFar.get(neighbor)!) {
           // update cost
           costSoFar.set(neighbor, newCost);
-          let priority = newCost;
+          let priority = newCost + heuristic(endNode, neighbor);
           visitedNodesInOrder.push(neighbor);
           frontier.push([neighbor, priority]);
           cameFrom.set(neighbor, current);
@@ -68,7 +68,7 @@ export const dijkstras = (
     }
   }
 
-  console.log("Dijkstra's Complete!");
+  console.log('A* Complete!');
   timer += performance.now();
   console.log('Time: ' + (timer / 1000).toFixed(5) + ' sec.');
 
