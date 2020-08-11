@@ -10,8 +10,7 @@ import { isWall, isStartNode, isEndNode, isGrass } from '../../algorithms/util';
 export const animateVisits = (
   nodesVisitedInOrder: Node[],
   shortestPath: Node[],
-  myRefs: React.MutableRefObject<any>,
-  costSoFar?: Map<Node, number>
+  myRefs: React.MutableRefObject<any>
 ) => {
   // const ANIMATION_TIMEOUT = 15;
   const ANIMATION_TIMEOUT = 5;
@@ -26,9 +25,7 @@ export const animateVisits = (
     setTimeout(() => {
       let domNode: any = myRefs.current[`node-${node.row}-${node.col}`];
       if (isWall(node, myRefs)) return;
-      if (!isStartNode(node.row, node.col, myRefs) && !isEndNode(node.row, node.col, myRefs)) {
-        domNode.innerHTML = costSoFar!.get(node);
-      }
+
       if (!isGrass(node.row, node.col, myRefs)) {
         domNode.classList.add('node-visited');
       }
@@ -54,18 +51,3 @@ const animateShortestPath = (shortestPath: Node[], myRefs: React.MutableRefObjec
     }, ANIMATION_TIMEOUT * index);
   });
 };
-
-// export const animateDistance = (
-//   costSoFar: Map<Node, number>,
-//   myRefs: React.MutableRefObject<any>
-// ) => {
-//   const ANIMATION_TIMEOUT = 20;
-//   [...costSoFar].map((mapping, index) => {
-//     let domNode = myRefs.current[`node-${mapping[0].row}-${mapping[0].col}`];
-//     if (!domNode.classList.contains('start') && !domNode.classList.contains('end')) {
-//       setTimeout(() => {
-//         myRefs.current[`node-${mapping[0].row}-${mapping[0].col}`].innerHTML = mapping[1];
-//       }, ANIMATION_TIMEOUT * index);
-//     }
-//   });
-// };

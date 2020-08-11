@@ -1,6 +1,7 @@
 import React, { useState, useRef, useLayoutEffect, useEffect } from 'react';
+import Switch from 'react-switch';
 import Node from '../../data_structures/Node';
-import { Box, Spacer } from '.././Shared';
+import { Box, Spacer, Span } from '.././Shared';
 import { Button, Grid, GridRow } from './styles';
 import { GridNode } from './Node';
 import { ICoordinates, IGridDimensions, IDynFunctions } from '../../types';
@@ -10,7 +11,8 @@ import {
   coverInTerrain,
   setNodeNeighbors,
   addWallsRandomly,
-  populateGrid
+  populateGrid,
+  displayDistances
 } from './util';
 import { bfs, dijkstras, gbfs, aStar } from '../../algorithms';
 import { animateVisits } from './Animate';
@@ -23,8 +25,10 @@ const Visualiser = () => {
   const [startNodeCoords, setStartNodeCoords] = useState<ICoordinates | null>({ row: 5, col: 5 });
   const [endNodeCoords, setEndNodeCoords] = useState<ICoordinates | null>({ row: 9, col: 10 });
   const [conversionType, setConversionType] = useState<string>('start');
-  const [gridDimensions, _] = useState<IGridDimensions>({ rows: 20, cols: 40 });
+  const [gridDimensions, _] = useState<IGridDimensions>({ rows: 10, cols: 20 });
   const [mazeGenerated, setMazeGenerated] = useState<boolean>(false);
+  const [checked, setChecked] = useState<boolean>(false);
+  const [costs, setCosts] = useState<Map<Node, number> | null>(null);
 
   /**
    * Algorithm Stats State
@@ -129,8 +133,8 @@ const Visualiser = () => {
       setTotalMovementCost(costSoFar.get(grid[endNodeCoords.row][endNodeCoords.col])!);
       setTimeTaken(timer);
       setShortestPathLength(shortestPath.length - 2);
-      animateVisits(visitedNodesInOrder, shortestPath, myRefs, costSoFar);
-      // animateDistance(costSoFar, myRefs);
+      animateVisits(visitedNodesInOrder, shortestPath, myRefs);
+      setCosts(costSoFar);
     }
   };
 
@@ -211,6 +215,13 @@ const Visualiser = () => {
     setMazeGenerated(true);
   };
 
+  const handleSwitch = () => {
+    setChecked(!checked);
+    if (costs !== null) {
+      displayDistances(costs, myRefs);
+    }
+  };
+
   return (
     <>
       <Stats
@@ -218,14 +229,7 @@ const Visualiser = () => {
         shortestPathLength={shortestPathLength}
         pathFinder={currentPathFinder}
         totalCost={totalMovementCost}
-      >
-        <Spacer my={5} />
-        <Box display="flex" justifyContent="center" alignItems="center">
-          <Button onClick={() => visualise()}>Visualize</Button>
-          <Button onClick={() => clear()}>Reset Pathfinder</Button>
-          <Button onClick={() => clear(true)}>Clear All</Button>
-        </Box>
-      </Stats>
+      ></Stats>
       <Box
         as="main"
         display="flex"
@@ -247,7 +251,19 @@ const Visualiser = () => {
             </option>
           ))}
         </select>
-        <Spacer my={3} />
+        <Spacer my={4} />
+        <Box display="flex" justifyContent="center" alignItems="center">
+          <Button onClick={() => visualise()}>Visualize</Button>
+          <Button onClick={() => clear()}>Reset Pathfinder</Button>
+          <Button onClick={() => clear(true)}>Clear All</Button>
+          <Box as="label" display="flex" justifyContent="center" alignItems="center">
+            <Switch onChange={handleSwitch} checked={checked} />
+            <Span color="white" pl={2}>
+              Distances
+            </Span>
+          </Box>
+          <Spacer my={4} />
+        </Box>
         <Grid>
           {grid &&
             grid.map((row, rowIdx) => (

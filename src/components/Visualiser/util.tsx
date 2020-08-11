@@ -136,3 +136,15 @@ const addIcon = (domNode: HTMLDivElement, type: string) => {
 export const getRandomArbitrary = (min: number, max: number): number => {
   return Math.floor(Math.random() * (max - min) + min);
 };
+
+export const displayDistances = (
+  costSoFar: Map<Node, number>,
+  myRefs: React.MutableRefObject<any>
+) => {
+  [...costSoFar].map((mapping) => {
+    let domNode = myRefs.current[`node-${mapping[0].row}-${mapping[0].col}`];
+    if (!domNode.classList.contains('start') && !domNode.classList.contains('end')) {
+      domNode.innerHTML = domNode.innerHTML ? null : mapping[1];
+    }
+  });
+};
