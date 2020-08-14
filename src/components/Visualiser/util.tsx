@@ -75,7 +75,13 @@ export const convertToType = (
     return;
   }
 
-  domNode.classList.add(conversionType);
+  // if the cell is already of that type, turn into regular
+  if (domNode.classList.contains(conversionType)) {
+    domNode.classList.remove(conversionType);
+    domNode.classList.add('regular');
+  } else {
+    domNode.classList.add(conversionType);
+  }
 };
 
 /**
@@ -137,6 +143,11 @@ export const getRandomArbitrary = (min: number, max: number): number => {
   return Math.floor(Math.random() * (max - min) + min);
 };
 
+/**
+ * Enables movement costs to be displayed on the grid
+ * @param costSoFar
+ * @param myRefs
+ */
 export const displayDistances = (
   costSoFar: Map<Node, number>,
   myRefs: React.MutableRefObject<any>

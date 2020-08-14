@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Span, Spacer } from '../Shared';
 
 /**
@@ -14,6 +14,22 @@ interface StatProps {
 }
 
 const Stats = (props: StatProps) => {
+  const [prevValues, setPrevValues] = useState<object | null>(null);
+
+  useEffect(() => {
+    const values = [];
+    if (props.timeTaken) {
+      values.push(props.timeTaken);
+    }
+    if (props.shortestPathLength) {
+      values.push(props.shortestPathLength);
+    }
+    if (props.totalCost) {
+      values.push(props.totalCost);
+    }
+    setPrevValues(values);
+  }, []);
+
   return (
     <Box
       bg="rgba(0, 0, 0, 0.7)"
@@ -30,7 +46,7 @@ const Stats = (props: StatProps) => {
       <Span color="white">
         Time (sec):{' '}
         {props.timeTaken && (
-          <Span style={{ color: 'gold' }}>{(props.timeTaken! / 1000).toFixed(5)} </Span>
+          <Span style={{ color: 'gold' }}>{(props.timeTaken / 1000).toFixed(5)} </Span>
         )}
       </Span>{' '}
       <br />

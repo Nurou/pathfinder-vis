@@ -28,8 +28,8 @@ export const Button = styled.button`
 
 export const NodeWrapper = styled('div')`
   position: relative;
-  width: 2vmin;
-  height: 2vmin;
+  width: 2.5vmin;
+  height: 2.5vmin;
   /* outline: 0.02rem solid gray; */
   border-collapse: collapse;
 

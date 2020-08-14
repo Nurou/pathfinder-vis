@@ -22,10 +22,10 @@ const Visualiser = () => {
    * Grid State
    */
   const [grid, setGrid] = useState<Node[][] | null>([]);
-  const [startNodeCoords, setStartNodeCoords] = useState<ICoordinates | null>({ row: 5, col: 5 });
-  const [endNodeCoords, setEndNodeCoords] = useState<ICoordinates | null>({ row: 9, col: 10 });
+  const [startNodeCoords, setStartNodeCoords] = useState<ICoordinates | null>({ row: 10, col: 1 });
+  const [endNodeCoords, setEndNodeCoords] = useState<ICoordinates | null>({ row: 0, col: 13 });
   const [conversionType, setConversionType] = useState<string>('start');
-  const [gridDimensions, _] = useState<IGridDimensions>({ rows: 10, cols: 20 });
+  const [gridDimensions, _] = useState<IGridDimensions>({ rows: 20, cols: 40 });
   const [mazeGenerated, setMazeGenerated] = useState<boolean>(false);
   const [checked, setChecked] = useState<boolean>(false);
   const [costs, setCosts] = useState<Map<Node, number> | null>(null);

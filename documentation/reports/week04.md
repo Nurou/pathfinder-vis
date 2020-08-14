@@ -1,9 +1,9 @@
 # What I did this week
 
-- Added A\* pathfinder
-- Refactored the codebase
-- Fixed bugs, esp. on the UI
-- Added functionality to the UI
+This week did not include any major changes. Small changes include:
+
+- Refactoring the codebase
+- Adding functionality to the UI
 
 # What I learned?
 
@@ -11,7 +11,7 @@ I learned more about the A\* pathfinder and various way to calculate movement co
 
 # Problems/Issues
 
-No major ones this week.
+No sticking ones this week.
 
 # What next?
 
