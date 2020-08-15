@@ -182,11 +182,21 @@ const Visualiser = () => {
       clear(true);
     }
 
+    const SN_COORDS: ICoordinates = {
+      row: getRandomArbitrary(0, gridDimensions!.rows),
+      col: getRandomArbitrary(0, gridDimensions!.cols)
+    };
+
+    const EN_COORDS: ICoordinates = {
+      row: getRandomArbitrary(0, gridDimensions!.rows),
+      col: getRandomArbitrary(0, gridDimensions!.cols)
+    };
+
     // add start and end nodes
-    if (startNodeCoords && endNodeCoords) {
+    if (SN_COORDS && EN_COORDS) {
       convertToType(
-        getRandomArbitrary(0, gridDimensions!.rows),
-        getRandomArbitrary(0, gridDimensions!.cols),
+        SN_COORDS.row,
+        SN_COORDS.col,
         'start',
         startNodeCoords,
         endNodeCoords,
@@ -195,8 +205,8 @@ const Visualiser = () => {
         myRefs
       );
       convertToType(
-        getRandomArbitrary(0, gridDimensions!.rows),
-        getRandomArbitrary(0, gridDimensions!.cols),
+        EN_COORDS.row,
+        EN_COORDS.col,
         'end',
         startNodeCoords,
         endNodeCoords,
