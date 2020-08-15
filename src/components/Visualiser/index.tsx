@@ -361,8 +361,6 @@ const Visualiser = () => {
         </Box>
         <Spacer my={3} />
       </Box>
-      <pre>{JSON.stringify(currentRun)}</pre>
-      <pre>{JSON.stringify(prevRun)}</pre>
     </>
   );
 };
