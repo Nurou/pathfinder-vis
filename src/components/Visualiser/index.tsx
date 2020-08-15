@@ -35,7 +35,10 @@ const Visualiser = () => {
   /**
    * Algorithm Stats State
    */
-  const [prevRun, setPrevValues] = useStickyState({}, 'previous_run');
+  const [hasRan, setHasRan] = useState<boolean>(false);
+  const [prevRun, setPrevRun] = useStickyState(null, 'previous_run');
+  const [currentRun, setCurrentRun] = useStickyState(null, 'current_run');
+
   const availablePathfinders = [
     { value: 'Bfs', label: 'Breadth-First Search' },
     { value: 'Ucs', label: 'Dijkstras (Uniform-Cost Search)' },
@@ -131,26 +134,61 @@ const Visualiser = () => {
         currentPathFinder
       ]();
 
-      // update stats
-      setTotalMovementCost(costSoFar.get(grid[endNodeCoords.row][endNodeCoords.col])!);
-      setTimeTaken(timer);
-      setShortestPathLength(shortestPath.length - 2);
+      const stats = {
+        pathfinder: currentPathFinder,
+        timeTaken: timer,
+        shortestPathLength: shortestPath.length - 2,
+        totalMovementCost: costSoFar.get(grid[endNodeCoords.row][endNodeCoords.col])!
+      };
+
+      // first run? update state
+      if (!hasRan) {
+        setHasRan(true);
+        setCurrentRun(stats);
+      } else {
+        console.log('setting previous');
+        setPrevRun(currentRun);
+        setCurrentRun(stats);
+      }
       animateVisits(visitedNodesInOrder, shortestPath, myRefs);
       setCosts(costSoFar);
-
-      // override previous value
-      updateStatsValues();
-      setPrevValues({
-        pathfinder: currentPathFinder,
-        timer: timer,
-        shortestPathLength: shortestPath.length - 2,
-        totalMovementCost: totalMovementCost
-      });
     }
   };
 
   const updateStatsValues = () => {
     // if nothing has been set, set prev
+    if (!prevRun) {
+      setPrevRun({
+        prev: {
+          pathfinder: currentPathFinder,
+          timeTaken: timeTaken,
+          shortestPathLength: shortestPathLength! - 2,
+          totalMovementCost: totalMovementCost
+        },
+        current: {
+          pathfinder: currentPathFinder,
+          timeTaken: timeTaken,
+          shortestPathLength: shortestPathLength! - 2,
+          totalMovementCost: totalMovementCost
+        }
+      });
+    } else {
+      // new run becomes previous run
+      setPrevRun({
+        prev: {
+          pathfinder: currentPathFinder,
+          timeTaken: timeTaken,
+          shortestPathLength: shortestPathLength! - 2,
+          totalMovementCost: totalMovementCost
+        },
+        current: {
+          pathfinder: currentPathFinder,
+          timeTaken: timeTaken,
+          shortestPathLength: shortestPathLength! - 2,
+          totalMovementCost: totalMovementCost
+        }
+      });
+    }
   };
 
   /**
@@ -257,13 +295,7 @@ const Visualiser = () => {
       >
         Pathfinder Visualisation
       </H1>
-      <Stats
-        previous={prevRun}
-        timeTaken={timeTaken}
-        shortestPathLength={shortestPathLength}
-        pathFinder={currentPathFinder}
-        totalCost={totalMovementCost}
-      />
+      <Stats previous={prevRun} current={currentRun} />
       <Box
         as="main"
         display="flex"
@@ -329,6 +361,7 @@ const Visualiser = () => {
         </Box>
         <Spacer my={3} />
       </Box>
+      <pre>{JSON.stringify(currentRun)}</pre>
       <pre>{JSON.stringify(prevRun)}</pre>
     </>
   );

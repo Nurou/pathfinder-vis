@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { memo } from 'react';
-import { Box } from '../Shared';
+import { Box, Span } from '../Shared';
 
 export const Grid = memo(styled.div`
   display: flex;
@@ -49,12 +49,20 @@ export const NodeWrapper = styled('div')`
 `;
 
 export const StatsWrapper = styled(Box)`
-  background-color: rgba(0, 0, 0, 0.7);
-
   h1,
   h2,
-  h3,
-  span {
+  h3 {
     color: white;
+  }
+
+  h2 {
+    text-decoration: underline gold;
+  }
+`;
+
+export const Statistic = styled(Span)`
+  color: white;
+  span:nth-of-type(1) {
+    color: gold;
   }
 `;
