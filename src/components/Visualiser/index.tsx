@@ -12,7 +12,8 @@ import {
   setNodeNeighbors,
   addWallsRandomly,
   populateGrid,
-  displayDistances
+  displayDistances,
+  getRandomArbitrary
 } from './util';
 import { bfs, dijkstras, gbfs, aStar } from '../../algorithms';
 import { animateVisits } from './Animate';
@@ -22,10 +23,10 @@ const Visualiser = () => {
    * Grid State
    */
   const [grid, setGrid] = useState<Node[][] | null>([]);
-  const [startNodeCoords, setStartNodeCoords] = useState<ICoordinates | null>({ row: 10, col: 1 });
-  const [endNodeCoords, setEndNodeCoords] = useState<ICoordinates | null>({ row: 0, col: 13 });
-  const [conversionType, setConversionType] = useState<string>('start');
+  const [startNodeCoords, setStartNodeCoords] = useState<ICoordinates | null>(null);
+  const [endNodeCoords, setEndNodeCoords] = useState<ICoordinates | null>(null);
   const [gridDimensions, _] = useState<IGridDimensions>({ rows: 20, cols: 40 });
+  const [conversionType, setConversionType] = useState<string>('start');
   const [mazeGenerated, setMazeGenerated] = useState<boolean>(false);
   const [checked, setChecked] = useState<boolean>(false);
   const [costs, setCosts] = useState<Map<Node, number> | null>(null);
@@ -48,19 +49,18 @@ const Visualiser = () => {
 
   // other component globals - setState not used due to avoid re-rendering
   let mouseIsPressed = false;
-  let myRefs: React.MutableRefObject<any> = useRef({});
+  const myRefs: React.MutableRefObject<any> = useRef({});
 
   // grid initialised after visual is rendered
   useLayoutEffect(() => {
-    let grid: Node[][] = [];
-    populateGrid(grid, gridDimensions);
+    const grid = populateGrid(gridDimensions);
     // update state
     setGrid(grid);
     // neighbors can be set once grid has been populated
     setNodeNeighbors(grid);
   }, []);
 
-  // runs last after render and useEffects above
+  // runs  after render and useEffects above
   useEffect(() => {
     coverInTerrain(myRefs);
   });
@@ -111,7 +111,7 @@ const Visualiser = () => {
     }
   };
 
-  let mapAlgoNameToAlgo: IDynFunctions = {
+  const mapAlgoNameToAlgo: IDynFunctions = {
     Bfs: () => bfs(grid!, startNodeCoords!, endNodeCoords!, myRefs),
     Ucs: () => dijkstras(grid!, startNodeCoords!, endNodeCoords!, myRefs),
     Gbfs: () => gbfs(grid!, startNodeCoords!, endNodeCoords!, myRefs),
@@ -121,12 +121,12 @@ const Visualiser = () => {
   /**
    * determines which algorithm to run based on user selection
    */
-  const visualise = () => {
+  const visualise = (): void => {
     // given we have what we need
-    if (grid && startNodeCoords && endNodeCoords) {
+    if (grid && startNodeCoords && endNodeCoords && currentPathFinder) {
       // call the selected algorithm
       const { visitedNodesInOrder, shortestPath, timer, costSoFar } = mapAlgoNameToAlgo[
-        currentPathFinder!
+        currentPathFinder
       ]();
 
       // update stats
@@ -143,12 +143,12 @@ const Visualiser = () => {
    * @param {object} grid - 2D array of the logical grid nodes in their current state (after algorithm has run)
    * @param {object} myRefs
    */
-  const clear = (all?: boolean) => {
+  const clear = (all?: boolean): void => {
     if (!grid) return;
 
     for (const row of grid) {
       for (const node of row) {
-        let domNode = myRefs.current[`node-${node.row}-${node.col}`];
+        const domNode = myRefs.current[`node-${node.row}-${node.col}`];
 
         if (!isNaN(domNode.innerHTML)) {
           domNode.innerHTML = null;
@@ -170,27 +170,23 @@ const Visualiser = () => {
     setShortestPathLength(null);
     setTimeTaken(null);
     setTotalMovementCost(null);
+    setCosts(null);
   };
 
   /**
    * Generates a random maze using walls and positions both the start and end nodes on the grid
    */
-  const createMaze = () => {
+  const createMaze = (): void => {
     // if maze already generated, clear previous
     if (mazeGenerated) {
       clear(true);
     }
 
-    // const SN_ROW = getRandomArbitrary(0, gridDimensions!.rows);
-    // const SN_COL = getRandomArbitrary(0, gridDimensions!.cols);
-    // const EN_ROW = getRandomArbitrary(0, gridDimensions!.rows);
-    // const EN_COL = getRandomArbitrary(0, gridDimensions!.cols);
-
     // add start and end nodes
     if (startNodeCoords && endNodeCoords) {
       convertToType(
-        startNodeCoords.row,
-        startNodeCoords.col,
+        getRandomArbitrary(0, gridDimensions!.rows),
+        getRandomArbitrary(0, gridDimensions!.cols),
         'start',
         startNodeCoords,
         endNodeCoords,
@@ -199,8 +195,8 @@ const Visualiser = () => {
         myRefs
       );
       convertToType(
-        endNodeCoords.row,
-        endNodeCoords.col,
+        getRandomArbitrary(0, gridDimensions!.rows),
+        getRandomArbitrary(0, gridDimensions!.cols),
         'end',
         startNodeCoords,
         endNodeCoords,
@@ -215,7 +211,7 @@ const Visualiser = () => {
     setMazeGenerated(true);
   };
 
-  const handleSwitch = () => {
+  const handleSwitch = (): void => {
     setChecked(!checked);
     if (costs !== null) {
       displayDistances(costs, myRefs);

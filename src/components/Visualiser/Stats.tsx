@@ -27,6 +27,7 @@ const Stats = (props: StatProps) => {
     if (props.totalCost) {
       values.push(props.totalCost);
     }
+    console.log({ values });
     setPrevValues(values);
   }, []);
 
