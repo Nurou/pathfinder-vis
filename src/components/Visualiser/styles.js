@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { memo } from 'react';
+import { Box } from '../Shared';
 
 export const Grid = memo(styled.div`
   display: flex;
@@ -44,5 +45,16 @@ export const NodeWrapper = styled('div')`
   span {
     position: absolute;
     top: 50%;
+  }
+`;
+
+export const StatsWrapper = styled(Box)`
+  background-color: rgba(0, 0, 0, 0.7);
+
+  h1,
+  h2,
+  h3,
+  span {
+    color: white;
   }
 `;

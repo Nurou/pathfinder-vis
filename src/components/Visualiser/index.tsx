@@ -1,7 +1,7 @@
 import React, { useState, useRef, useLayoutEffect, useEffect } from 'react';
 import Switch from 'react-switch';
 import Node from '../../data_structures/Node';
-import { Box, Spacer, Span } from '.././Shared';
+import { Box, Spacer, Span, H1 } from '.././Shared';
 import { Button, Grid, GridRow } from './styles';
 import { GridNode } from './Node';
 import { ICoordinates, IGridDimensions, IDynFunctions } from '../../types';
@@ -17,6 +17,7 @@ import {
 } from './util';
 import { bfs, dijkstras, gbfs, aStar } from '../../algorithms';
 import { animateVisits } from './Animate';
+import { useStickyState } from '../../hooks/useStickyState';
 
 const Visualiser = () => {
   /**
@@ -34,6 +35,7 @@ const Visualiser = () => {
   /**
    * Algorithm Stats State
    */
+  const [prevRun, setPrevValues] = useStickyState({}, 'previous_run');
   const availablePathfinders = [
     { value: 'Bfs', label: 'Breadth-First Search' },
     { value: 'Ucs', label: 'Dijkstras (Uniform-Cost Search)' },
@@ -135,7 +137,20 @@ const Visualiser = () => {
       setShortestPathLength(shortestPath.length - 2);
       animateVisits(visitedNodesInOrder, shortestPath, myRefs);
       setCosts(costSoFar);
+
+      // override previous value
+      updateStatsValues();
+      setPrevValues({
+        pathfinder: currentPathFinder,
+        timer: timer,
+        shortestPathLength: shortestPath.length - 2,
+        totalMovementCost: totalMovementCost
+      });
     }
+  };
+
+  const updateStatsValues = () => {
+    // if nothing has been set, set prev
   };
 
   /**
@@ -182,14 +197,16 @@ const Visualiser = () => {
       clear(true);
     }
 
+    // restrict to LHS of grid
     const SN_COORDS: ICoordinates = {
       row: getRandomArbitrary(0, gridDimensions!.rows),
-      col: getRandomArbitrary(0, gridDimensions!.cols)
+      col: getRandomArbitrary(0, gridDimensions!.cols / 2)
     };
 
+    // restrict to RHS of grid
     const EN_COORDS: ICoordinates = {
       row: getRandomArbitrary(0, gridDimensions!.rows),
-      col: getRandomArbitrary(0, gridDimensions!.cols)
+      col: getRandomArbitrary(gridDimensions!.cols / 2, gridDimensions!.cols)
     };
 
     // add start and end nodes
@@ -230,12 +247,23 @@ const Visualiser = () => {
 
   return (
     <>
+      <H1
+        fontFamily="rock salt"
+        fontSize={[4, 5, 6]}
+        color="white"
+        width="250px"
+        margin="5rem auto"
+        style={{ verticalAlign: 'middle' }}
+      >
+        Pathfinder Visualisation
+      </H1>
       <Stats
+        previous={prevRun}
         timeTaken={timeTaken}
         shortestPathLength={shortestPathLength}
         pathFinder={currentPathFinder}
         totalCost={totalMovementCost}
-      ></Stats>
+      />
       <Box
         as="main"
         display="flex"
@@ -301,6 +329,7 @@ const Visualiser = () => {
         </Box>
         <Spacer my={3} />
       </Box>
+      <pre>{JSON.stringify(prevRun)}</pre>
     </>
   );
 };
