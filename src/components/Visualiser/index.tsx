@@ -50,9 +50,6 @@ const Visualiser = () => {
   const [currentPathFinder, setCurrentPathFinder] = useState<string | null>(
     availablePathfinders[0].value
   );
-  const [timeTaken, setTimeTaken] = useState<number | null>(null);
-  const [shortestPathLength, setShortestPathLength] = useState<number | null>(null);
-  const [totalMovementCost, setTotalMovementCost] = useState<number | null>(null);
 
   // other component globals - setState not used due to avoid re-rendering
   let mouseIsPressed = false;
@@ -118,6 +115,9 @@ const Visualiser = () => {
     }
   };
 
+  /**
+   * Enables individual algorithms to be run based on the name of the one currently selected
+   */
   const mapAlgoNameToAlgo: IDynFunctions = {
     Bfs: () => bfs(grid!, startNodeCoords!, endNodeCoords!, myRefs),
     Ucs: () => dijkstras(grid!, startNodeCoords!, endNodeCoords!, myRefs),
@@ -157,42 +157,6 @@ const Visualiser = () => {
     }
   };
 
-  const updateStatsValues = () => {
-    // if nothing has been set, set prev
-    if (!prevRun) {
-      setPrevRun({
-        prev: {
-          pathfinder: currentPathFinder,
-          timeTaken: timeTaken,
-          shortestPathLength: shortestPathLength! - 2,
-          totalMovementCost: totalMovementCost
-        },
-        current: {
-          pathfinder: currentPathFinder,
-          timeTaken: timeTaken,
-          shortestPathLength: shortestPathLength! - 2,
-          totalMovementCost: totalMovementCost
-        }
-      });
-    } else {
-      // new run becomes previous run
-      setPrevRun({
-        prev: {
-          pathfinder: currentPathFinder,
-          timeTaken: timeTaken,
-          shortestPathLength: shortestPathLength! - 2,
-          totalMovementCost: totalMovementCost
-        },
-        current: {
-          pathfinder: currentPathFinder,
-          timeTaken: timeTaken,
-          shortestPathLength: shortestPathLength! - 2,
-          totalMovementCost: totalMovementCost
-        }
-      });
-    }
-  };
-
   /**
    * clears the graph/grid so algorithm can be run again or a different one
    * @param {object} grid - 2D array of the logical grid nodes in their current state (after algorithm has run)
@@ -221,11 +185,6 @@ const Visualiser = () => {
         }
       }
     }
-    // clear stats
-    setShortestPathLength(null);
-    setTimeTaken(null);
-    setTotalMovementCost(null);
-    setCosts(null);
   };
 
   /**
@@ -278,6 +237,9 @@ const Visualiser = () => {
     setMazeGenerated(true);
   };
 
+  /**
+   * toggle the display of distance values
+   */
   const handleSwitch = (): void => {
     setChecked(!checked);
     if (costs !== null) {
@@ -285,7 +247,10 @@ const Visualiser = () => {
     }
   };
 
-  const renderGrid = () => {
+  /**
+   * Renders the logical nodes as div elements
+   */
+  const renderGrid = (): JSX.Element[] => {
     return grid!.map((row, rowIdx) => (
       <GridRow key={rowIdx}>
         {row.map((node: Node) => {
@@ -309,7 +274,7 @@ const Visualiser = () => {
   return (
     <>
       <H1
-        fontFamily="Press Start 2P"
+        fontFamily="Orbitron"
         fontSize={[4, 5, 8]}
         color="white"
         width="80vmin"

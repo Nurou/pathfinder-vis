@@ -5,7 +5,7 @@ export interface IDetails {
 export const details: IDetails = {
   Bfs: {
     title: 'Breadth-first Search',
-    description: 'Explores equally in all directions (all about the breadth)',
+    description: 'Explores equally in all directions',
     weighted: false,
     guarantee: false
   },
@@ -18,7 +18,7 @@ export const details: IDetails = {
   Gbfs: {
     title: 'Greedy Best-First Search',
     description:
-      'Explores by expanding the most promising node (hence the greed) chosen according to a specified rule.',
+      'Explores by expanding the most promising node (hence greedy) chosen according to a specified rule.',
     weighted: true,
     guarantee: false
   },
