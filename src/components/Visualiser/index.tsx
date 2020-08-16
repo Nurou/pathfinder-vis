@@ -148,7 +148,7 @@ const Visualiser = () => {
         setHasRan(true);
         setCurrentRun(stats);
       } else {
-        console.log('setting previous');
+        // shift the runs
         setPrevRun(currentRun);
         setCurrentRun(stats);
       }
