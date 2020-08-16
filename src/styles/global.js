@@ -3,8 +3,7 @@ import { createGlobalStyle } from 'styled-components';
 export const GlobalStyle = createGlobalStyle`
   body {
     background-color: #2a4365;
-    /* font-family: 'Work Sans', sans-serif; */
-    font-family: 'Rock Salt', sans-serif;
+    font-family: 'Orbitron', sans-serif;
     margin: 0;
   }
 

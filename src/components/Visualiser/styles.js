@@ -21,7 +21,7 @@ export const GridRow = styled.div`
 export const Button = styled.button`
   padding: 0.4rem;
   margin: 0 0.5rem;
-  font-family: 'Work Sans', sans-serif;
+  font-family: 'Orbitron', sans-serif;
   background: #ebf8ff;
   color: #2a4365;
   border: none;
@@ -61,8 +61,18 @@ export const StatsWrapper = styled(Box)`
 `;
 
 export const Statistic = styled(Span)`
+  white-space: nowrap;
   color: white;
   span:nth-of-type(1) {
     color: gold;
+  }
+`;
+
+export const AlgoInfo = styled(Box)`
+  strong {
+    font-weight: bold;
+    color: #888888;
+    text-shadow: 1px 0 #888888;
+    letter-spacing: 1px;
   }
 `;

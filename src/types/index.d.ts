@@ -9,7 +9,7 @@ export interface IGridDimensions {
   cols: number;
 }
 
-interface IReturnedStats {
+export interface IReturnedStats {
   visitedNodesInOrder: Node[];
   shortestPath: Node[];
   timer: number;
@@ -21,4 +21,17 @@ export interface IDynFunctions {
   [key: string]: () => IReturnedStats;
   [key: string]: () => IReturnedStats;
   [key: string]: () => IReturnedStats;
+}
+
+export interface IStatItems {
+  pathfinder: string;
+  shortestPathLength: number;
+  timeTaken: number;
+  totalMovementCost: number;
+}
+
+export interface IStatProps {
+  previous?: IStatItems;
+  current?: IStatItems;
+  children?: any;
 }

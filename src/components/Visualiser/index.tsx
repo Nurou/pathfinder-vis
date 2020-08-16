@@ -5,7 +5,7 @@ import { Box, Spacer, Span, H1 } from '.././Shared';
 import { Button, Grid, GridRow } from './styles';
 import { GridNode } from './Node';
 import { ICoordinates, IGridDimensions, IDynFunctions } from '../../types';
-import Stats from './Stats';
+import InfoDisplay from './InfoDisplay';
 import {
   convertToType,
   coverInTerrain,
@@ -18,6 +18,8 @@ import {
 import { bfs, dijkstras, gbfs, aStar } from '../../algorithms';
 import { animateVisits } from './Animate';
 import { useStickyState } from '../../hooks/useStickyState';
+import Description from './Description';
+import { details } from '../../algorithms/details';
 
 const Visualiser = () => {
   /**
@@ -283,19 +285,41 @@ const Visualiser = () => {
     }
   };
 
+  const renderGrid = () => {
+    return grid!.map((row, rowIdx) => (
+      <GridRow key={rowIdx}>
+        {row.map((node: Node) => {
+          const { row, col } = node;
+          return (
+            <GridNode
+              key={`${row}-${col}`}
+              col={col}
+              row={row}
+              myRefs={myRefs}
+              onMouseEnter={(row, col) => handleMouseEnter(row, col)}
+              onMouseDown={(row, col) => handleMouseDown(row, col)}
+              onMouseUp={() => handleMouseUp()}
+            />
+          );
+        })}
+      </GridRow>
+    ));
+  };
+
   return (
     <>
       <H1
-        fontFamily="rock salt"
-        fontSize={[4, 5, 6]}
+        fontFamily="Press Start 2P"
+        fontSize={[4, 5, 8]}
         color="white"
-        width="250px"
+        width="80vmin"
         margin="5rem auto"
-        style={{ verticalAlign: 'middle' }}
       >
         Pathfinder Visualisation
       </H1>
-      <Stats previous={prevRun} current={currentRun} />
+      <InfoDisplay previous={prevRun} current={currentRun}>
+        {currentPathFinder && <Description details={details[currentPathFinder]} />}
+      </InfoDisplay>
       <Box
         as="main"
         display="flex"
@@ -330,27 +354,7 @@ const Visualiser = () => {
           </Box>
           <Spacer my={4} />
         </Box>
-        <Grid>
-          {grid &&
-            grid.map((row, rowIdx) => (
-              <GridRow key={rowIdx}>
-                {row.map((node) => {
-                  const { row, col } = node;
-                  return (
-                    <GridNode
-                      key={`${row}-${col}`}
-                      col={col}
-                      row={row}
-                      myRefs={myRefs}
-                      onMouseEnter={(row, col) => handleMouseEnter(row, col)}
-                      onMouseDown={(row, col) => handleMouseDown(row, col)}
-                      onMouseUp={() => handleMouseUp()}
-                    />
-                  );
-                })}
-              </GridRow>
-            ))}
-        </Grid>
+        <Grid>{grid && renderGrid()}</Grid>
         <Spacer my={3} />
         <Box display="flex" justifyContent="center" alignItems="center">
           <Button onClick={createMaze}>Generate Maze </Button>
