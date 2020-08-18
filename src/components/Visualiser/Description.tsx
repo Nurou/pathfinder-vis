@@ -17,7 +17,7 @@ const Description = ({ details }: any) => {
       flexDirection="column"
       p={4}
       m={4}
-      color="black"
+      color="#1A202C"
       bg="white"
       // maxWidth="30rem"
       fontSize={[1, 2, 3]}
@@ -25,19 +25,23 @@ const Description = ({ details }: any) => {
       height="auto"
     >
       <Span>
-        <strong>Selected:</strong> {details.title}
+        Selected:<strong> {details.title}</strong>
       </Span>
       <Span>
-        <strong>Description:</strong>
-        <br />"{details.description}"
+        Description:
+        <strong>
+          <br />"{details.description}"
+        </strong>
       </Span>
       <Span>
-        <strong>Weighted:</strong>
-        <Span color={details.weighted ? 'green' : 'red'}>{details.weighted ? ' Yes' : ' No'}</Span>
+        Weighted:
+        <Span color={details.weighted ? '#68D391' : '#E53E3E'}>
+          {details.weighted ? ' Yes' : ' No'}
+        </Span>
       </Span>
       <Span>
-        <strong>Guarantees Shortest Path: </strong>
-        <Span color={details.guarantee ? 'green' : 'red'}>
+        Guarantees Shortest Path:
+        <Span color={details.guarantee ? '#68D391' : '#E53E3E'}>
           {details.guarantee ? ' Yes' : ' No'}
         </Span>
       </Span>

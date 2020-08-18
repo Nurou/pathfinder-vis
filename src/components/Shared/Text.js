@@ -1,5 +1,5 @@
-import styled from 'styled-components'
-import { typography, color, space, layout, maxWidth } from 'styled-system'
+import styled from 'styled-components';
+import { typography, color, space, layout, maxWidth } from 'styled-system';
 
 export const Text = styled.p`
   ${typography};
@@ -7,13 +7,13 @@ export const Text = styled.p`
   ${space};
   ${layout};
   ${maxWidth}
-`
+`;
 
 Text.defaultProps = {
   fontSize: '1.125rem',
-  color: 'black',
+  // color: 'black',
   lineHeight: 1.89,
-  fontFamily: '"Raleway", "sans-serif"',
-}
+  fontFamily: '"Raleway", "sans-serif"'
+};
 
-export default Text
+export default Text;

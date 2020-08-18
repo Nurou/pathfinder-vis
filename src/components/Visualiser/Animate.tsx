@@ -13,7 +13,7 @@ export const animateVisits = (
   myRefs: React.MutableRefObject<any>
 ) => {
   // const ANIMATION_TIMEOUT = 15;
-  const ANIMATION_TIMEOUT = 5;
+  const ANIMATION_TIMEOUT = 15;
 
   nodesVisitedInOrder.forEach((node, index) => {
     if (index === nodesVisitedInOrder.length - 1) {
@@ -41,7 +41,7 @@ export const animateVisits = (
 const animateShortestPath = (shortestPath: Node[], myRefs: React.MutableRefObject<any>) => {
   shortestPath.forEach((node, index) => {
     // const ANIMATION_TIMEOUT = 50;
-    const ANIMATION_TIMEOUT = 20;
+    const ANIMATION_TIMEOUT = 30;
     setTimeout(() => {
       // exclude walls and end nodes
       let domNode = myRefs.current[`node-${node.row}-${node.col}`];

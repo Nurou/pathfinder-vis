@@ -278,9 +278,6 @@ const Visualiser = () => {
 
   return (
     <>
-      <H1 fontSize={[3, 4, 5, 6]} color="white" width="80vmin" margin="5rem auto">
-        Pathfinder Visualisation
-      </H1>
       <Box
         as="main"
         display="flex"
@@ -293,9 +290,9 @@ const Visualiser = () => {
           {currentPathFinder && <Description details={details[currentPathFinder]} />}
         </InfoDisplay>
         {grid && renderGrid()}
-        <ControlPanel>
+        <ControlPanel bg="#E2E8F0">
           <Box display="flex" justifyContent="center" alignItems="center">
-            <Button onClick={createMaze}>Generate Maze </Button>
+            <Button onClick={createMaze}>{mazeGenerated ? 'Regenerate' : 'Generate'} Maze </Button>
             <Button onClick={() => setConversionType('start')}>Start </Button>
             <Button onClick={() => setConversionType('end')}>Finish</Button>
             <Button onClick={() => setConversionType('wall')}>Add Walls </Button>

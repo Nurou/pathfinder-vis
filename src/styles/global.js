@@ -4,8 +4,9 @@ export const GlobalStyle = createGlobalStyle`
 
 
   body {
-    background-color: #2a4365;
-    font-family: 'Orbitron', sans-serif;
+    background-color: #E2E8F0;
+    /* font-family: 'Orbitron', sans-serif; */
+    font-family: 'Source Code Pro', sans-serif;
     margin: 0;
   }
 
@@ -58,7 +59,8 @@ export const GlobalStyle = createGlobalStyle`
 
   100% {
     transform: scale(1);
-    background-color: hsl(30, 20%, 75%);
+    /* background-color: hsl(30, 20%, 75%); */
+    background-color: hsl(42, 93%, 39%);
   }
 }
 
@@ -83,7 +85,7 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   100% {
-    background-color: hsl(51, 100%, 50%);
+    background-color: hsl(47, 81%, 61%);
   }
 
 }

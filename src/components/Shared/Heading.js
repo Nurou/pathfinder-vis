@@ -23,7 +23,7 @@ export const H1 = styled.h1`
 `;
 H1.defaultProps = {
   lineHeight: 1.25,
-  letterSpacing: 12
+  letterSpacing: 8
 };
 
 export const H2 = H1.withComponent('h2');

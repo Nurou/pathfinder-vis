@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { IStatProps } from '../../types';
-import { Box, Span, Spacer, H2 } from '../Shared';
+import { Box, Span, Spacer, H2, H1 } from '../Shared';
 import { StatsWrapper, Statistic } from './styles';
 
 /**
@@ -13,10 +13,14 @@ const InfoDisplay = ({ previous, current, children }: IStatProps) => {
   const [movementCostDiff, setMovementCostDiff] = useState<number | null>(null);
 
   useEffect(() => {
-    if (previous && current) {
+    if (previous && current && !noPath(previous.shortestPathLength)) {
       setTimeDiff(current.timeTaken - previous.timeTaken);
       setStepDiff(current.shortestPathLength - previous.shortestPathLength);
       setMovementCostDiff(current.totalMovementCost - previous.totalMovementCost);
+    } else {
+      setTimeDiff(null);
+      setStepDiff(null);
+      setMovementCostDiff(null);
     }
   }, [previous, current]);
 
@@ -27,19 +31,19 @@ const InfoDisplay = ({ previous, current, children }: IStatProps) => {
   const displayNoPath = () => (
     <>
       <Statistic>
-        Time (sec): <Span style={{ color: 'red' }}>N/A</Span>
+        Time (sec): <Span style={{ color: '#E53E3E' }}>N/A</Span>
       </Statistic>{' '}
       <Spacer my={3} />
       <Statistic>
         Number of steps:{' '}
-        <Span style={{ color: 'red' }} className="na">
+        <Span style={{ color: '#E53E3E' }} className="na">
           N/A
         </Span>
       </Statistic>
       <Spacer my={3} />
       <Statistic>
         Total Movement Cost:{' '}
-        <Span style={{ color: 'red' }} className="na">
+        <Span style={{ color: '#E53E3E' }} className="na">
           N/A
         </Span>
       </Statistic>
@@ -55,10 +59,12 @@ const InfoDisplay = ({ previous, current, children }: IStatProps) => {
         alignItems="center"
         width="100%"
         height="auto"
-        // minHeight="460px"
         bg="rgba(0, 0, 0, 0.7)"
         p={4}
       >
+        <H1 fontSize={5} color="#FFFFFF" p={3}>
+          Pathfinder Visualiser
+        </H1>
         {previous && (
           <StatsWrapper fontSize={[1, 2, 3]} mr={4} maxWidth="300px">
             <H2>Previous Run</H2>
@@ -73,31 +79,19 @@ const InfoDisplay = ({ previous, current, children }: IStatProps) => {
               <>
                 <Spacer my={3} />
                 <Statistic>
-                  Time (sec):{' '}
-                  {!noPath ? (
-                    <Span class="na"> N/A</Span>
-                  ) : (
-                    previous.timeTaken && <Span>{(previous.timeTaken / 1000).toFixed(5)} </Span>
-                  )}
+                  Time (sec): previous.timeTaken &&{' '}
+                  <Span>{(previous.timeTaken / 1000).toFixed(5)} </Span>
                 </Statistic>{' '}
                 <Spacer my={3} />
                 <Statistic>
                   Number of steps:
-                  {!noPath ? (
-                    <Span class="na"> N/A</Span>
-                  ) : (
-                    <Span>{previous.shortestPathLength}</Span>
-                  )}
+                  <Span>{previous.shortestPathLength}</Span>
                 </Statistic>
                 <br />
                 <Spacer my={3} />
                 <Statistic>
                   Total Movement Cost:
-                  {!noPath ? (
-                    <Span class="na"> N/A</Span>
-                  ) : (
-                    <Span>{previous.totalMovementCost}</Span>
-                  )}
+                  <Span>{previous.totalMovementCost}</Span>
                 </Statistic>
               </>
             )}
@@ -118,10 +112,12 @@ const InfoDisplay = ({ previous, current, children }: IStatProps) => {
                 {current !== null && previous !== null ? (
                   <React.Fragment>
                     <Span>{(current!.timeTaken / 1000).toFixed(5)}</Span>
-                    <Span color={timeDiff! <= 0 ? 'green' : 'red'}>
-                      {' '}
-                      ( {timeDiff! > 0 && '+'} {timeDiff?.toFixed(4)} ms)
-                    </Span>
+                    {timeDiff && (
+                      <Span color={timeDiff! <= 0 ? 'green' : 'red'}>
+                        {' '}
+                        ( {timeDiff! > 0 && '+'} {timeDiff?.toFixed(4)} ms)
+                      </Span>
+                    )}
                   </React.Fragment>
                 ) : current && current.timeTaken ? (
                   <Span>{(current!.timeTaken / 1000).toFixed(5)} </Span>
@@ -135,10 +131,12 @@ const InfoDisplay = ({ previous, current, children }: IStatProps) => {
                 {current !== null && previous !== null ? (
                   <React.Fragment>
                     <Span>{current!.shortestPathLength}</Span>
-                    <Span color={stepDiff! <= 0 ? 'green' : 'red'}>
-                      {' '}
-                      ( {stepDiff! > 0 && '+'} {stepDiff} )
-                    </Span>
+                    {stepDiff && (
+                      <Span color={stepDiff! <= 0 ? '#68D391' : '#E53E3E'}>
+                        {' '}
+                        ( {stepDiff! > 0 && '+'} {stepDiff} )
+                      </Span>
+                    )}
                   </React.Fragment>
                 ) : current && current.shortestPathLength ? (
                   <Span>{current.shortestPathLength}</Span>
@@ -153,10 +151,12 @@ const InfoDisplay = ({ previous, current, children }: IStatProps) => {
                 {current !== null && previous !== null ? (
                   <React.Fragment>
                     <Span>{current!.totalMovementCost}</Span>
-                    <Span color={current!.totalMovementCost! >= 0 ? 'green' : 'red'}>
-                      {' '}
-                      ( {movementCostDiff! > 0 && '+'} {movementCostDiff} )
-                    </Span>
+                    {movementCostDiff && (
+                      <Span color={current!.totalMovementCost! >= 0 ? '#68D391' : '#E53E3E'}>
+                        {' '}
+                        ( {movementCostDiff! > 0 && '+'} {movementCostDiff} )
+                      </Span>
+                    )}
                   </React.Fragment>
                 ) : current && current.shortestPathLength ? (
                   <Span>{current.shortestPathLength}</Span>

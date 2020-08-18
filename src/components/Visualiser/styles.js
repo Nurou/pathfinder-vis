@@ -21,10 +21,13 @@ export const GridRow = styled.div`
 `;
 
 export const Button = styled.button`
-  padding: 0.4rem;
+  padding: 0.8rem;
   margin: 0 0.5rem;
-  font-family: 'Orbitron', sans-serif;
-  background: #ebf8ff;
+  border-radius: 8px;
+  font-family: 'Source Code Pro', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  background: #cbd5e0;
   color: #2a4365;
   border: none;
 `;
@@ -53,7 +56,7 @@ export const StatsWrapper = styled(Box)`
   }
 
   h2 {
-    text-decoration: underline gold;
+    text-decoration: underline #ecc94b;
   }
 `;
 
@@ -61,7 +64,7 @@ export const Statistic = styled(Span)`
   white-space: nowrap;
   color: white;
   span:nth-of-type(1) {
-    color: gold;
+    color: #ecc94b;
   }
 `;
 

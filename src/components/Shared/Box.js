@@ -11,7 +11,7 @@ import {
   zIndex,
   maxWidth,
   shadow,
-  grid,
+  grid
 } from 'styled-system';
 
 export const Box = styled.div`
@@ -43,10 +43,10 @@ export const Flex = styled.div`
   ${grid}
 `;
 Flex.defaultProps = {
-  position: 'realative',
+  position: 'relative',
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'center',
+  justifyContent: 'center'
 };
 
 export default Box;
