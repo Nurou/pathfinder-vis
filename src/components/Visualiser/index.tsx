@@ -20,6 +20,7 @@ import { animateVisits } from './Animate';
 import { useStickyState } from '../../hooks/useStickyState';
 import Description from './Description';
 import { details } from '../../algorithms/details';
+import ControlPanel from './ControlPanel';
 
 const Visualiser = () => {
   /**
@@ -28,7 +29,7 @@ const Visualiser = () => {
   const [grid, setGrid] = useState<Node[][] | null>([]);
   const [startNodeCoords, setStartNodeCoords] = useState<ICoordinates | null>(null);
   const [endNodeCoords, setEndNodeCoords] = useState<ICoordinates | null>(null);
-  const [gridDimensions, _] = useState<IGridDimensions>({ rows: 20, cols: 40 });
+  const [gridDimensions, _] = useState<IGridDimensions>({ rows: 20, cols: 65 });
   const [conversionType, setConversionType] = useState<string>('start');
   const [mazeGenerated, setMazeGenerated] = useState<boolean>(false);
   const [checked, setChecked] = useState<boolean>(false);
@@ -250,85 +251,81 @@ const Visualiser = () => {
   /**
    * Renders the logical nodes as div elements
    */
-  const renderGrid = (): JSX.Element[] => {
-    return grid!.map((row, rowIdx) => (
-      <GridRow key={rowIdx}>
-        {row.map((node: Node) => {
-          const { row, col } = node;
-          return (
-            <GridNode
-              key={`${row}-${col}`}
-              col={col}
-              row={row}
-              myRefs={myRefs}
-              onMouseEnter={(row, col) => handleMouseEnter(row, col)}
-              onMouseDown={(row, col) => handleMouseDown(row, col)}
-              onMouseUp={() => handleMouseUp()}
-            />
-          );
-        })}
-      </GridRow>
-    ));
+  const renderGrid = (): JSX.Element => {
+    return (
+      <Grid>
+        {grid!.map((row, rowIdx) => (
+          <GridRow key={rowIdx}>
+            {row.map((node: Node) => {
+              const { row, col } = node;
+              return (
+                <GridNode
+                  key={`${row}-${col}`}
+                  col={col}
+                  row={row}
+                  myRefs={myRefs}
+                  onMouseEnter={(row, col) => handleMouseEnter(row, col)}
+                  onMouseDown={(row, col) => handleMouseDown(row, col)}
+                  onMouseUp={() => handleMouseUp()}
+                />
+              );
+            })}
+          </GridRow>
+        ))}
+      </Grid>
+    );
   };
 
   return (
     <>
-      <H1
-        fontFamily="Orbitron"
-        fontSize={[4, 5, 8]}
-        color="white"
-        width="80vmin"
-        margin="5rem auto"
-      >
+      <H1 fontSize={[3, 4, 5, 6]} color="white" width="80vmin" margin="5rem auto">
         Pathfinder Visualisation
       </H1>
-      <InfoDisplay previous={prevRun} current={currentRun}>
-        {currentPathFinder && <Description details={details[currentPathFinder]} />}
-      </InfoDisplay>
       <Box
         as="main"
         display="flex"
         flexDirection="column"
         alignItems="center"
         justifyContent="center"
-        pt={4}
+        overflow="hidden"
       >
-        <select
-          value={currentPathFinder!}
-          onChange={(e) => {
-            setCurrentPathFinder(e.target.value);
-          }}
-        >
-          <option disabled>Choose pathfinder</option>
-          {availablePathfinders.map((o) => (
-            <option value={o.value} key={o.label}>
-              {o.label}
-            </option>
-          ))}
-        </select>
-        <Spacer my={4} />
-        <Box display="flex" justifyContent="center" alignItems="center">
-          <Button onClick={() => visualise()}>Visualize</Button>
-          <Button onClick={() => clear()}>Reset Pathfinder</Button>
-          <Button onClick={() => clear(true)}>Clear All</Button>
-          <Box as="label" display="flex" justifyContent="center" alignItems="center">
-            <Switch onChange={handleSwitch} checked={checked} />
-            <Span color="white" pl={2}>
-              Distances
-            </Span>
+        <InfoDisplay previous={prevRun} current={currentRun}>
+          {currentPathFinder && <Description details={details[currentPathFinder]} />}
+        </InfoDisplay>
+        {grid && renderGrid()}
+        <ControlPanel>
+          <Box display="flex" justifyContent="center" alignItems="center">
+            <Button onClick={createMaze}>Generate Maze </Button>
+            <Button onClick={() => setConversionType('start')}>Start </Button>
+            <Button onClick={() => setConversionType('end')}>Finish</Button>
+            <Button onClick={() => setConversionType('wall')}>Add Walls </Button>
+            <Button onClick={() => setConversionType('grass')}>Add Grass</Button>
           </Box>
-          <Spacer my={4} />
-        </Box>
-        <Grid>{grid && renderGrid()}</Grid>
-        <Spacer my={3} />
-        <Box display="flex" justifyContent="center" alignItems="center">
-          <Button onClick={createMaze}>Generate Maze </Button>
-          <Button onClick={() => setConversionType('start')}>Start </Button>
-          <Button onClick={() => setConversionType('end')}>Finish</Button>
-          <Button onClick={() => setConversionType('wall')}>Add Walls </Button>
-          <Button onClick={() => setConversionType('grass')}>Add Grass</Button>
-        </Box>
-        <Spacer my={3} />
+          <select
+            value={currentPathFinder!}
+            onChange={(e) => {
+              setCurrentPathFinder(e.target.value);
+            }}
+          >
+            <option disabled>Choose pathfinder</option>
+            {availablePathfinders.map((o) => (
+              <option value={o.value} key={o.label}>
+                {o.label}
+              </option>
+            ))}
+          </select>
+          <Box display="flex" justifyContent="center" alignItems="center">
+            <Button onClick={() => visualise()}>Visualize</Button>
+            <Button onClick={() => clear()}>Reset Pathfinder</Button>
+            <Button onClick={() => clear(true)}>Clear All</Button>
+            <Box as="label" display="flex" justifyContent="center" alignItems="center">
+              <Switch onChange={handleSwitch} checked={checked} />
+              <Span color="white" pl={2}>
+                Distances
+              </Span>
+            </Box>
+          </Box>
+        </ControlPanel>
       </Box>
     </>
   );

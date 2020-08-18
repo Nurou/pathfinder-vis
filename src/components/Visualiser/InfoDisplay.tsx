@@ -60,7 +60,7 @@ const InfoDisplay = ({ previous, current, children }: IStatProps) => {
         p={4}
       >
         {previous && (
-          <StatsWrapper fontSize={[2, 3, 4]} mr={4} maxWidth="300px">
+          <StatsWrapper fontSize={[1, 2, 3]} mr={4} maxWidth="300px">
             <H2>Previous Run</H2>
             <Statistic>
               Pathfinder:
@@ -103,7 +103,7 @@ const InfoDisplay = ({ previous, current, children }: IStatProps) => {
             )}
           </StatsWrapper>
         )}
-        <StatsWrapper fontSize={[2, 3, 4]} m={4} maxWidth="400px">
+        <StatsWrapper fontSize={[1, 2, 3]} m={4} maxWidth="400px">
           <H2>Current Run </H2>
           <Statistic>
             Pathfinder: <Span>{current!.pathfinder}</Span>

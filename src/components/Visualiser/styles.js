@@ -2,20 +2,22 @@ import styled from 'styled-components';
 import { memo } from 'react';
 import { Box, Span } from '../Shared';
 
-export const Grid = memo(styled.div`
+export const Grid = memo(styled(Box)`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   white-space: nowrap;
   border-collapse: collapse;
-  border: 0.3rem hsl(55, 30%, 80%) solid;
+  border-top: 0.3rem hsl(55, 30%, 80%) solid;
+  border-bottom: 0.3rem hsl(55, 30%, 80%) solid;
 `);
 
 export const GridRow = styled.div`
-  display: flex;
   border-collapse: collapse;
-  line-height: 0;
+  display: grid;
+  grid-template-columns: repeat(65, 1fr);
+  width: 100vw;
 `;
 
 export const Button = styled.button`
@@ -29,18 +31,13 @@ export const Button = styled.button`
 
 export const NodeWrapper = styled('div')`
   position: relative;
-  width: 2.5vmin;
-  height: 2.5vmin;
+  width: auto;
+  height: 2rem;
   /* outline: 0.02rem solid gray; */
-  border-collapse: collapse;
 
-  background: ${({ variant }) =>
-    variant === 'start' ? 'black' : variant === 'end' ? 'red' : null};
-
-  /* center text */
   text-align: center;
   vertical-align: middle;
-  line-height: 2vmin;
+  line-height: 2rem;
 
   span {
     position: absolute;

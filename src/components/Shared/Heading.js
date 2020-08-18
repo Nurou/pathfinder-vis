@@ -8,7 +8,7 @@ import {
   background,
   border,
   position,
-  zIndex,
+  zIndex
 } from 'styled-system';
 
 export const H1 = styled.h1`
@@ -23,7 +23,7 @@ export const H1 = styled.h1`
 `;
 H1.defaultProps = {
   lineHeight: 1.25,
-  fontFamily: 'raleway',
+  letterSpacing: 12
 };
 
 export const H2 = H1.withComponent('h2');
