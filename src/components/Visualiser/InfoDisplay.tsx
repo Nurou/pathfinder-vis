@@ -55,7 +55,7 @@ const InfoDisplay = ({ previous, current, children }: IStatProps) => {
         alignItems="center"
         width="100%"
         height="auto"
-        minHeight="460px"
+        // minHeight="460px"
         bg="rgba(0, 0, 0, 0.7)"
         p={4}
       >

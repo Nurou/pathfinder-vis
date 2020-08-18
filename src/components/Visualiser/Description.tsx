@@ -19,8 +19,8 @@ const Description = ({ details }: any) => {
       m={4}
       color="black"
       bg="white"
-      maxWidth="30rem"
-      fontSize={[2, 3, 4]}
+      // maxWidth="30rem"
+      fontSize={[1, 2, 3]}
       lineHeight={3 / 2}
       height="auto"
     >
