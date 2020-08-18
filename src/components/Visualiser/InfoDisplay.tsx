@@ -79,19 +79,16 @@ const InfoDisplay = ({ previous, current, children }: IStatProps) => {
               <>
                 <Spacer my={3} />
                 <Statistic>
-                  Time (sec): previous.timeTaken &&{' '}
-                  <Span>{(previous.timeTaken / 1000).toFixed(5)} </Span>
+                  Time (sec): <Span>{(previous.timeTaken / 1000).toFixed(5)} </Span>
                 </Statistic>{' '}
                 <Spacer my={3} />
                 <Statistic>
-                  Number of steps:
-                  <Span>{previous.shortestPathLength}</Span>
+                  Number of steps: <Span>{previous.shortestPathLength}</Span>
                 </Statistic>
                 <br />
                 <Spacer my={3} />
                 <Statistic>
-                  Total Movement Cost:
-                  <Span>{previous.totalMovementCost}</Span>
+                  Total Movement Cost: <Span>{previous.totalMovementCost}</Span>
                 </Statistic>
               </>
             )}
@@ -113,7 +110,7 @@ const InfoDisplay = ({ previous, current, children }: IStatProps) => {
                   <React.Fragment>
                     <Span>{(current!.timeTaken / 1000).toFixed(5)}</Span>
                     {timeDiff && (
-                      <Span color={timeDiff! <= 0 ? 'green' : 'red'}>
+                      <Span color={timeDiff! <= 0 ? '#68D391' : '#E53E3E'}>
                         {' '}
                         ( {timeDiff! > 0 && '+'} {timeDiff?.toFixed(4)} ms)
                       </Span>
