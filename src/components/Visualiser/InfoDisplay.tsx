@@ -60,7 +60,7 @@ const InfoDisplay = ({ previous, current, children }: IStatProps) => {
         width="100%"
         height="auto"
         bg="rgba(0, 0, 0, 0.7)"
-        p={4}
+        p={3}
       >
         <H1 fontSize={5} color="#FFFFFF" p={3}>
           Pathfinder Visualiser

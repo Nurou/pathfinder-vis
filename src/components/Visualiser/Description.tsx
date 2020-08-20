@@ -9,29 +9,27 @@ export interface IDetails {
   guarantee: boolean;
 }
 
-const Description = ({ details }: any) => {
-  console.log('💩: Description -> details', details);
+const Description = ({ details, children }: any) => {
   return (
     <AlgoInfo
       display="flex"
-      flexDirection="column"
+      justifyContent="space-around"
+      alignItems="center"
       p={4}
-      m={4}
       color="#1A202C"
       bg="white"
-      // maxWidth="30rem"
-      fontSize={[1, 2, 3]}
+      width="100%"
+      fontSize={[1, 2, 2]}
       lineHeight={3 / 2}
       height="auto"
     >
-      <Span>
+      {children}
+      {/* <Span>
         Selected:<strong> {details.title}</strong>
-      </Span>
+      </Span> */}
       <Span>
         Description:
-        <strong>
-          <br />"{details.description}"
-        </strong>
+        <strong>"{details.description}"</strong>
       </Span>
       <Span>
         Weighted:

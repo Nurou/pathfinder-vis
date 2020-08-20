@@ -21,6 +21,7 @@ import { useStickyState } from '../../hooks/useStickyState';
 import Description from './Description';
 import { details } from '../../algorithms/details';
 import ControlPanel from './ControlPanel';
+import Checkbox from './Checkbox';
 
 const Visualiser = () => {
   /**
@@ -29,7 +30,7 @@ const Visualiser = () => {
   const [grid, setGrid] = useState<Node[][] | null>([]);
   const [startNodeCoords, setStartNodeCoords] = useState<ICoordinates | null>(null);
   const [endNodeCoords, setEndNodeCoords] = useState<ICoordinates | null>(null);
-  const [gridDimensions, _] = useState<IGridDimensions>({ rows: 20, cols: 65 });
+  const [gridDimensions, _] = useState<IGridDimensions>({ rows: 25, cols: 80 });
   const [conversionType, setConversionType] = useState<string>('start');
   const [mazeGenerated, setMazeGenerated] = useState<boolean>(false);
   const [checked, setChecked] = useState<boolean>(false);
@@ -241,8 +242,8 @@ const Visualiser = () => {
   /**
    * toggle the display of distance values
    */
-  const handleSwitch = (): void => {
-    setChecked(!checked);
+  const handleCheck = (event: any): void => {
+    setChecked(event.target.checked);
     if (costs !== null) {
       displayDistances(costs, myRefs);
     }
@@ -276,6 +277,27 @@ const Visualiser = () => {
     );
   };
 
+  const pathFinderSelector = () => (
+    <Box display="flex" flexDirection="column">
+      <label htmlFor="algo-select">Choose a pathfinder</label>
+      <select
+        id="algo-select"
+        style={{ height: '3rem' }}
+        value={currentPathFinder!}
+        onChange={(e) => {
+          setCurrentPathFinder(e.target.value);
+        }}
+      >
+        <option disabled>Choose pathfinder</option>
+        {availablePathfinders.map((o) => (
+          <option value={o.value} key={o.label}>
+            {o.label}
+          </option>
+        ))}
+      </select>
+    </Box>
+  );
+
   return (
     <>
       <Box
@@ -286,10 +308,11 @@ const Visualiser = () => {
         justifyContent="center"
         overflow="hidden"
       >
-        <InfoDisplay previous={prevRun} current={currentRun}>
-          {currentPathFinder && <Description details={details[currentPathFinder]} />}
-        </InfoDisplay>
+        <InfoDisplay previous={prevRun} current={currentRun} />
         {grid && renderGrid()}
+        {currentPathFinder && (
+          <Description details={details[currentPathFinder]}>{pathFinderSelector()}</Description>
+        )}
         <ControlPanel
           display="flex"
           justifyContent="space-around"
@@ -305,31 +328,19 @@ const Visualiser = () => {
             <Button onClick={() => setConversionType('wall')}>Add Walls </Button>
             <Button onClick={() => setConversionType('grass')}>Add Grass</Button>
           </Box>
-          <label htmlFor="algo-select">Choose a pathfinder</label>
-          <select
-            id="algo-select"
-            style={{ height: '3rem', padding: '1rem' }}
-            value={currentPathFinder!}
-            onChange={(e) => {
-              setCurrentPathFinder(e.target.value);
-            }}
-          >
-            <option disabled>Choose pathfinder</option>
-            {availablePathfinders.map((o) => (
-              <option value={o.value} key={o.label}>
-                {o.label}
-              </option>
-            ))}
-          </select>
           <Box display="flex" justifyContent="center" alignItems="center">
-            <Button onClick={() => visualise()}>Visualize</Button>
+            <Button main onClick={() => visualise()}>
+              Visualize
+            </Button>
+          </Box>
+          <Box display="flex" justifyContent="center" alignItems="center">
             <Button onClick={() => clear()}>Reset Pathfinder</Button>
             <Button onClick={() => clear(true)}>Clear All</Button>
             <Box as="label" display="flex" justifyContent="center" alignItems="center">
-              <Switch onChange={handleSwitch} checked={checked} />
-              <Span color="white" pl={2}>
-                Distances
-              </Span>
+              <label>
+                <Checkbox checked={checked} onChange={handleCheck} />
+                <Span ml={1}>Show Distances</Span>
+              </label>
             </Box>
           </Box>
         </ControlPanel>

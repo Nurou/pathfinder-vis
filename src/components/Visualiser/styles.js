@@ -16,20 +16,19 @@ export const Grid = memo(styled(Box)`
 export const GridRow = styled.div`
   border-collapse: collapse;
   display: grid;
-  grid-template-columns: repeat(65, 1fr);
+  grid-template-columns: repeat(80, 1fr);
   width: 100vw;
 `;
 
 export const Button = styled.button`
-  padding: 1rem;
+  padding: ${(props) => (props.main ? '1.5rem' : '1rem')};
   margin: 0 0.5rem;
-  border-radius: 8px;
   font-family: 'Source Code Pro', sans-serif;
   font-size: 1.15rem;
   font-weight: 700;
-  background: #cbd5e0;
-  color: #2d3748;
-  border: none;
+  background: ${(props) => (props.main ? '#F56565' : '#cbd5e0')};
+  color: ${(props) => (props.main ? 'white' : '#2d3748')};
+  border: ${(props) => (props.main ? '3px solid #9B2C2C' : 'none')};
 `;
 
 export const NodeWrapper = styled('div')`
