@@ -13,7 +13,7 @@ export const animateVisits = (
   myRefs: React.MutableRefObject<any>
 ) => {
   // const ANIMATION_TIMEOUT = 15;
-  const ANIMATION_TIMEOUT = 15;
+  const ANIMATION_TIMEOUT = 5;
 
   nodesVisitedInOrder.forEach((node, index) => {
     if (index === nodesVisitedInOrder.length - 1) {

@@ -21,14 +21,14 @@ export const GridRow = styled.div`
 `;
 
 export const Button = styled.button`
-  padding: 0.8rem;
+  padding: 1rem;
   margin: 0 0.5rem;
   border-radius: 8px;
   font-family: 'Source Code Pro', sans-serif;
   font-size: 1.15rem;
   font-weight: 700;
   background: #cbd5e0;
-  color: #2a4365;
+  color: #2d3748;
   border: none;
 `;
 

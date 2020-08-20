@@ -290,7 +290,14 @@ const Visualiser = () => {
           {currentPathFinder && <Description details={details[currentPathFinder]} />}
         </InfoDisplay>
         {grid && renderGrid()}
-        <ControlPanel bg="#E2E8F0">
+        <ControlPanel
+          display="flex"
+          justifyContent="space-around"
+          alignItems="center"
+          width="100%"
+          p={5}
+          bg="#E2E8F0"
+        >
           <Box display="flex" justifyContent="center" alignItems="center">
             <Button onClick={createMaze}>{mazeGenerated ? 'Regenerate' : 'Generate'} Maze </Button>
             <Button onClick={() => setConversionType('start')}>Start </Button>
@@ -298,7 +305,10 @@ const Visualiser = () => {
             <Button onClick={() => setConversionType('wall')}>Add Walls </Button>
             <Button onClick={() => setConversionType('grass')}>Add Grass</Button>
           </Box>
+          <label htmlFor="algo-select">Choose a pathfinder</label>
           <select
+            id="algo-select"
+            style={{ height: '3rem', padding: '1rem' }}
             value={currentPathFinder!}
             onChange={(e) => {
               setCurrentPathFinder(e.target.value);
