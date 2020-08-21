@@ -1,8 +1,7 @@
 import React, { useState, useRef, useLayoutEffect, useEffect } from 'react';
 import Node from '../../data_structures/Node';
-import { Box, Spacer, Span, H1 } from '.././Shared';
-import { Button, Grid, GridRow } from './styles';
-import { GridNode } from './Node';
+import { Box, Span } from '.././Shared';
+import { Button } from './styles';
 import { ICoordinates, IGridDimensions, IDynFunctions } from '../../types';
 import InfoDisplay from './InfoDisplay';
 import {
@@ -252,67 +251,65 @@ const Visualiser = () => {
   };
 
   return (
-    <>
-      <Box
-        as="main"
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        justifyContent="center"
-        overflow="hidden"
-      >
-        <InfoDisplay previous={prevRun} current={currentRun} />
-        {grid && (
-          <GridGraph
-            grid={grid}
-            myRefs={myRefs}
-            handleMouseEnter={handleMouseEnter}
-            handleMouseDown={handleMouseDown}
-            handleMouseUp={handleMouseUp}
+    <Box
+      as="main"
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      justifyContent="center"
+      overflow="hidden"
+    >
+      <InfoDisplay previous={prevRun} current={currentRun} />
+      {grid && (
+        <GridGraph
+          grid={grid}
+          myRefs={myRefs}
+          handleMouseEnter={handleMouseEnter}
+          handleMouseDown={handleMouseDown}
+          handleMouseUp={handleMouseUp}
+        />
+      )}
+      {currentPathFinder && (
+        <Description details={details[currentPathFinder]}>
+          <PathFinderSelector
+            currentPathfinder={currentPathFinder}
+            setCurrentPathfinder={setCurrentPathFinder}
+            availablePathfinders={availablePathfinders}
           />
-        )}
-        {currentPathFinder && (
-          <Description details={details[currentPathFinder]}>
-            <PathFinderSelector
-              currentPathfinder={currentPathFinder}
-              setCurrentPathfinder={setCurrentPathFinder}
-              availablePathfinders={availablePathfinders}
-            />
-          </Description>
-        )}
-        <ControlPanel
-          display="flex"
-          justifyContent="space-around"
-          alignItems="center"
-          width="100%"
-          p={5}
-          bg="#E2E8F0"
-        >
-          <Box display="flex" justifyContent="center" alignItems="center">
-            <Button onClick={createMaze}>{mazeGenerated ? 'Regenerate' : 'Generate'} Maze </Button>
-            <Button onClick={() => setConversionType('start')}>Start </Button>
-            <Button onClick={() => setConversionType('end')}>Finish</Button>
-            <Button onClick={() => setConversionType('wall')}>Add Walls </Button>
-            <Button onClick={() => setConversionType('grass')}>Add Grass</Button>
+        </Description>
+      )}
+      <ControlPanel
+        display="flex"
+        justifyContent="space-around"
+        alignItems="center"
+        width="100%"
+        p={5}
+        bg="#E2E8F0"
+      >
+        <Box display="flex" justifyContent="center" alignItems="center">
+          <Button onClick={createMaze}>{mazeGenerated ? 'Regenerate' : 'Generate'} Maze </Button>
+          <Button onClick={() => setConversionType('start')}>Start </Button>
+          <Button onClick={() => setConversionType('end')}>Finish</Button>
+          <Button onClick={() => setConversionType('wall')}>Add Walls </Button>
+          <Button onClick={() => setConversionType('grass')}>Add Grass</Button>
+        </Box>
+        <Box display="flex" justifyContent="center" alignItems="center">
+          <Button main onClick={() => visualise()}>
+            Visualize
+          </Button>
+        </Box>
+        <Box display="flex" justifyContent="center" alignItems="center">
+          <Button onClick={() => clear()}>Reset Pathfinder</Button>
+          <Button onClick={() => clear(true)}>Clear All</Button>
+          <Box as="label" display="flex" justifyContent="center" alignItems="center">
+            <label>
+              <Checkbox checked={checked} onChange={handleCheck} />
+              <Span ml={1}>Show Distances</Span>
+            </label>
           </Box>
-          <Box display="flex" justifyContent="center" alignItems="center">
-            <Button main onClick={() => visualise()}>
-              Visualize
-            </Button>
-          </Box>
-          <Box display="flex" justifyContent="center" alignItems="center">
-            <Button onClick={() => clear()}>Reset Pathfinder</Button>
-            <Button onClick={() => clear(true)}>Clear All</Button>
-            <Box as="label" display="flex" justifyContent="center" alignItems="center">
-              <label>
-                <Checkbox checked={checked} onChange={handleCheck} />
-                <Span ml={1}>Show Distances</Span>
-              </label>
-            </Box>
-          </Box>
-        </ControlPanel>
-      </Box>
-    </>
+        </Box>
+      </ControlPanel>
+    </Box>
   );
 };
 
