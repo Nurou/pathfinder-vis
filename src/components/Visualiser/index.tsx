@@ -1,5 +1,4 @@
 import React, { useState, useRef, useLayoutEffect, useEffect } from 'react';
-import Switch from 'react-switch';
 import Node from '../../data_structures/Node';
 import { Box, Spacer, Span, H1 } from '.././Shared';
 import { Button, Grid, GridRow } from './styles';
@@ -23,6 +22,7 @@ import { details } from '../../algorithms/details';
 import ControlPanel from './ControlPanel';
 import Checkbox from './Checkbox';
 import { PathFinderSelector } from './PathFinderSelector';
+import { GridGraph } from './GridGraph';
 
 const Visualiser = () => {
   /**
@@ -50,6 +50,7 @@ const Visualiser = () => {
     { value: 'Gbfs', label: 'Greedy Best-First Search' },
     { value: 'aStar', label: 'A*' }
   ];
+
   const [currentPathFinder, setCurrentPathFinder] = useState<string | null>(
     availablePathfinders[0].value
   );
@@ -250,34 +251,6 @@ const Visualiser = () => {
     }
   };
 
-  /**
-   * Renders the logical nodes as div elements
-   */
-  const renderGrid = (): JSX.Element => {
-    return (
-      <Grid>
-        {grid!.map((row, rowIdx) => (
-          <GridRow key={rowIdx}>
-            {row.map((node: Node) => {
-              const { row, col } = node;
-              return (
-                <GridNode
-                  key={`${row}-${col}`}
-                  col={col}
-                  row={row}
-                  myRefs={myRefs}
-                  onMouseEnter={(row, col) => handleMouseEnter(row, col)}
-                  onMouseDown={(row, col) => handleMouseDown(row, col)}
-                  onMouseUp={() => handleMouseUp()}
-                />
-              );
-            })}
-          </GridRow>
-        ))}
-      </Grid>
-    );
-  };
-
   return (
     <>
       <Box
@@ -289,7 +262,15 @@ const Visualiser = () => {
         overflow="hidden"
       >
         <InfoDisplay previous={prevRun} current={currentRun} />
-        {grid && renderGrid()}
+        {grid && (
+          <GridGraph
+            grid={grid}
+            myRefs={myRefs}
+            handleMouseEnter={handleMouseEnter}
+            handleMouseDown={handleMouseDown}
+            handleMouseUp={handleMouseUp}
+          />
+        )}
         {currentPathFinder && (
           <Description details={details[currentPathFinder]}>
             <PathFinderSelector
