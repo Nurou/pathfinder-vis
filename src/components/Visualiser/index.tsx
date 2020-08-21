@@ -22,6 +22,7 @@ import Description from './Description';
 import { details } from '../../algorithms/details';
 import ControlPanel from './ControlPanel';
 import Checkbox from './Checkbox';
+import { PathFinderSelector } from './PathFinderSelector';
 
 const Visualiser = () => {
   /**
@@ -277,27 +278,6 @@ const Visualiser = () => {
     );
   };
 
-  const pathFinderSelector = () => (
-    <Box display="flex" flexDirection="column">
-      <label htmlFor="algo-select">Choose a pathfinder</label>
-      <select
-        id="algo-select"
-        style={{ height: '3rem' }}
-        value={currentPathFinder!}
-        onChange={(e) => {
-          setCurrentPathFinder(e.target.value);
-        }}
-      >
-        <option disabled>Choose pathfinder</option>
-        {availablePathfinders.map((o) => (
-          <option value={o.value} key={o.label}>
-            {o.label}
-          </option>
-        ))}
-      </select>
-    </Box>
-  );
-
   return (
     <>
       <Box
@@ -311,7 +291,13 @@ const Visualiser = () => {
         <InfoDisplay previous={prevRun} current={currentRun} />
         {grid && renderGrid()}
         {currentPathFinder && (
-          <Description details={details[currentPathFinder]}>{pathFinderSelector()}</Description>
+          <Description details={details[currentPathFinder]}>
+            <PathFinderSelector
+              currentPathfinder={currentPathFinder}
+              setCurrentPathfinder={setCurrentPathFinder}
+              availablePathfinders={availablePathfinders}
+            />
+          </Description>
         )}
         <ControlPanel
           display="flex"
