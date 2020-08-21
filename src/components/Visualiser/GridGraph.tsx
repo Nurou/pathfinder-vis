@@ -17,8 +17,8 @@ interface IGridProps {
 export const GridGraph = (props: IGridProps): JSX.Element => {
   return (
     <Grid>
-      {props.grid!.map((row, rowIdx) => (
-        <GridRow key={rowIdx}>
+      {props.grid.map((row, rowIdx) => (
+        <GridRow key={rowIdx} columns={props.grid[0].length}>
           {row.map((node: Node) => {
             const { row, col } = node;
             return (

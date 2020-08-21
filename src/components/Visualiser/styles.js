@@ -16,7 +16,7 @@ export const Grid = memo(styled(Box)`
 export const GridRow = styled.div`
   border-collapse: collapse;
   display: grid;
-  grid-template-columns: repeat(80, 1fr);
+  grid-template-columns: repeat(${(props) => props.columns}, 1fr);
   width: 100vw;
 `;
 

@@ -30,7 +30,7 @@ const Visualiser = () => {
   const [grid, setGrid] = useState<Node[][] | null>([]);
   const [startNodeCoords, setStartNodeCoords] = useState<ICoordinates | null>(null);
   const [endNodeCoords, setEndNodeCoords] = useState<ICoordinates | null>(null);
-  const [gridDimensions, _] = useState<IGridDimensions>({ rows: 25, cols: 80 });
+  const [gridDimensions, _] = useState<IGridDimensions>({ rows: 25, cols: 60 });
   const [conversionType, setConversionType] = useState<string>('start');
   const [mazeGenerated, setMazeGenerated] = useState<boolean>(false);
   const [checked, setChecked] = useState<boolean>(false);
@@ -293,20 +293,28 @@ const Visualiser = () => {
           <Button onClick={() => setConversionType('wall')}>Add Walls </Button>
           <Button onClick={() => setConversionType('grass')}>Add Grass</Button>
         </Box>
-        <Box display="flex" justifyContent="center" alignItems="center">
+        <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
           <Button main onClick={() => visualise()}>
             Visualize
           </Button>
-        </Box>
-        <Box display="flex" justifyContent="center" alignItems="center">
-          <Button onClick={() => clear()}>Reset Pathfinder</Button>
-          <Button onClick={() => clear(true)}>Clear All</Button>
-          <Box as="label" display="flex" justifyContent="center" alignItems="center">
+          <Box as="label" display="flex" justifyContent="center" alignItems="center" mt={2}>
             <label>
               <Checkbox checked={checked} onChange={handleCheck} />
               <Span ml={1}>Show Distances</Span>
             </label>
           </Box>
+          {/* <p>Select speed:</p>
+          <div>
+            <input type="radio" id="fast"  value="fast" checked />
+            <label htmlFor="fast">fast</label>
+          </div>
+
+        
+          </div> */}
+        </Box>
+        <Box display="flex" justifyContent="center" alignItems="center">
+          <Button onClick={() => clear()}>Reset Pathfinder</Button>
+          <Button onClick={() => clear(true)}>Clear All</Button>
         </Box>
       </ControlPanel>
     </Box>

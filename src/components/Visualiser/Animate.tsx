@@ -1,5 +1,9 @@
 import { Node } from '../../data_structures/Node';
 import { isWall, isStartNode, isEndNode, isGrass } from '../../algorithms/util';
+import { number } from 'prop-types';
+
+type TAnimationSpeed = 'fast' | 'medium' | 'slow';
+
 /**
  *  Animates the progression of the breadth-first search algorithm after the algorithm has concluded its work
  *
@@ -10,10 +14,25 @@ import { isWall, isStartNode, isEndNode, isGrass } from '../../algorithms/util';
 export const animateVisits = (
   nodesVisitedInOrder: Node[],
   shortestPath: Node[],
-  myRefs: React.MutableRefObject<any>
+  myRefs: React.MutableRefObject<any>,
+  animationSpeed?: TAnimationSpeed
 ) => {
-  // const ANIMATION_TIMEOUT = 15;
-  const ANIMATION_TIMEOUT = 5;
+  let ANIMATION_TIMEOUT = 10;
+
+  // switch (animationSpeed) {
+  //   case 'fast':
+  //     ANIMATION_TIMEOUT = 10;
+  //     break;
+  //   case 'medium':
+  //     ANIMATION_TIMEOUT = 20;
+  //     break;
+  //   case 'slow':
+  //     ANIMATION_TIMEOUT = 30;
+  //     break;
+  //   default:
+  //     ANIMATION_TIMEOUT = 5;
+  //     break;
+  // }
 
   nodesVisitedInOrder.forEach((node, index) => {
     if (index === nodesVisitedInOrder.length - 1) {
@@ -38,10 +57,29 @@ export const animateVisits = (
  * @param {object} shortestPath
  * @param {object} myRefs
  */
-const animateShortestPath = (shortestPath: Node[], myRefs: React.MutableRefObject<any>) => {
+const animateShortestPath = (
+  shortestPath: Node[],
+  myRefs: React.MutableRefObject<any>,
+  animationSpeed?: TAnimationSpeed
+) => {
+  let ANIMATION_TIMEOUT = 10;
+
+  // switch (animationSpeed) {
+  //   case 'fast':
+  //     ANIMATION_TIMEOUT = 10;
+  //     break;
+  //   case 'medium':
+  //     ANIMATION_TIMEOUT = 20;
+  //     break;
+  //   case 'slow':
+  //     ANIMATION_TIMEOUT = 30;
+  //     break;
+  //   default:
+  //     ANIMATION_TIMEOUT = 5;
+  //     break;
+  // }
+
   shortestPath.forEach((node, index) => {
-    // const ANIMATION_TIMEOUT = 50;
-    const ANIMATION_TIMEOUT = 30;
     setTimeout(() => {
       // exclude walls and end nodes
       let domNode = myRefs.current[`node-${node.row}-${node.col}`];
