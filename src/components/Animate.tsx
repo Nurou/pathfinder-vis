@@ -1,8 +1,6 @@
-import { Node } from '../../data_structures/Node';
-import { isWall, isStartNode, isEndNode, isGrass } from '../../algorithms/util';
-import { number } from 'prop-types';
-
-type TAnimationSpeed = 'fast' | 'medium' | 'slow';
+import { Node } from '../data_structures/Node';
+import { isWall, isGrass } from '../algorithms/util';
+import { TAnimationSpeed } from '../types';
 
 /**
  *  Animates the progression of the breadth-first search algorithm after the algorithm has concluded its work
@@ -17,22 +15,23 @@ export const animateVisits = (
   myRefs: React.MutableRefObject<any>,
   animationSpeed?: TAnimationSpeed
 ) => {
-  let ANIMATION_TIMEOUT = 10;
+  let ANIMATION_TIMEOUT: number;
 
-  // switch (animationSpeed) {
-  //   case 'fast':
-  //     ANIMATION_TIMEOUT = 10;
-  //     break;
-  //   case 'medium':
-  //     ANIMATION_TIMEOUT = 20;
-  //     break;
-  //   case 'slow':
-  //     ANIMATION_TIMEOUT = 30;
-  //     break;
-  //   default:
-  //     ANIMATION_TIMEOUT = 5;
-  //     break;
-  // }
+  switch (animationSpeed) {
+    case 'fast':
+      ANIMATION_TIMEOUT = 3;
+      break;
+    case 'medium':
+      ANIMATION_TIMEOUT = 10;
+      break;
+    case 'slow':
+      ANIMATION_TIMEOUT = 30;
+      break;
+    default:
+      ANIMATION_TIMEOUT = 15;
+      break;
+  }
+  console.log('💩: ANIMATION_TIMEOUT', ANIMATION_TIMEOUT);
 
   nodesVisitedInOrder.forEach((node, index) => {
     if (index === nodesVisitedInOrder.length - 1) {
@@ -62,22 +61,22 @@ const animateShortestPath = (
   myRefs: React.MutableRefObject<any>,
   animationSpeed?: TAnimationSpeed
 ) => {
-  let ANIMATION_TIMEOUT = 10;
+  let ANIMATION_TIMEOUT: number;
 
-  // switch (animationSpeed) {
-  //   case 'fast':
-  //     ANIMATION_TIMEOUT = 10;
-  //     break;
-  //   case 'medium':
-  //     ANIMATION_TIMEOUT = 20;
-  //     break;
-  //   case 'slow':
-  //     ANIMATION_TIMEOUT = 30;
-  //     break;
-  //   default:
-  //     ANIMATION_TIMEOUT = 5;
-  //     break;
-  // }
+  switch (animationSpeed) {
+    case 'fast':
+      ANIMATION_TIMEOUT = 20;
+      break;
+    case 'medium':
+      ANIMATION_TIMEOUT = 30;
+      break;
+    case 'slow':
+      ANIMATION_TIMEOUT = 40;
+      break;
+    default:
+      ANIMATION_TIMEOUT = 30;
+      break;
+  }
 
   shortestPath.forEach((node, index) => {
     setTimeout(() => {

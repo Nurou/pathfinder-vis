@@ -1,15 +1,9 @@
 import React from 'react';
-import { Box, H1, Text, Span } from '../Shared';
+import { Span } from '../Shared';
 import { AlgoInfo } from './styles';
+import { IDetails } from '../../types';
 
-export interface IDetails {
-  title: string;
-  description: string;
-  weighted: boolean;
-  guarantee: boolean;
-}
-
-const Description = ({ details, children }: any) => {
+const Description = ({ details, children }: { details: IDetails; children: any }) => {
   return (
     <AlgoInfo
       display="flex"
@@ -24,9 +18,6 @@ const Description = ({ details, children }: any) => {
       height="auto"
     >
       {children}
-      {/* <Span>
-        Selected:<strong> {details.title}</strong>
-      </Span> */}
       <Span>
         Description:
         <strong>"{details.description}"</strong>

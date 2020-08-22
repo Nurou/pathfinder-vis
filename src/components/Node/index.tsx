@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import { NodeWrapper } from './styles';
+import { useTraceUpdate } from '../../hooks/useTraceUpdate';
 
 type TNodeProps = {
   row: number;
@@ -7,12 +8,13 @@ type TNodeProps = {
   onMouseDown: (row: number, col: number) => void;
   onMouseEnter: (row: number, col: number) => void;
   onMouseUp: () => void;
-  myRefs: any;
+  myRefs: React.MutableRefObject<any>;
 };
 
 export const GridNode = memo(
   ({ row, col, onMouseDown, onMouseEnter, onMouseUp, myRefs }: TNodeProps) => {
     console.log('Rendered: Node');
+    useTraceUpdate({ row, col, onMouseDown, onMouseEnter, onMouseUp, myRefs });
     return (
       <NodeWrapper
         ref={(el: HTMLDivElement) => handleRef(el, row, col, myRefs)}
@@ -34,7 +36,12 @@ interface HTMLDivElement {
  * @param {number} row
  * @param {number} col
  */
-const handleRef = (el: HTMLDivElement, row: number, col: number, myRefs: any) => {
+const handleRef = (
+  el: HTMLDivElement,
+  row: number,
+  col: number,
+  myRefs: React.MutableRefObject<any>
+) => {
   // get existing refs
   let newRefs = { ...myRefs.current };
 

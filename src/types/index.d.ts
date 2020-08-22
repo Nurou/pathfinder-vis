@@ -35,3 +35,28 @@ export interface IStatProps {
   current?: IStatItems;
   children?: any;
 }
+
+export type TAnimationSpeed = 'fast' | 'medium' | 'slow';
+
+export interface IDetailsArray {
+  [k: string]: IDetails;
+}
+
+export interface IDetails {
+  title: string;
+  description: string;
+  weighted: boolean;
+  guarantee: boolean;
+}
+
+export interface IVisualiseProps {
+  grid: Node[][] | null;
+  startNodeCoords: ICoordinates | null;
+  endNodeCoords: ICoordinates | null;
+  myRefs: React.MutableRefObject<any>;
+  currentRun: any;
+  setCurrentRun: React.Dispatch<any>;
+  setPrevRun: React.Dispatch<any>;
+  setCosts: any;
+  currentPathFinder?: string | null;
+}

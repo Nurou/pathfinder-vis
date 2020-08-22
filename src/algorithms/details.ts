@@ -1,8 +1,6 @@
-export interface IDetails {
-  [k: string]: unknown;
-}
+import { IDetailsArray } from './../types/index.d';
 
-export const details: IDetails = {
+export const details: IDetailsArray = {
   Bfs: {
     title: 'Breadth-first Search',
     description: 'Explores equally in all directions',

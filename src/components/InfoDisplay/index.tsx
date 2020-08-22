@@ -96,7 +96,7 @@ const InfoDisplay = ({ previous, current, children }: IStatProps) => {
         )}
         <StatsWrapper fontSize={[1, 2, 3]} m={4} maxWidth="400px">
           <H2>Current Run </H2>
-          <Statistic>Pathfinder:{current && <Span>{current.pathfinder}</Span>}</Statistic>
+          <Statistic>Pathfinder: {current && <Span>{current.pathfinder}</Span>}</Statistic>
           <Spacer my={3} />
           {current && noPath(current!.shortestPathLength) ? (
             displayNoPath()

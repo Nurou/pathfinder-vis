@@ -1,4 +1,4 @@
-import { Box } from '../Shared';
+import { Box } from './Shared';
 import React from 'react';
 
 interface IPathFinderProps {
@@ -13,7 +13,8 @@ type TPathFinderObject = {
 };
 
 /**
- *
+ * Component for user to select the pathfinder to run
+ * @param props
  */
 export const PathFinderSelector = (props: IPathFinderProps) => (
   <Box display="flex" flexDirection="column">
