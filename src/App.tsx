@@ -10,7 +10,7 @@ import {
   addWallsRandomly,
   populateGrid,
   getRandomArbitrary
-} from './components/util';
+} from './util';
 import { useStickyState } from './hooks/useStickyState';
 import Description from './components/Description';
 import { details } from './algorithms/details';
@@ -28,8 +28,8 @@ const App = () => {
   const [startNodeCoords, setStartNodeCoords] = useState<ICoordinates | null>(null);
   const [endNodeCoords, setEndNodeCoords] = useState<ICoordinates | null>(null);
   const [gridDimensions, _] = useState<IGridDimensions>({
-    rows: 20,
-    cols: 60
+    rows: 10,
+    cols: 45
   });
   const [conversionType, setConversionType] = useState<string>('start');
   const [mazeGenerated, setMazeGenerated] = useState<boolean>(false);
@@ -101,40 +101,40 @@ const App = () => {
     }
 
     // restrict to LHS of grid
-    const SN_COORDS: ICoordinates = {
-      row: getRandomArbitrary(0, gridDimensions!.rows),
-      col: getRandomArbitrary(0, gridDimensions!.cols / 2)
-    };
+    // const SN_COORDS: ICoordinates = {
+    //   row: getRandomArbitrary(0, gridDimensions!.rows),
+    //   col: getRandomArbitrary(0, gridDimensions!.cols / 2)
+    // };
 
-    // restrict to RHS of grid
-    const EN_COORDS: ICoordinates = {
-      row: getRandomArbitrary(0, gridDimensions!.rows),
-      col: getRandomArbitrary(gridDimensions!.cols / 2, gridDimensions!.cols)
-    };
+    // // restrict to RHS of grid
+    // const EN_COORDS: ICoordinates = {
+    //   row: getRandomArbitrary(0, gridDimensions!.rows),
+    //   col: getRandomArbitrary(gridDimensions!.cols / 2, gridDimensions!.cols)
+    // };
 
-    // add start and end nodes
-    if (SN_COORDS && EN_COORDS) {
-      convertToType(
-        SN_COORDS.row,
-        SN_COORDS.col,
-        'start',
-        startNodeCoords,
-        endNodeCoords,
-        setStartNodeCoords,
-        setEndNodeCoords,
-        myRefs
-      );
-      convertToType(
-        EN_COORDS.row,
-        EN_COORDS.col,
-        'end',
-        startNodeCoords,
-        endNodeCoords,
-        setStartNodeCoords,
-        setEndNodeCoords,
-        myRefs
-      );
-    }
+    // // add start and end nodes
+    // if (SN_COORDS && EN_COORDS) {
+    //   convertToType(
+    //     SN_COORDS.row,
+    //     SN_COORDS.col,
+    //     'start',
+    //     startNodeCoords,
+    //     endNodeCoords,
+    //     setStartNodeCoords,
+    //     setEndNodeCoords,
+    //     myRefs
+    //   );
+    //   convertToType(
+    //     EN_COORDS.row,
+    //     EN_COORDS.col,
+    //     'end',
+    //     startNodeCoords,
+    //     endNodeCoords,
+    //     setStartNodeCoords,
+    //     setEndNodeCoords,
+    //     myRefs
+    //   );
+    // }
 
     addWallsRandomly(grid, myRefs);
 
