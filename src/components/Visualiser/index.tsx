@@ -41,6 +41,8 @@ const Visualise = ({
         currentPathFinder
       ]();
 
+      console.log(costSoFar);
+
       const stats = {
         pathfinder: currentPathFinder,
         timeTaken: timer,

@@ -3,7 +3,7 @@ import Node from '../../data_structures/Node';
 import { Grid, GridRow } from './styles';
 import { GridNode } from '../Node';
 import { useTraceUpdate } from '../../hooks/useTraceUpdate';
-import { convertToType, coverInTerrain } from '../util';
+import { convertToType, coverInTerrain } from '../../util';
 import { ICoordinates } from '../../types';
 
 interface IGridProps {

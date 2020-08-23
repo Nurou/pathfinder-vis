@@ -13,8 +13,8 @@ type TNodeProps = {
 
 export const GridNode = memo(
   ({ row, col, onMouseDown, onMouseEnter, onMouseUp, myRefs }: TNodeProps) => {
+    // useTraceUpdate({ row, col, onMouseDown, onMouseEnter, onMouseUp, myRefs });
     console.log('Rendered: Node');
-    useTraceUpdate({ row, col, onMouseDown, onMouseEnter, onMouseUp, myRefs });
     return (
       <NodeWrapper
         ref={(el: HTMLDivElement) => handleRef(el, row, col, myRefs)}

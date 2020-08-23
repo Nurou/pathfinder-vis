@@ -10,7 +10,7 @@ import {
   addWallsRandomly,
   populateGrid,
   getRandomArbitrary
-} from './components/util';
+} from './util';
 import { useStickyState } from './hooks/useStickyState';
 import Description from './components/Description';
 import { details } from './algorithms/details';
@@ -28,8 +28,8 @@ const App = () => {
   const [startNodeCoords, setStartNodeCoords] = useState<ICoordinates | null>(null);
   const [endNodeCoords, setEndNodeCoords] = useState<ICoordinates | null>(null);
   const [gridDimensions, _] = useState<IGridDimensions>({
-    rows: 20,
-    cols: 60
+    rows: 10,
+    cols: 45
   });
   const [conversionType, setConversionType] = useState<string>('start');
   const [mazeGenerated, setMazeGenerated] = useState<boolean>(false);
