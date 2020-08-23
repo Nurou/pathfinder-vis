@@ -101,40 +101,40 @@ const App = () => {
     }
 
     // restrict to LHS of grid
-    const SN_COORDS: ICoordinates = {
-      row: getRandomArbitrary(0, gridDimensions!.rows),
-      col: getRandomArbitrary(0, gridDimensions!.cols / 2)
-    };
+    // const SN_COORDS: ICoordinates = {
+    //   row: getRandomArbitrary(0, gridDimensions!.rows),
+    //   col: getRandomArbitrary(0, gridDimensions!.cols / 2)
+    // };
 
-    // restrict to RHS of grid
-    const EN_COORDS: ICoordinates = {
-      row: getRandomArbitrary(0, gridDimensions!.rows),
-      col: getRandomArbitrary(gridDimensions!.cols / 2, gridDimensions!.cols)
-    };
+    // // restrict to RHS of grid
+    // const EN_COORDS: ICoordinates = {
+    //   row: getRandomArbitrary(0, gridDimensions!.rows),
+    //   col: getRandomArbitrary(gridDimensions!.cols / 2, gridDimensions!.cols)
+    // };
 
-    // add start and end nodes
-    if (SN_COORDS && EN_COORDS) {
-      convertToType(
-        SN_COORDS.row,
-        SN_COORDS.col,
-        'start',
-        startNodeCoords,
-        endNodeCoords,
-        setStartNodeCoords,
-        setEndNodeCoords,
-        myRefs
-      );
-      convertToType(
-        EN_COORDS.row,
-        EN_COORDS.col,
-        'end',
-        startNodeCoords,
-        endNodeCoords,
-        setStartNodeCoords,
-        setEndNodeCoords,
-        myRefs
-      );
-    }
+    // // add start and end nodes
+    // if (SN_COORDS && EN_COORDS) {
+    //   convertToType(
+    //     SN_COORDS.row,
+    //     SN_COORDS.col,
+    //     'start',
+    //     startNodeCoords,
+    //     endNodeCoords,
+    //     setStartNodeCoords,
+    //     setEndNodeCoords,
+    //     myRefs
+    //   );
+    //   convertToType(
+    //     EN_COORDS.row,
+    //     EN_COORDS.col,
+    //     'end',
+    //     startNodeCoords,
+    //     endNodeCoords,
+    //     setStartNodeCoords,
+    //     setEndNodeCoords,
+    //     myRefs
+    //   );
+    // }
 
     addWallsRandomly(grid, myRefs);
 
