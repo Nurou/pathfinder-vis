@@ -10,6 +10,8 @@ export const GlobalStyle = createGlobalStyle`
     margin: 0;
   }
 
+  /* input[type='radio'] { transform: scale(2); } */
+
   pre {
     color: white;
   }

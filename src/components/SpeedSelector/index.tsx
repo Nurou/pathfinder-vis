@@ -12,7 +12,6 @@ export const SpeedSelector = ({
    * @param event - radio button selection
    */
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    event.preventDefault();
     const { value } = event.target;
     setVisualisationSpeed(value as TAnimationSpeed);
   };
