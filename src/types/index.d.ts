@@ -49,16 +49,14 @@ export interface IDetails {
   guarantee: boolean;
 }
 
-export interface IVisualiseProps {
+export interface IVisualiserProps {
   grid: Node[][] | null;
-  // startNodeCoords: ICoordinates | null;
-  // endNodeCoords: ICoordinates | null;
-  startNodeCoords: any;
-  endNodeCoords: any;
+  startNodeCoords: React.MutableRefObject<any>;
+  endNodeCoords: React.MutableRefObject<any>;
   myRefs: React.MutableRefObject<any>;
   currentRun: any;
   setCurrentRun: React.Dispatch<any>;
   setPrevRun: React.Dispatch<any>;
-  setCosts: any;
+  setCosts: React.Dispatch<React.SetStateAction<Map<Node, number> | null>>;
   currentPathFinder?: string | null;
 }

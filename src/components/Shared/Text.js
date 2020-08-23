@@ -11,9 +11,7 @@ export const Text = styled.p`
 
 Text.defaultProps = {
   fontSize: '1.125rem',
-  // color: 'black',
-  lineHeight: 1.89,
-  fontFamily: '"Raleway", "sans-serif"'
+  lineHeight: 1.89
 };
 
 export default Text;

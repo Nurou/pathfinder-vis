@@ -1,6 +1,6 @@
-import { ICoordinates, IGridDimensions } from './types';
-import Node from './data_structures/Node';
-import { isStartNode, isEndNode } from './algorithms/util';
+import { ICoordinates, IGridDimensions } from '../../types';
+import Node from '../../data_structures/Node';
+import { isStartNode, isEndNode } from '../../algorithms/util';
 
 const END_NODE_SVG =
   '<svg version="1.1" id="Icons" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 32 32" style="enable-background:new 0 0 32 32;" xml:space="preserve"><style type="text/css">.st0{fill:none;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}.st1{fill:none;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}.st2{fill:none;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:5.2066,0;}</style><polyline class="st0" points="3,29 5,29 16,18 27,29 29,29 "/><path class="st0" d="M11,23L11,23c3.1,1.8,6.9,1.8,10,0l0,0"/><line class="st0" x1="16" y1="4" x2="16" y2="18"/><rect x="16" y="4" class="st0" width="10" height="9"/><polyline class="st0" points="26,7 30,7 30,16 21,16 26,13 "/></svg>';
@@ -21,17 +21,19 @@ const addIcon = (domNode: HTMLDivElement, type: string) => {
 export const convertToType = (
   row: number,
   col: number,
-  conversionType: any,
-  startNodeCoords: any,
-  endNodeCoords: any,
-  myRefs: any
+  conversionType: React.MutableRefObject<string>,
+  startNodeCoords: React.MutableRefObject<ICoordinates>,
+  endNodeCoords: React.MutableRefObject<ICoordinates>,
+  myRefs: React.MutableRefObject<any>
 ): void => {
   // target node
-  const domNode = myRefs!.current[`node-${row}-${col}`];
+  const targetCell = myRefs!.current[`node-${row}-${col}`];
 
-  domNode.classList.remove('regular');
+  if (alreadyOccupied(targetCell) || !conversionType.current) {
+    return;
+  }
 
-  console.log(conversionType);
+  targetCell.classList.remove('regular');
 
   if (conversionType.current === 'start') {
     // if start node already set, move it
@@ -43,18 +45,13 @@ export const convertToType = (
       currentStartNode.classList.remove('start');
       currentStartNode.classList.add('regular');
       currentStartNode.innerHTML = null;
-
-      // update start node
-      domNode.classList.add('start');
-      // setStartNodeCoords({ row: row, col: col });
-      startNodeCoords.current = { row: row, col: col };
-    } else {
-      domNode.classList.add('start');
-      startNodeCoords.current = { row: row, col: col };
     }
 
+    targetCell.classList.add('start');
+    startNodeCoords.current = { row: row, col: col };
+
     // add icon
-    addIcon(domNode, 'start');
+    addIcon(targetCell, 'start');
     return;
   }
 
@@ -69,28 +66,28 @@ export const convertToType = (
       currentEndNode.classList.remove('end');
       currentEndNode.classList.add('regular');
       currentEndNode.innerHTML = null;
-
-      // update end node
-      domNode.classList.add('end');
-      endNodeCoords.current = { row: row, col: col };
-    } else {
-      domNode.classList.add('end');
-      endNodeCoords.current = { row: row, col: col };
     }
 
+    // update end node
+    targetCell.classList.add('end');
+    endNodeCoords.current = { row: row, col: col };
+
     // add icon
-    addIcon(domNode, 'end');
+    addIcon(targetCell, 'end');
 
     return;
   }
 
-  // if the cell is already of that type, turn into regular
-  if (domNode.classList.contains(conversionType.current)) {
-    domNode.classList.remove(conversionType.current);
-    domNode.classList.add('regular');
-  } else {
-    domNode.classList.add(conversionType.current);
-  }
+  targetCell.classList.add(conversionType.current);
+};
+
+const alreadyOccupied = (targetCell: HTMLDivElement) => {
+  return (
+    targetCell.classList.contains('start') ||
+    targetCell.classList.contains('end') ||
+    targetCell.classList.contains('wall') ||
+    targetCell.classList.contains('grass')
+  );
 };
 
 /**
@@ -116,7 +113,7 @@ export const populateGrid = (gridDimensions: IGridDimensions): Node[][] => {
       currentRow.push(newNode);
     }
     // add the whole row
-    grid!.push(currentRow);
+    grid.push(currentRow);
   }
 
   return grid;
@@ -170,4 +167,93 @@ export const displayDistances = (
       domNode.innerHTML = domNode.innerHTML ? null : mapping[1];
     }
   });
+};
+
+/**
+ * clears the graph/grid so algorithm can be run again or a different one
+ * @param {object} grid - 2D array of the logical grid nodes in their current state (after algorithm has run)
+ * @param {object} myRefs
+ */
+export const clear = (
+  grid: Node[][] | null,
+  myRefs: React.MutableRefObject<any>,
+  all?: boolean
+): void => {
+  if (!grid) return;
+  for (const row of grid) {
+    for (const node of row) {
+      const domNode = myRefs.current[`node-${node.row}-${node.col}`];
+      if (!isNaN(domNode.innerHTML)) {
+        domNode.innerHTML = null;
+      }
+      // when clearing the whole graph
+      if (all) {
+        domNode.classList.remove('node-visited', 'node-shortest-path', 'wall', 'grass');
+        domNode.classList.add('regular');
+      } else if (
+        domNode.classList.contains('node-visited') ||
+        domNode.classList.contains('node-shortest-path')
+      ) {
+        domNode.classList.remove('node-visited', 'node-shortest-path');
+        domNode.classList.add('regular');
+      }
+    }
+  }
+};
+
+/**
+ * Generates a random maze using walls and positions both the start and end nodes on the grid
+ */
+export const createMaze = (
+  mazeGenerated: boolean,
+  grid: Node[][] | null,
+  myRefs: React.MutableRefObject<any>,
+  gridDimensions: IGridDimensions,
+  conversionType: React.MutableRefObject<string>,
+  startNodeCoords: React.MutableRefObject<any>,
+  endNodeCoords: React.MutableRefObject<any>,
+  setMazeGenerated: React.Dispatch<React.SetStateAction<boolean>>
+): void => {
+  // if maze already generated, clear previous
+  if (mazeGenerated) {
+    clear(grid, myRefs, true);
+  }
+
+  // restrict to LHS of grid
+  const SN_COORDS: ICoordinates = {
+    row: getRandomArbitrary(0, gridDimensions!.rows),
+    col: getRandomArbitrary(0, gridDimensions!.cols / 2)
+  };
+
+  // restrict to RHS of grid
+  const EN_COORDS: ICoordinates = {
+    row: getRandomArbitrary(0, gridDimensions!.rows),
+    col: getRandomArbitrary(gridDimensions!.cols / 2, gridDimensions!.cols)
+  };
+
+  // add start and end nodes
+  if (SN_COORDS && EN_COORDS) {
+    conversionType.current = 'start';
+    convertToType(
+      SN_COORDS.row,
+      SN_COORDS.col,
+      conversionType,
+      startNodeCoords,
+      endNodeCoords,
+      myRefs
+    );
+    conversionType.current = 'end';
+    convertToType(
+      EN_COORDS.row,
+      EN_COORDS.col,
+      conversionType,
+      startNodeCoords,
+      endNodeCoords,
+      myRefs
+    );
+  }
+
+  addWallsRandomly(grid, myRefs);
+
+  setMazeGenerated(true);
 };

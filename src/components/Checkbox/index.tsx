@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { CheckboxContainer, HiddenCheckbox, StyledCheckbox, Icon } from './styles';
-import { displayDistances } from '../../util';
+import { displayDistances } from '../Graph/util';
 import Node from '../../data_structures/Node';
 
 interface ICheckBoxProps {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { TAnimationSpeed } from '../../types';
-import { Box } from '../Shared';
+import { Box, Span } from '../Shared';
 
 export const SpeedSelector = ({
   setVisualisationSpeed
@@ -18,15 +18,17 @@ export const SpeedSelector = ({
 
   return (
     <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" mb={3}>
-      <p>Select speed:</p>
-      <div onChange={handleRadioChange}>
+      <Span fontSize={3} p={4}>
+        Select speed:
+      </Span>
+      <Box onChange={handleRadioChange} mb={2} style={{ transform: 'scale(1.5)' }}>
         <input type="radio" id="fast" value="fast" name="speed" />
         <label htmlFor="fast">fast</label>
         <input type="radio" id="medium" value="medium" name="speed" defaultChecked />
         <label htmlFor="medium">medium</label>
         <input type="radio" id="slow" value="slow" name="speed" />
         <label htmlFor="slow">slow</label>
-      </div>
+      </Box>
     </Box>
   );
 };

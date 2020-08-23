@@ -4,7 +4,7 @@ import { bfs, dijkstras, gbfs, aStar } from '../../algorithms';
 import { IDynFunctions, TAnimationSpeed, ICoordinates } from '../../types';
 import { animateVisits } from '../Animate';
 import SpeedSelector from '../SpeedSelector';
-import { IVisualiseProps } from '../../types';
+import { IVisualiserProps } from '../../types';
 
 const Visualiser = ({
   grid,
@@ -16,20 +16,18 @@ const Visualiser = ({
   setCurrentRun,
   setPrevRun,
   setCosts
-}: any) => {
+}: IVisualiserProps) => {
   const [hasRan, setHasRan] = useState<boolean>(false);
   const [visualisationSpeed, setVisualisationSpeed] = useState<TAnimationSpeed>('medium');
-  let { current: currentStartNode } = startNodeCoords;
-  let { current: currentEndNode } = endNodeCoords;
 
   /**
    * Enables individual algorithms to be run based on the name of the one currently selected
    */
   const mapAlgoNameToAlgo: IDynFunctions = {
-    Bfs: () => bfs(grid, currentStartNode, currentEndNode, myRefs),
-    Ucs: () => dijkstras(grid, currentStartNode, currentEndNode, myRefs),
-    Gbfs: () => gbfs(grid, currentStartNode, currentEndNode, myRefs),
-    aStar: () => aStar(grid, currentStartNode, currentEndNode, myRefs)
+    Bfs: () => bfs(grid!, startNodeCoords.current, endNodeCoords.current, myRefs),
+    Ucs: () => dijkstras(grid!, startNodeCoords.current, endNodeCoords.current, myRefs),
+    Gbfs: () => gbfs(grid!, startNodeCoords.current, endNodeCoords.current, myRefs),
+    aStar: () => aStar(grid!, startNodeCoords.current, endNodeCoords.current, myRefs)
   };
 
   /**
@@ -37,7 +35,7 @@ const Visualiser = ({
    */
   const visualise = (): void => {
     // given we have what we need
-    if (grid && currentStartNode && currentEndNode && currentPathFinder) {
+    if (grid && startNodeCoords.current && endNodeCoords.current && currentPathFinder) {
       // call the selected algorithm
       const { visitedNodesInOrder, shortestPath, timer, costSoFar } = mapAlgoNameToAlgo[
         currentPathFinder
@@ -47,7 +45,9 @@ const Visualiser = ({
         pathfinder: currentPathFinder,
         timeTaken: timer,
         shortestPathLength: shortestPath.length - 2,
-        totalMovementCost: costSoFar.get(grid[currentEndNode.row][currentEndNode.col])!
+        totalMovementCost: costSoFar.get(
+          grid[endNodeCoords.current.row][endNodeCoords.current.col]
+        )!
       };
 
       // first run? update state

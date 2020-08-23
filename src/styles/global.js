@@ -5,12 +5,10 @@ export const GlobalStyle = createGlobalStyle`
 
   body {
     background-color: #E2E8F0;
-    /* font-family: 'Orbitron', sans-serif; */
     font-family: 'Source Code Pro', sans-serif;
     margin: 0;
   }
 
-  /* input[type='radio'] { transform: scale(2); } */
 
   pre {
     color: white;
