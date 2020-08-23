@@ -18,20 +18,22 @@ import ControlPanel from './components/ControlPanel';
 import Checkbox from './components/Checkbox';
 import { PathFinderSelector } from './components/PathFinderSelector';
 import { Graph } from './components/Graph/Graph';
-import Visualise from './components/Visualiser';
+import Visualiser from './components/Visualiser';
 
 const App = () => {
   /**
    * Grid State
    */
   const [grid, setGrid] = useState<Node[][] | null>([]);
-  const [startNodeCoords, setStartNodeCoords] = useState<ICoordinates | null>(null);
-  const [endNodeCoords, setEndNodeCoords] = useState<ICoordinates | null>(null);
+  const startNodeCoords = useRef(null);
+  const endNodeCoords = useRef(null);
   const [gridDimensions, _] = useState<IGridDimensions>({
-    rows: 10,
-    cols: 45
+    rows: 15,
+    cols: 40
   });
-  const [conversionType, setConversionType] = useState<string>('start');
+
+  const conversionType = useRef('');
+
   const [mazeGenerated, setMazeGenerated] = useState<boolean>(false);
   const [costs, setCosts] = useState<Map<Node, number> | null>(null);
 
@@ -101,40 +103,38 @@ const App = () => {
     }
 
     // restrict to LHS of grid
-    // const SN_COORDS: ICoordinates = {
-    //   row: getRandomArbitrary(0, gridDimensions!.rows),
-    //   col: getRandomArbitrary(0, gridDimensions!.cols / 2)
-    // };
+    const SN_COORDS: ICoordinates = {
+      row: getRandomArbitrary(0, gridDimensions!.rows),
+      col: getRandomArbitrary(0, gridDimensions!.cols / 2)
+    };
 
-    // // restrict to RHS of grid
-    // const EN_COORDS: ICoordinates = {
-    //   row: getRandomArbitrary(0, gridDimensions!.rows),
-    //   col: getRandomArbitrary(gridDimensions!.cols / 2, gridDimensions!.cols)
-    // };
+    // restrict to RHS of grid
+    const EN_COORDS: ICoordinates = {
+      row: getRandomArbitrary(0, gridDimensions!.rows),
+      col: getRandomArbitrary(gridDimensions!.cols / 2, gridDimensions!.cols)
+    };
 
-    // // add start and end nodes
-    // if (SN_COORDS && EN_COORDS) {
-    //   convertToType(
-    //     SN_COORDS.row,
-    //     SN_COORDS.col,
-    //     'start',
-    //     startNodeCoords,
-    //     endNodeCoords,
-    //     setStartNodeCoords,
-    //     setEndNodeCoords,
-    //     myRefs
-    //   );
-    //   convertToType(
-    //     EN_COORDS.row,
-    //     EN_COORDS.col,
-    //     'end',
-    //     startNodeCoords,
-    //     endNodeCoords,
-    //     setStartNodeCoords,
-    //     setEndNodeCoords,
-    //     myRefs
-    //   );
-    // }
+    // add start and end nodes
+    if (SN_COORDS && EN_COORDS) {
+      conversionType.current = 'start';
+      convertToType(
+        SN_COORDS.row,
+        SN_COORDS.col,
+        conversionType,
+        startNodeCoords,
+        endNodeCoords,
+        myRefs
+      );
+      conversionType.current = 'end';
+      convertToType(
+        EN_COORDS.row,
+        EN_COORDS.col,
+        conversionType,
+        startNodeCoords,
+        endNodeCoords,
+        myRefs
+      );
+    }
 
     addWallsRandomly(grid, myRefs);
 
@@ -157,8 +157,6 @@ const App = () => {
           conversionType={conversionType}
           startNodeCoords={startNodeCoords}
           endNodeCoords={endNodeCoords}
-          setStartNodeCoords={setStartNodeCoords}
-          setEndNodeCoords={setEndNodeCoords}
           myRefs={myRefs}
         />
       )}
@@ -181,13 +179,13 @@ const App = () => {
       >
         <Box display="flex" justifyContent="center" alignItems="center">
           <Button onClick={createMaze}>{mazeGenerated ? 'Regenerate' : 'Generate'} Maze </Button>
-          <Button onClick={() => setConversionType('start')}>Start </Button>
-          <Button onClick={() => setConversionType('end')}>Finish</Button>
-          <Button onClick={() => setConversionType('wall')}>Add Walls </Button>
-          <Button onClick={() => setConversionType('grass')}>Add Grass</Button>
+          <Button onClick={() => (conversionType.current = 'start')}>Start </Button>
+          <Button onClick={() => (conversionType.current = 'end')}>Finish</Button>
+          <Button onClick={() => (conversionType.current = 'wall')}>Add Walls </Button>
+          <Button onClick={() => (conversionType.current = 'grass')}>Add Grass</Button>
         </Box>
         <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
-          <Visualise
+          <Visualiser
             grid={grid}
             startNodeCoords={startNodeCoords}
             endNodeCoords={endNodeCoords}
@@ -198,7 +196,6 @@ const App = () => {
             setPrevRun={setPrevRun}
             setCosts={setCosts}
           />
-
           <Box as="label" display="flex" justifyContent="center" alignItems="center" mt={3}>
             <label>
               <Checkbox costs={costs} myRefs={myRefs} />

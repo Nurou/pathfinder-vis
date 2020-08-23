@@ -3,16 +3,14 @@ import Node from '../../data_structures/Node';
 import { Grid, GridRow } from './styles';
 import { GridNode } from '../Node';
 import { useTraceUpdate } from '../../hooks/useTraceUpdate';
-import { convertToType, coverInTerrain } from '../../util';
+import { coverInTerrain, convertToType } from '../../util';
 import { ICoordinates } from '../../types';
 
 interface IGridProps {
   grid: Node[][];
-  conversionType: string;
-  setStartNodeCoords: React.Dispatch<React.SetStateAction<ICoordinates | null>>;
-  setEndNodeCoords: React.Dispatch<React.SetStateAction<ICoordinates | null>>;
-  startNodeCoords: ICoordinates | null;
-  endNodeCoords: ICoordinates | null;
+  conversionType: any;
+  startNodeCoords: any;
+  endNodeCoords: any;
   myRefs?: React.MutableRefObject<any>;
 }
 
@@ -21,7 +19,7 @@ interface IGridProps {
  */
 
 export const Graph = memo(
-  (props: IGridProps): JSX.Element => {
+  (props: any): JSX.Element => {
     useTraceUpdate(props);
 
     // setState not used due to avoid unnecessary grid re-renders
@@ -67,8 +65,6 @@ export const Graph = memo(
         props.conversionType,
         props.startNodeCoords,
         props.endNodeCoords,
-        props.setStartNodeCoords,
-        props.setEndNodeCoords,
         props.myRefs
       );
     };

@@ -21,11 +21,9 @@ const addIcon = (domNode: HTMLDivElement, type: string) => {
 export const convertToType = (
   row: number,
   col: number,
-  conversionType: string,
-  startNodeCoords: ICoordinates | null,
-  endNodeCoords: ICoordinates | null,
-  setStartNodeCoords: React.Dispatch<React.SetStateAction<ICoordinates | null>>,
-  setEndNodeCoords: React.Dispatch<React.SetStateAction<ICoordinates | null>>,
+  conversionType: any,
+  startNodeCoords: any,
+  endNodeCoords: any,
   myRefs: any
 ): void => {
   // target node
@@ -33,12 +31,14 @@ export const convertToType = (
 
   domNode.classList.remove('regular');
 
-  if (conversionType === 'start') {
+  console.log(conversionType);
+
+  if (conversionType.current === 'start') {
     // if start node already set, move it
-    if (startNodeCoords) {
+    if (startNodeCoords.current) {
       // get current start node and convert back to regular
       const currentStartNode = myRefs!.current[
-        `node-${startNodeCoords.row}-${startNodeCoords.col}`
+        `node-${startNodeCoords.current.row}-${startNodeCoords.current.col}`
       ];
       currentStartNode.classList.remove('start');
       currentStartNode.classList.add('regular');
@@ -46,10 +46,11 @@ export const convertToType = (
 
       // update start node
       domNode.classList.add('start');
-      setStartNodeCoords({ row: row, col: col });
+      // setStartNodeCoords({ row: row, col: col });
+      startNodeCoords.current = { row: row, col: col };
     } else {
       domNode.classList.add('start');
-      setStartNodeCoords({ row: row, col: col });
+      startNodeCoords.current = { row: row, col: col };
     }
 
     // add icon
@@ -57,11 +58,13 @@ export const convertToType = (
     return;
   }
 
-  if (conversionType === 'end') {
+  if (conversionType.current === 'end') {
     // if end node already set, move it
-    if (endNodeCoords) {
+    if (endNodeCoords.current) {
       // get current end node and remove class
-      const currentEndNode = myRefs!.current[`node-${endNodeCoords.row}-${endNodeCoords.col}`];
+      const currentEndNode = myRefs!.current[
+        `node-${endNodeCoords.current.row}-${endNodeCoords.current.col}`
+      ];
 
       currentEndNode.classList.remove('end');
       currentEndNode.classList.add('regular');
@@ -69,10 +72,10 @@ export const convertToType = (
 
       // update end node
       domNode.classList.add('end');
-      setEndNodeCoords({ row: row, col: col });
+      endNodeCoords.current = { row: row, col: col };
     } else {
       domNode.classList.add('end');
-      setEndNodeCoords({ row: row, col: col });
+      endNodeCoords.current = { row: row, col: col };
     }
 
     // add icon
@@ -82,11 +85,11 @@ export const convertToType = (
   }
 
   // if the cell is already of that type, turn into regular
-  if (domNode.classList.contains(conversionType)) {
-    domNode.classList.remove(conversionType);
+  if (domNode.classList.contains(conversionType.current)) {
+    domNode.classList.remove(conversionType.current);
     domNode.classList.add('regular');
   } else {
-    domNode.classList.add(conversionType);
+    domNode.classList.add(conversionType.current);
   }
 };
 

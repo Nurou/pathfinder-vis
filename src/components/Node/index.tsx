@@ -13,7 +13,7 @@ type TNodeProps = {
 
 export const GridNode = memo(
   ({ row, col, onMouseDown, onMouseEnter, onMouseUp, myRefs }: TNodeProps) => {
-    // useTraceUpdate({ row, col, onMouseDown, onMouseEnter, onMouseUp, myRefs });
+    useTraceUpdate({ row, col, onMouseDown, onMouseEnter, onMouseUp, myRefs });
     console.log('Rendered: Node');
     return (
       <NodeWrapper

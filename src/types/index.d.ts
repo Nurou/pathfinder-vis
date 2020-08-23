@@ -51,8 +51,10 @@ export interface IDetails {
 
 export interface IVisualiseProps {
   grid: Node[][] | null;
-  startNodeCoords: ICoordinates | null;
-  endNodeCoords: ICoordinates | null;
+  // startNodeCoords: ICoordinates | null;
+  // endNodeCoords: ICoordinates | null;
+  startNodeCoords: any;
+  endNodeCoords: any;
   myRefs: React.MutableRefObject<any>;
   currentRun: any;
   setCurrentRun: React.Dispatch<any>;

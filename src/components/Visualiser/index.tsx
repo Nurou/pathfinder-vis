@@ -6,7 +6,7 @@ import { animateVisits } from '../Animate';
 import SpeedSelector from '../SpeedSelector';
 import { IVisualiseProps } from '../../types';
 
-const Visualise = ({
+const Visualiser = ({
   grid,
   startNodeCoords,
   endNodeCoords,
@@ -16,18 +16,20 @@ const Visualise = ({
   setCurrentRun,
   setPrevRun,
   setCosts
-}: IVisualiseProps) => {
+}: any) => {
   const [hasRan, setHasRan] = useState<boolean>(false);
   const [visualisationSpeed, setVisualisationSpeed] = useState<TAnimationSpeed>('medium');
+  let { current: currentStartNode } = startNodeCoords;
+  let { current: currentEndNode } = endNodeCoords;
 
   /**
    * Enables individual algorithms to be run based on the name of the one currently selected
    */
   const mapAlgoNameToAlgo: IDynFunctions = {
-    Bfs: () => bfs(grid!, startNodeCoords!, endNodeCoords!, myRefs),
-    Ucs: () => dijkstras(grid!, startNodeCoords!, endNodeCoords!, myRefs),
-    Gbfs: () => gbfs(grid!, startNodeCoords!, endNodeCoords!, myRefs),
-    aStar: () => aStar(grid!, startNodeCoords!, endNodeCoords!, myRefs)
+    Bfs: () => bfs(grid, currentStartNode, currentEndNode, myRefs),
+    Ucs: () => dijkstras(grid, currentStartNode, currentEndNode, myRefs),
+    Gbfs: () => gbfs(grid, currentStartNode, currentEndNode, myRefs),
+    aStar: () => aStar(grid, currentStartNode, currentEndNode, myRefs)
   };
 
   /**
@@ -35,19 +37,17 @@ const Visualise = ({
    */
   const visualise = (): void => {
     // given we have what we need
-    if (grid && startNodeCoords && endNodeCoords && currentPathFinder) {
+    if (grid && currentStartNode && currentEndNode && currentPathFinder) {
       // call the selected algorithm
       const { visitedNodesInOrder, shortestPath, timer, costSoFar } = mapAlgoNameToAlgo[
         currentPathFinder
       ]();
 
-      console.log(costSoFar);
-
       const stats = {
         pathfinder: currentPathFinder,
         timeTaken: timer,
         shortestPathLength: shortestPath.length - 2,
-        totalMovementCost: costSoFar.get(grid[endNodeCoords.row][endNodeCoords.col])!
+        totalMovementCost: costSoFar.get(grid[currentEndNode.row][currentEndNode.col])!
       };
 
       // first run? update state
@@ -74,4 +74,4 @@ const Visualise = ({
   );
 };
 
-export default Visualise;
+export default Visualiser;
