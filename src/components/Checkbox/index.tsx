@@ -9,9 +9,8 @@ interface ICheckBoxProps {
   props?: any;
 }
 
-export const Checkbox = ({ costs, myRefs, ...props }: ICheckBoxProps) => {
-  const [checked, setChecked] = useState<boolean>(false);
-
+// export const Checkbox = ({ costs, myRefs, ...props }: ICheckBoxProps) => {
+export const Checkbox = ({ costs, myRefs, checked, setChecked, ...props }: any) => {
   /**
    * toggle the display of distance values
    * @param event - checkbox toggle

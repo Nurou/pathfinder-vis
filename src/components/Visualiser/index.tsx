@@ -18,7 +18,7 @@ const Visualiser = ({
   setCosts
 }: IVisualiserProps) => {
   const [hasRan, setHasRan] = useState<boolean>(false);
-  const [visualisationSpeed, setVisualisationSpeed] = useState<TAnimationSpeed>('medium');
+  const [visualisationSpeed, setVisualisationSpeed] = useState<TAnimationSpeed>('fast');
 
   /**
    * Enables individual algorithms to be run based on the name of the one currently selected

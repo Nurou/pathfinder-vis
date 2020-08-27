@@ -35,6 +35,8 @@ const App = () => {
     availablePathfinders[0].value
   );
 
+  const [checked, setChecked] = useState<boolean>(false);
+
   const myRefs = useRef({});
   const conversionType = useRef('');
 
@@ -62,6 +64,15 @@ const App = () => {
       endNodeCoords,
       setMazeGenerated
     );
+  };
+
+  /**
+   *
+   * @param all - if flag is present, the graph is completely cleared
+   */
+  const clearGraph = (all?: true) => {
+    setChecked(false);
+    clear(grid, myRefs, all);
   };
 
   return (
@@ -121,14 +132,16 @@ const App = () => {
           />
           <Box as="label" display="flex" justifyContent="center" alignItems="center" mt={3}>
             <label>
-              <Checkbox costs={costs} myRefs={myRefs} />
-              <Span ml={1}>Show Distances</Span>
+              <Checkbox costs={costs} myRefs={myRefs} checked={checked} setChecked={setChecked} />
+              <Span fontSize={4} ml={1}>
+                Show Distances
+              </Span>
             </label>
           </Box>
         </Box>
         <Box display="flex" justifyContent="center" alignItems="center">
-          <Button onClick={() => clear(grid, myRefs)}>Reset Pathfinder</Button>
-          <Button onClick={() => clear(grid, myRefs, true)}>Clear All</Button>
+          <Button onClick={() => clearGraph()}>Reset Pathfinder</Button>
+          <Button onClick={() => clearGraph(true)}>Clear All</Button>
         </Box>
       </ControlPanel>
     </Box>
