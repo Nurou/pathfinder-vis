@@ -1,17 +1,17 @@
-import { setNodeNeighbors, populateGrid } from './../components/Visualiser/util';
+import { setNodeNeighbors, populateGrid } from './../components/Graph/util';
 
 let grid: any = [];
 const GRID_ROWS = 20;
 const GRID_COLS = 30;
 
 beforeAll(() => {
-  populateGrid(grid, { rows: GRID_ROWS, cols: GRID_COLS });
+  grid = populateGrid({ rows: GRID_ROWS, cols: GRID_COLS });
 });
 
 describe('initially', () => {
   test('node has no neighbors ', () => {
     // get some node from grid
-    let someNode = grid[10][20];
+    let someNode = grid[10][15];
     // check its neighbors
     expect(someNode.getNeighbors()).toBeNull;
   });
