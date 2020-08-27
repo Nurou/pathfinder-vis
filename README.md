@@ -10,6 +10,8 @@
 - [Week 02](https://github.com/Nurou/pathfinder-vis/blob/master/documentation/reports/week02.md)
 - [Week 03](https://github.com/Nurou/pathfinder-vis/blob/master/documentation/reports/week03.md)
 - [Week 04](https://github.com/Nurou/pathfinder-vis/blob/master/documentation/reports/week04.md)
+- [Week 05](https://github.com/Nurou/pathfinder-vis/blob/master/documentation/reports/week05.md)
+- [Week 06](https://github.com/Nurou/pathfinder-vis/blob/master/documentation/reports/week06.md)
 
 ## Available Scripts
 
