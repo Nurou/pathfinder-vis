@@ -161,7 +161,7 @@ export const displayDistances = (
   costSoFar: Map<Node, number>,
   myRefs: React.MutableRefObject<any>
 ): void => {
-  [...costSoFar].map((mapping) => {
+  [...costSoFar].forEach((mapping) => {
     const domNode = myRefs.current[`node-${mapping[0].row}-${mapping[0].col}`];
     if (!domNode.classList.contains('start') && !domNode.classList.contains('end')) {
       domNode.innerHTML = domNode.innerHTML ? null : mapping[1];

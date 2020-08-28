@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from './styles';
 import { bfs, dijkstras, gbfs, aStar } from '../../algorithms';
-import { IDynFunctions, TAnimationSpeed, ICoordinates } from '../../types';
+import { IDynFunctions, TAnimationSpeed } from '../../types';
 import { animateVisits } from '../Animate';
 import SpeedSelector from '../SpeedSelector';
 import { IVisualiserProps } from '../../types';
@@ -19,7 +19,7 @@ const Visualiser = ({
 }: IVisualiserProps) => {
   const [hasRan, setHasRan] = useState<boolean>(false);
   const [visualisationSpeed, setVisualisationSpeed] = useState<TAnimationSpeed>('fast');
-  const [simulationIsRunning, setSimulationIsRunning] = useState(false);
+  // const [simulationIsRunning] = useState(false);
 
   /**
    * Enables individual algorithms to be run based on the name of the one currently selected
@@ -76,7 +76,6 @@ const Visualiser = ({
       <Button main onClick={handleClick}>
         Visualize
       </Button>
-      <pre>{JSON.stringify(simulationIsRunning)}</pre>
     </>
   );
 };

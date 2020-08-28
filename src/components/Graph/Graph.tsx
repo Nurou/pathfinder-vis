@@ -4,7 +4,6 @@ import { Grid, GridRow } from './styles';
 import { GridNode } from '../Node';
 import { useTraceUpdate } from '../../hooks/useTraceUpdate';
 import { coverInTerrain, convertToType } from './util';
-import { ICoordinates } from '../../types';
 
 interface IGridProps {
   grid: Node[][];
@@ -19,7 +18,7 @@ interface IGridProps {
  */
 
 export const Graph = memo(
-  (props: any): JSX.Element => {
+  (props: IGridProps): JSX.Element => {
     useTraceUpdate(props);
 
     // setState not used due to avoid unnecessary grid re-renders
@@ -65,7 +64,7 @@ export const Graph = memo(
         props.conversionType,
         props.startNodeCoords,
         props.endNodeCoords,
-        props.myRefs
+        props.myRefs!
       );
     };
 

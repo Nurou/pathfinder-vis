@@ -25,9 +25,9 @@ const App = () => {
   const [grid, setGrid] = useState<Node[][] | null>([]);
   const startNodeCoords = useRef(null);
   const endNodeCoords = useRef(null);
-  const [gridDimensions, _] = useState<IGridDimensions>({
+  const [gridDimensions] = useState<IGridDimensions>({
     rows: 30,
-    cols: 45
+    cols: 65
   });
   const [mazeGenerated, setMazeGenerated] = useState<boolean>(false);
   const [costs, setCosts] = useState<Map<Node, number> | null>(null);
@@ -51,7 +51,7 @@ const App = () => {
     setGrid(grid);
     // neighbors can be set once grid has been populated
     setNodeNeighbors(grid);
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleClick = () => {
     createMaze(
@@ -144,14 +144,6 @@ const App = () => {
           <Button onClick={() => clearGraph(true)}>Clear All</Button>
         </Box>
       </ControlPanel>
-      {/* <pre
-        style={{
-          fontSize: '3rem',
-          color: 'black'
-        }}
-      >
-        {JSON.stringify(simulationIsRunning)}
-      </pre> */}
     </Box>
   );
 };

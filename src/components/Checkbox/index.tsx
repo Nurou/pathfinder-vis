@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { CheckboxContainer, HiddenCheckbox, StyledCheckbox, Icon } from './styles';
 import { displayDistances } from '../Graph/util';
 import Node from '../../data_structures/Node';
@@ -6,11 +6,12 @@ import Node from '../../data_structures/Node';
 interface ICheckBoxProps {
   costs: Map<Node, number> | null;
   myRefs: React.MutableRefObject<any>;
+  checked: boolean;
+  setChecked: React.Dispatch<React.SetStateAction<boolean>>;
   props?: any;
 }
 
-// export const Checkbox = ({ costs, myRefs, ...props }: ICheckBoxProps) => {
-export const Checkbox = ({ costs, myRefs, checked, setChecked, ...props }: any) => {
+export const Checkbox = ({ costs, myRefs, checked, setChecked, ...props }: ICheckBoxProps) => {
   /**
    * toggle the display of distance values
    * @param event - checkbox toggle
