@@ -20,28 +20,6 @@ export class PriorityQueue {
   constructor(comparator = (a: any, b: any) => a > b) {
     this.heap = [];
     this.comparator = comparator;
-
-    // custom push
-    if (!Array.prototype.pushC) {
-      Array.prototype.pushC = function <T>(this: T[], elem: T): any {
-        let len = this.length;
-        this[len] = elem;
-        len++;
-        this.length = len;
-        return len;
-      };
-    }
-
-    // custom pop
-    if (!Array.prototype.popC) {
-      Array.prototype.popC = function <T>(this: T[]): any {
-        let len = this.length - 1;
-        let value = this[len];
-        this.length = len;
-        delete this[len];
-        return value;
-      };
-    }
   }
 
   size() {
@@ -58,12 +36,15 @@ export class PriorityQueue {
 
   push(...values: any[]) {
     values.forEach((value) => {
-      // this.heap.push(value);
-      this.heap.pushC(value);
+      let currentLength = this.heap.length;
+      this.heap[currentLength] = value;
+      currentLength++;
+      this.heap.length = currentLength;
       this.siftUp();
     });
     return this.size();
   }
+
   pop() {
     const poppedValue = this.peek();
     const bottom = this.size() - 1;
@@ -71,7 +52,10 @@ export class PriorityQueue {
       this.swap(top, bottom);
     }
     // this.heap.pop();
-    this.heap.popC();
+    let len = this.heap.length - 1;
+    this.heap.length = len;
+    delete this.heap[len];
+    // this.heap[currentLength] =
     this.siftDown();
     return poppedValue;
   }

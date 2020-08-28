@@ -19,6 +19,7 @@ const Visualiser = ({
 }: IVisualiserProps) => {
   const [hasRan, setHasRan] = useState<boolean>(false);
   const [visualisationSpeed, setVisualisationSpeed] = useState<TAnimationSpeed>('fast');
+  const [simulationIsRunning, setSimulationIsRunning] = useState(false);
 
   /**
    * Enables individual algorithms to be run based on the name of the one currently selected
@@ -28,6 +29,10 @@ const Visualiser = ({
     Ucs: () => dijkstras(grid!, startNodeCoords.current, endNodeCoords.current, myRefs),
     Gbfs: () => gbfs(grid!, startNodeCoords.current, endNodeCoords.current, myRefs),
     aStar: () => aStar(grid!, startNodeCoords.current, endNodeCoords.current, myRefs)
+  };
+
+  const handleClick = () => {
+    visualise();
   };
 
   /**
@@ -59,6 +64,7 @@ const Visualiser = ({
         setPrevRun(currentRun);
         setCurrentRun(stats);
       }
+
       animateVisits(visitedNodesInOrder, shortestPath, myRefs, visualisationSpeed);
       setCosts(costSoFar);
     }
@@ -67,9 +73,10 @@ const Visualiser = ({
   return (
     <>
       <SpeedSelector setVisualisationSpeed={setVisualisationSpeed} />
-      <Button main onClick={() => visualise()}>
+      <Button main onClick={handleClick}>
         Visualize
       </Button>
+      <pre>{JSON.stringify(simulationIsRunning)}</pre>
     </>
   );
 };

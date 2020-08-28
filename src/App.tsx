@@ -26,15 +26,15 @@ const App = () => {
   const startNodeCoords = useRef(null);
   const endNodeCoords = useRef(null);
   const [gridDimensions, _] = useState<IGridDimensions>({
-    rows: 25,
-    cols: 65
+    rows: 30,
+    cols: 45
   });
   const [mazeGenerated, setMazeGenerated] = useState<boolean>(false);
   const [costs, setCosts] = useState<Map<Node, number> | null>(null);
   const [currentPathFinder, setCurrentPathFinder] = useState<string | null>(
     availablePathfinders[0].value
   );
-
+  // this is here (and not in checkbox component) so that it can be unchecked when the grid is cleared
   const [checked, setChecked] = useState<boolean>(false);
 
   const myRefs = useRef({});
@@ -144,6 +144,14 @@ const App = () => {
           <Button onClick={() => clearGraph(true)}>Clear All</Button>
         </Box>
       </ControlPanel>
+      {/* <pre
+        style={{
+          fontSize: '3rem',
+          color: 'black'
+        }}
+      >
+        {JSON.stringify(simulationIsRunning)}
+      </pre> */}
     </Box>
   );
 };

@@ -31,7 +31,6 @@ export const animateVisits = (
       ANIMATION_TIMEOUT = 15;
       break;
   }
-  console.log('💩: ANIMATION_TIMEOUT', ANIMATION_TIMEOUT);
 
   nodesVisitedInOrder.forEach((node, index) => {
     if (index === nodesVisitedInOrder.length - 1) {

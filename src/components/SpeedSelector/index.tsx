@@ -22,9 +22,9 @@ export const SpeedSelector = ({
         Select speed:
       </Span>
       <Box onChange={handleRadioChange} mb={2} style={{ transform: 'scale(1.5)' }}>
-        <input type="radio" id="fast" value="fast" name="speed" />
+        <input type="radio" id="fast" value="fast" name="speed" defaultChecked />
         <label htmlFor="fast">fast</label>
-        <input type="radio" id="medium" value="medium" name="speed" defaultChecked />
+        <input type="radio" id="medium" value="medium" name="speed" />
         <label htmlFor="medium">medium</label>
         <input type="radio" id="slow" value="slow" name="speed" />
         <label htmlFor="slow">slow</label>

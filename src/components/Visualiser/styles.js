@@ -9,4 +9,5 @@ export const Button = styled.button`
   background: ${(props) => (props.main ? '#F56565' : '#cbd5e0')};
   color: ${(props) => (props.main ? 'white' : '#2d3748')};
   border: ${(props) => (props.main ? '3px solid #9B2C2C' : 'none')};
+  opacity: ${(props) => props.disabled && 0.5};
 `;
