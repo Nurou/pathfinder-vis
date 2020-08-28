@@ -5,7 +5,7 @@
 export class Node {
   row: number;
   col: number;
-  neighbors: Node[] | null;
+  neighbors: any;
 
   /**
    *
@@ -15,7 +15,7 @@ export class Node {
   constructor(row: number, col: number) {
     this.row = row;
     this.col = col;
-    this.neighbors = [];
+    this.neighbors = null;
   }
 
   /**
@@ -25,10 +25,24 @@ export class Node {
    */
   setNeighbors(grid: Node[][]): void {
     const neighbors = [];
-    if (this.row > 0) neighbors.push(grid[this.row - 1][this.col]);
-    if (this.row < grid.length - 1) neighbors.push(grid[this.row + 1][this.col]);
-    if (this.col > 0) neighbors.push(grid[this.row][this.col - 1]);
-    if (this.col < grid[0].length - 1) neighbors.push(grid[this.row][this.col + 1]);
+    let index = 0;
+    if (this.row > 0) {
+      neighbors[index] = grid[this.row - 1][this.col];
+      index++;
+    }
+    if (this.row < grid.length - 1) {
+      neighbors[index] = grid[this.row + 1][this.col];
+      index++;
+    }
+    if (this.col > 0) {
+      neighbors[index] = grid[this.row][this.col - 1];
+      index++;
+    }
+    if (this.col < grid[0].length - 1) {
+      neighbors[index] = grid[this.row][this.col + 1];
+      index++;
+    }
+
     this.neighbors = neighbors;
   }
 

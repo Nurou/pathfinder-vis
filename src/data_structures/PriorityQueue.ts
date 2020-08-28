@@ -35,13 +35,15 @@ export class PriorityQueue {
   }
 
   push(...values: any[]) {
-    values.forEach((value) => {
+    for (let index = 0; index < values.length; index++) {
       let currentLength = this.heap.length;
-      this.heap[currentLength] = value;
+      // simulate Array.prototype push method
+      this.heap[currentLength] = values[index];
       currentLength++;
       this.heap.length = currentLength;
+      //
       this.siftUp();
-    });
+    }
     return this.size();
   }
 
@@ -51,11 +53,11 @@ export class PriorityQueue {
     if (bottom > top) {
       this.swap(top, bottom);
     }
-    // this.heap.pop();
+    // simulate Array.prototype pop method
     let len = this.heap.length - 1;
     this.heap.length = len;
     delete this.heap[len];
-    // this.heap[currentLength] =
+    //
     this.siftDown();
     return poppedValue;
   }
@@ -97,8 +99,8 @@ export class PriorityQueue {
   }
 
   toString() {
-    this.heap.forEach((el) => {
-      console.log(el);
-    });
+    for (let index = 0; index < this.heap.length; index++) {
+      console.log(this.heap[index]);
+    }
   }
 }
