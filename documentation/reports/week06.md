@@ -4,6 +4,7 @@
 - solved some UI bugs
 - peer reviewed another project
 - turned array accessing in data structures from utilising push/pop methods to index based
+- wrote more documentation
 
 # What I learned?
 

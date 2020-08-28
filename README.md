@@ -34,7 +34,7 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 
 Generates a **test coverage report**.
 
-To view the generated report in a browser, navigate to **coverage/lcov-report/index.html**.
+To view the generated report in a browser, navigate to **coverage/lcov-report/index.html** in the project's root directory and open the html file in your browser.
 
 ### `yarn build`
 

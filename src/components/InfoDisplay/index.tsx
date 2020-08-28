@@ -31,21 +31,15 @@ const InfoDisplay = ({ previous, current, children }: IStatProps) => {
   const displayNoPath = () => (
     <>
       <Statistic>
-        Time (sec): <Span style={{ color: '#E53E3E' }}>N/A</Span>
+        Time (sec): <Span className="na">N/A</Span>
       </Statistic>{' '}
       <Spacer my={3} />
       <Statistic>
-        Number of steps:{' '}
-        <Span style={{ color: '#E53E3E' }} className="na">
-          N/A
-        </Span>
+        Number of steps: <Span className="na">N/A</Span>
       </Statistic>
       <Spacer my={3} />
       <Statistic>
-        Total Movement Cost:{' '}
-        <Span style={{ color: '#E53E3E' }} className="na">
-          N/A
-        </Span>
+        Total Movement Cost: <Span className="na">N/A</Span>
       </Statistic>
     </>
   );

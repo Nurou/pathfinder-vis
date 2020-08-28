@@ -16,7 +16,12 @@ export const StatsWrapper = styled(Box)`
 export const Statistic = styled(Span)`
   white-space: nowrap;
   color: white;
+  .na {
+    color: #e53e3e;
+  }
   span:nth-of-type(1) {
-    color: #ecc94b;
+    :not(.na) {
+      color: #ecc94b;
+    }
   }
 `;

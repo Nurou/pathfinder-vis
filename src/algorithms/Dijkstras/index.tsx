@@ -51,7 +51,8 @@ export const dijkstras = (
     }
 
     if (current?.neighbors) {
-      for (const neighbor of current.neighbors) {
+      for (let index = 0; index < current.neighbors.length; index++) {
+        const neighbor = current.neighbors[index];
         // skip walls
         if (isWall(neighbor, myRefs)) continue;
         let newCost = costSoFar.get(current)! + getMovementCost(neighbor, myRefs);
@@ -60,7 +61,11 @@ export const dijkstras = (
           // update cost
           costSoFar.set(neighbor, newCost);
           let priority = newCost;
-          visitedNodesInOrder.push(neighbor);
+
+          let currentLength = visitedNodesInOrder.length;
+          visitedNodesInOrder[currentLength] = neighbor;
+          currentLength++;
+          visitedNodesInOrder.length = currentLength;
           frontier.push([neighbor, priority]);
           cameFrom.set(neighbor, current);
         }
