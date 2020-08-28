@@ -18,3 +18,7 @@ The way that state is managed is no where near optimal.
 Other issues include dealing with arrays in JavaScript.
 
 # What next?
+
+- The ES6 Map data structure is yet to be replaced
+- UI bug fixes need to be fixed
+- More heuristics for the pathfinders would be a nice addition if there is time for it

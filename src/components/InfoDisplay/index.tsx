@@ -130,7 +130,7 @@ const InfoDisplay = ({ previous, current, children }: IStatProps) => {
                 {current !== null && previous !== null && (
                   <>
                     <Span>{current!.shortestPathLength}</Span>{' '}
-                    {stepDiff !== 0 && (
+                    {stepDiff && stepDiff !== 0 && (
                       <Span color={stepDiff! < 0 ? '#68D391' : '#E53E3E'}>
                         ( {stepDiff! > 0 && '+'} {stepDiff} )
                       </Span>
@@ -145,7 +145,7 @@ const InfoDisplay = ({ previous, current, children }: IStatProps) => {
                 {current !== null && previous !== null ? (
                   <>
                     <Span>{current!.totalMovementCost}</Span>
-                    {movementCostDiff !== 0 && (
+                    {movementCostDiff && movementCostDiff !== 0 && (
                       <Span color={current!.totalMovementCost! >= 0 ? '#68D391' : '#E53E3E'}>
                         {' '}
                         ( {movementCostDiff! > 0 && '+'} {movementCostDiff} )

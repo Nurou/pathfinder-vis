@@ -46,21 +46,25 @@ export const aStar = (
     let current: Node | undefined = frontier.pop()[0];
 
     // early exit conditional
-    if (current === endNode) {
+    if (current === endNode || !current) {
       break;
     }
 
-    if (current?.neighbors) {
-      for (const neighbor of current.neighbors) {
-        // skip walls
+    if (current.neighbors) {
+      for (let index = 0; index < current.neighbors.length; index++) {
+        let neighbor = current.neighbors[index];
         if (isWall(neighbor, myRefs)) continue;
         let newCost = costSoFar.get(current)! + getMovementCost(neighbor, myRefs);
-        // no cost associated with neighbor or better cost?
         if (!costSoFar.has(neighbor) || newCost < costSoFar.get(neighbor)!) {
           // update cost
           costSoFar.set(neighbor, newCost);
           let priority = newCost + heuristic(endNode, neighbor);
-          visitedNodesInOrder.push(neighbor);
+
+          let currentLength = visitedNodesInOrder.length;
+          visitedNodesInOrder[currentLength] = neighbor;
+          currentLength++;
+          visitedNodesInOrder.length = currentLength;
+          // visitedNodesInOrder.push(neighbor);
           frontier.push([neighbor, priority]);
           cameFrom.set(neighbor, current);
         }

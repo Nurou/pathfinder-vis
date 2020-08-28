@@ -50,13 +50,18 @@ export const bfs = (
     }
 
     if (current?.neighbors) {
-      for (const neighbor of current.neighbors) {
+      for (let index = 0; index < current.neighbors.length; index++) {
+        const neighbor = current.neighbors[index];
         if (!cameFrom.get(neighbor) && !isWall(neighbor, myRefs)) {
           // movement costs not accounted for by Bfs - tracked for comparison purposes
           let newCost = costSoFar.get(current)! + getMovementCost(neighbor, myRefs);
           costSoFar.set(neighbor, newCost);
 
-          visitedNodesInOrder.push(neighbor);
+          let currentLength = visitedNodesInOrder.length;
+          visitedNodesInOrder[currentLength] = neighbor;
+          currentLength++;
+          visitedNodesInOrder.length = currentLength;
+          // visitedNodesInOrder.push(neighbor);
           frontier.push(neighbor);
 
           cameFrom.set(neighbor, current);
