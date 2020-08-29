@@ -1,5 +1,7 @@
 # Pathfinder Visualisation
 
+A web application for visualising and observing the differences between common pathfinder algorithms. Access it through the link →
+
 ## Documentation Links
 
 - [Project Specification](https://github.com/Nurou/pathfinder-vis/blob/master/documentation/specification.md)
