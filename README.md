@@ -2,10 +2,10 @@
 
 ## Documentation Links
 
-[Project Specification](https://github.com/Nurou/pathfinder-vis/blob/master/documentation/specification.md)
-[Project Implementation](https://github.com/Nurou/pathfinder-vis/blob/master/documentation/implementation.md)
-[Testing](https://github.com/Nurou/pathfinder-vis/blob/master/documentation/testing.md)
-[User Guide](https://github.com/Nurou/pathfinder-vis/blob/master/documentation/user_guide.md)
+- [Project Specification](https://github.com/Nurou/pathfinder-vis/blob/master/documentation/specification.md)
+- [Project Implementation](https://github.com/Nurou/pathfinder-vis/blob/master/documentation/implementation.md)
+- [Testing](https://github.com/Nurou/pathfinder-vis/blob/master/documentation/testing.md)
+- [User Guide](https://github.com/Nurou/pathfinder-vis/blob/master/documentation/user_guide.md)
 
 ### Weekly Reports
 
