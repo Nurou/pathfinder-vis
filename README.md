@@ -1,6 +1,6 @@
 # Pathfinder Visualisation
 
-A web application for visualising and observing the differences between common pathfinder algorithms. Access it through the link →
+A web application for visualising and observing the differences between common pathfinder algorithms. 
 
 ## Documentation Links
 
