@@ -1,4 +1,4 @@
-# Pathfinder Visualisation
+# Pathfinder Visualisation ⎍
 
 A web application for visualising and observing the differences between common pathfinder algorithms. 
 
