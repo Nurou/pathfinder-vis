@@ -2,20 +2,21 @@ import { ICoordinates } from '../../types';
 import { PriorityQueue } from '../../data_structures/PriorityQueue';
 import { checkArgs, reconstructPath, isWall, getMovementCost } from '../util';
 import Node from '../../data_structures/Node';
-import { MyMap } from '../../data_structures/Map';
+import { CustomMap } from '../../data_structures/Map';
 
 /**
  *  An implementation of Dijkstra's algorithm for path finding that accounts for the movement costs of nodes
  *
- * @param {array} grid grid holding all the logical nodes
+ * @param {array} grid holds logical nodes
  * @param {object} startNodeCoords
  * @param {object} endNodeCoords
+ * @param
  */
 export const dijkstras = (
   grid: Node[][],
   startNodeCoords: ICoordinates,
   endNodeCoords: ICoordinates,
-  myRefs: any
+  myRefs: React.MutableRefObject<HTMLDivElement>
 ) => {
   checkArgs(grid, startNodeCoords, endNodeCoords);
 
@@ -33,15 +34,13 @@ export const dijkstras = (
   console.log('\nInitial contents:');
   console.log(frontier.peek()[0]); //=>
 
-  // let cameFrom = new Map<Node, Node>();
-  let cameFrom = new MyMap<Node, Node>();
-  // cameFrom.set(startNode, null!);
-  cameFrom.put(startNode, null!);
+  let cameFrom = new CustomMap<Node, Node | null>();
+  cameFrom.put(startNode, null);
 
   // keeps track of total movement cost from the start node to all nodes
   // same node can be visited multiple times with different costs
-  let costSoFar = new Map<Node, number>();
-  costSoFar.set(startNode, 0);
+  let costSoFar = new CustomMap<Node, number>();
+  costSoFar.put(startNode, 0);
 
   // keep on checking the queue until it's empty
   while (frontier && frontier.size()) {
@@ -62,7 +61,7 @@ export const dijkstras = (
         // no cost associated with neighbor or better cost?
         if (!costSoFar.has(neighbor) || newCost < costSoFar.get(neighbor)!) {
           // update cost
-          costSoFar.set(neighbor, newCost);
+          costSoFar.put(neighbor, newCost);
           let priority = newCost;
 
           let currentLength = visitedNodesInOrder.length;
@@ -70,7 +69,6 @@ export const dijkstras = (
           currentLength++;
           visitedNodesInOrder.length = currentLength;
           frontier.push([neighbor, priority]);
-          // cameFrom.set(neighbor, current);
           cameFrom.put(neighbor, current);
         }
       }

@@ -1,3 +1,4 @@
+import { CustomMap } from './../data_structures/Map/index';
 import { Node } from './../data_structures/Node';
 export interface ICoordinates {
   row: number;
@@ -13,7 +14,7 @@ export interface IReturnedStats {
   visitedNodesInOrder: Node[];
   shortestPath: Node[];
   timer: number;
-  costSoFar: Map<Node, number>;
+  costSoFar: Map<Node, number> | CustomMap<Node, number>;
 }
 
 export interface IDynFunctions {
@@ -49,14 +50,17 @@ export interface IDetails {
   guarantee: boolean;
 }
 
+//TODO: add proper types in place of any
 export interface IVisualiserProps {
   grid: Node[][] | null;
-  startNodeCoords: React.MutableRefObject<any>;
-  endNodeCoords: React.MutableRefObject<any>;
-  myRefs: React.MutableRefObject<any>;
+  startNodeCoords: React.MutableRefObject<ICoordinates | null>;
+  endNodeCoords: React.MutableRefObject<ICoordinates | null>;
+  myRefs: any;
   currentRun: any;
   setCurrentRun: React.Dispatch<any>;
   setPrevRun: React.Dispatch<any>;
-  setCosts: React.Dispatch<React.SetStateAction<Map<Node, number> | null>>;
+  setCosts: React.Dispatch<
+    React.SetStateAction<Map<Node, number> | CustomMap<Node, number> | null>
+  >;
   currentPathFinder?: string | null;
 }

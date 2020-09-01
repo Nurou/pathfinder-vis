@@ -2,6 +2,7 @@ import { ICoordinates } from '../../types';
 import { PriorityQueue } from '../../data_structures/PriorityQueue';
 import { checkArgs, reconstructPath, isWall, getMovementCost, heuristic } from '../util';
 import Node from '../../data_structures/Node';
+import { CustomMap } from '../../data_structures/Map';
 
 /**
  *  An implementation of the Greedy Best-Fist Search, which uses a heuristic function to approximate the goal
@@ -30,12 +31,12 @@ export const gbfs = (
   let frontier = new PriorityQueue((a, b) => a[1] < b[1]);
   frontier.push([startNode, 0]);
 
-  let cameFrom = new Map<Node, Node>();
-  cameFrom.set(startNode, null!);
+  let cameFrom = new CustomMap<Node, Node | null>();
+  cameFrom.put(startNode, null);
 
   // cost tracked comparison purposes only - does not affect heuristic
-  let costSoFar = new Map<Node, number>();
-  costSoFar.set(startNode, 0);
+  let costSoFar = new CustomMap<Node, number>();
+  costSoFar.put(startNode, 0);
 
   // keep on checking the queue until it's empty
   while (frontier && frontier.size()) {
@@ -55,11 +56,11 @@ export const gbfs = (
         visitedNodesInOrder.push(neighbor);
         let priority = heuristic(endNode, neighbor);
         frontier.push([neighbor, priority]);
-        cameFrom.set(neighbor, current);
+        cameFrom.put(neighbor, current);
 
         // movement costs not accounted for by Bfs - tracked for comparison purposes
         let newCost = costSoFar.get(current)! + getMovementCost(neighbor, myRefs);
-        costSoFar.set(neighbor, newCost);
+        costSoFar.put(neighbor, newCost);
       }
     }
   }

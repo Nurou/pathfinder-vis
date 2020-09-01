@@ -19,16 +19,15 @@ const Visualiser = ({
 }: IVisualiserProps) => {
   const [hasRan, setHasRan] = useState<boolean>(false);
   const [visualisationSpeed, setVisualisationSpeed] = useState<TAnimationSpeed>('fast');
-  // const [simulationIsRunning] = useState(false);
 
   /**
    * Enables individual algorithms to be run based on the name of the one currently selected
    */
   const mapAlgoNameToAlgo: IDynFunctions = {
-    Bfs: () => bfs(grid!, startNodeCoords.current, endNodeCoords.current, myRefs),
-    Ucs: () => dijkstras(grid!, startNodeCoords.current, endNodeCoords.current, myRefs),
-    Gbfs: () => gbfs(grid!, startNodeCoords.current, endNodeCoords.current, myRefs),
-    aStar: () => aStar(grid!, startNodeCoords.current, endNodeCoords.current, myRefs)
+    Bfs: () => bfs(grid!, startNodeCoords.current!, endNodeCoords.current!, myRefs),
+    Ucs: () => dijkstras(grid!, startNodeCoords.current!, endNodeCoords.current!, myRefs),
+    Gbfs: () => gbfs(grid!, startNodeCoords.current!, endNodeCoords.current!, myRefs),
+    aStar: () => aStar(grid!, startNodeCoords.current!, endNodeCoords.current!, myRefs)
   };
 
   const handleClick = () => {

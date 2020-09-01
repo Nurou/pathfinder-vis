@@ -13,6 +13,7 @@ import Checkbox from './components/Checkbox';
 import { PathFinderSelector } from './components/PathFinderSelector';
 import { Graph } from './components/Graph/Graph';
 import Visualiser from './components/Visualiser';
+import { CustomMap } from './data_structures/Map';
 
 const availablePathfinders = [
   { value: 'Bfs', label: 'Breadth-First Search' },
@@ -30,7 +31,7 @@ const App = () => {
     cols: 65
   });
   const [mazeGenerated, setMazeGenerated] = useState<boolean>(false);
-  const [costs, setCosts] = useState<Map<Node, number> | null>(null);
+  const [costs, setCosts] = useState<Map<Node, number> | CustomMap<Node, number> | null>(null);
   const [currentPathFinder, setCurrentPathFinder] = useState<string | null>(
     availablePathfinders[0].value
   );

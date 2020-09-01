@@ -1,6 +1,6 @@
 import { Entry } from './Entry';
 
-export class MyMap<K, V> {
+export class CustomMap<K, V> {
   private size: number;
   private values: Array<Entry<K, V> | null>;
 
@@ -33,6 +33,13 @@ export class MyMap<K, V> {
         this.values[this.size++] = new Entry<K, V>(key, value);
       }
     }
+  }
+
+  has(key: K): boolean {
+    for (let index = 0; index < this.values.length; index++) {
+      if (this.values[index]?.getKey() === key) return true;
+    }
+    return false;
   }
 
   getSize(): number {

@@ -1,6 +1,7 @@
 import { Node } from '../../data_structures/Node';
 import { reconstructPath, checkArgs, isWall, getMovementCost } from '../util';
 import { ICoordinates } from '../../types';
+import { CustomMap } from '../../data_structures/Map';
 
 /* logical implementation of BFS
  */
@@ -34,11 +35,11 @@ export const bfs = (
   frontier.push(startNode);
 
   // map preceding node to each node.
-  let cameFrom = new Map<Node, Node>();
-  cameFrom.set(startNode, null!);
+  let cameFrom = new CustomMap<Node, Node | null>();
+  cameFrom.put(startNode, null);
 
-  let costSoFar = new Map<Node, number>();
-  costSoFar.set(startNode, 0);
+  let costSoFar = new CustomMap<Node, number>();
+  costSoFar.put(startNode, 0);
 
   // keep on checking the queue until it's empty
   while (frontier && frontier.length) {
@@ -55,16 +56,15 @@ export const bfs = (
         if (!cameFrom.get(neighbor) && !isWall(neighbor, myRefs)) {
           // movement costs not accounted for by Bfs - tracked for comparison purposes
           let newCost = costSoFar.get(current)! + getMovementCost(neighbor, myRefs);
-          costSoFar.set(neighbor, newCost);
+          costSoFar.put(neighbor, newCost);
 
           let currentLength = visitedNodesInOrder.length;
           visitedNodesInOrder[currentLength] = neighbor;
           currentLength++;
           visitedNodesInOrder.length = currentLength;
-          // visitedNodesInOrder.push(neighbor);
-          frontier.push(neighbor);
 
-          cameFrom.set(neighbor, current);
+          frontier.push(neighbor);
+          cameFrom.put(neighbor, current);
         }
       }
     }
