@@ -1,3 +1,4 @@
+import { MyMap } from './../data_structures/Map/index';
 import { ICoordinates } from '../types';
 import { Node } from '../data_structures/Node';
 
@@ -40,7 +41,11 @@ const between = (x: number, min: number, max: number) => {
  * @param {number} startNode
  * @param {number} endNode
  */
-export const reconstructPath = (startNode: Node, endNode: Node, cameFrom?: Map<Node, Node>) => {
+export const reconstructPath = (
+  startNode: Node,
+  endNode: Node,
+  cameFrom?: MyMap<Node, Node> | Map<Node, Node>
+) => {
   // path starts out empty
   let path: Node[] = [];
 

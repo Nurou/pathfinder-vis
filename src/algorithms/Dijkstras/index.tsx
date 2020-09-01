@@ -2,6 +2,7 @@ import { ICoordinates } from '../../types';
 import { PriorityQueue } from '../../data_structures/PriorityQueue';
 import { checkArgs, reconstructPath, isWall, getMovementCost } from '../util';
 import Node from '../../data_structures/Node';
+import { MyMap } from '../../data_structures/Map';
 
 /**
  *  An implementation of Dijkstra's algorithm for path finding that accounts for the movement costs of nodes
@@ -32,8 +33,10 @@ export const dijkstras = (
   console.log('\nInitial contents:');
   console.log(frontier.peek()[0]); //=>
 
-  let cameFrom = new Map<Node, Node>();
-  cameFrom.set(startNode, null!);
+  // let cameFrom = new Map<Node, Node>();
+  let cameFrom = new MyMap<Node, Node>();
+  // cameFrom.set(startNode, null!);
+  cameFrom.put(startNode, null!);
 
   // keeps track of total movement cost from the start node to all nodes
   // same node can be visited multiple times with different costs
@@ -67,7 +70,8 @@ export const dijkstras = (
           currentLength++;
           visitedNodesInOrder.length = currentLength;
           frontier.push([neighbor, priority]);
-          cameFrom.set(neighbor, current);
+          // cameFrom.set(neighbor, current);
+          cameFrom.put(neighbor, current);
         }
       }
     }
