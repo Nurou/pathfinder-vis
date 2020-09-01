@@ -16,7 +16,7 @@ export const dijkstras = (
   grid: Node[][],
   startNodeCoords: ICoordinates,
   endNodeCoords: ICoordinates,
-  myRefs: React.MutableRefObject<HTMLDivElement>
+  myRefs: React.MutableRefObject<any>
 ) => {
   checkArgs(grid, startNodeCoords, endNodeCoords);
 

@@ -64,7 +64,7 @@ export const aStar = (
           visitedNodesInOrder[currentLength] = neighbor;
           currentLength++;
           visitedNodesInOrder.length = currentLength;
-          // visitedNodesInOrder.push(neighbor);
+
           frontier.push([neighbor, priority]);
           cameFrom.set(neighbor, current);
         }

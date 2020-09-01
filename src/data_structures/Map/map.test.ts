@@ -32,4 +32,20 @@ describe('a map:', () => {
     map.remove(node1);
     expect(map.getSize()).toBe(0);
   });
+
+  test('should be able to find keys it contains', () => {
+    let map = new CustomMap<Node, Node>();
+    map.put(node1, node2);
+    expect(map.has(node1)).toBeTruthy;
+    expect(map.has(node2)).toBeTruthy;
+  });
+
+  test('should return the correct set of keys', () => {
+    let map = new CustomMap<Node, Node>();
+    map.put(node1, node2);
+    map.put(node2, node1);
+    expect(map.keySet().length).toBe(2);
+    expect(map.keySet()[0]).toEqual(node1);
+    expect(map.keySet()[1]).toEqual(node2);
+  });
 });

@@ -1,6 +1,6 @@
 import { Node } from '../../data_structures/Node';
-import { bfs } from '.';
 import { setNodeNeighbors } from '../../components/Graph/util';
+import { aStar } from '.';
 
 let grid: any = [];
 let mockRefs: any = { current: {} };
@@ -25,12 +25,12 @@ describe('verify initial state of grid', () => {
   });
 
   test('throw if no arguments provided', () => {
-    expect(bfs).toThrow();
+    expect(aStar).toThrow();
   });
 
   test('throw if nodes are outside grid boundaries', () => {
     expect(() =>
-      bfs(
+      aStar(
         grid,
         { row: -3, col: 400 },
         { row: 10, col: 10 },
@@ -45,7 +45,7 @@ describe('verify initial state of grid', () => {
   });
 
   test('number of traversed nodes one when start and end adjacent to one another', () => {
-    const { shortestPath } = bfs(grid, { row: 1, col: 1 }, { row: 1, col: 2 }, mockRefs);
+    const { shortestPath } = aStar(grid, { row: 1, col: 1 }, { row: 1, col: 2 }, mockRefs);
     expect(shortestPath.length).toBe(2);
   });
 });
