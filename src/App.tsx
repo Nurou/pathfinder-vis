@@ -27,7 +27,7 @@ const App = () => {
   const startNodeCoords = useRef(null);
   const endNodeCoords = useRef(null);
   const [gridDimensions] = useState<IGridDimensions>({
-    rows: 30,
+    rows: 25,
     cols: 65
   });
   const [mazeGenerated, setMazeGenerated] = useState<boolean>(false);

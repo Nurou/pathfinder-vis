@@ -2,6 +2,7 @@ import { ICoordinates } from '../../types';
 import { PriorityQueue } from '../../data_structures/PriorityQueue';
 import { checkArgs, reconstructPath, isWall, getMovementCost, heuristic } from '../util';
 import Node from '../../data_structures/Node';
+import { CustomMap } from '../../data_structures/Map';
 
 /**
  *  An implementation of the A* algorithm, which uses the actual distance from the start and the estimated distance to the goal.
@@ -32,13 +33,13 @@ export const aStar = (
   console.log('\nInitial contents:');
   console.log(frontier.peek()[0]); //=>
 
-  let cameFrom = new Map<Node, Node>();
-  cameFrom.set(startNode, null!);
+  let cameFrom = new CustomMap<Node, Node>();
+  cameFrom.put(startNode, null!);
 
   // keeps track of total movement cost from the start node to all nodes
   // same node can be visited multiple times with different costs
-  let costSoFar = new Map<Node, number>();
-  costSoFar.set(startNode, 0);
+  let costSoFar = new CustomMap<Node, number>();
+  costSoFar.put(startNode, 0);
 
   // keep on checking the queue until it's empty
   while (frontier && frontier.size()) {
@@ -57,7 +58,7 @@ export const aStar = (
         let newCost = costSoFar.get(current)! + getMovementCost(neighbor, myRefs);
         if (!costSoFar.has(neighbor) || newCost < costSoFar.get(neighbor)!) {
           // update cost
-          costSoFar.set(neighbor, newCost);
+          costSoFar.put(neighbor, newCost);
           let priority = newCost + heuristic(endNode, neighbor);
 
           let currentLength = visitedNodesInOrder.length;
@@ -66,7 +67,7 @@ export const aStar = (
           visitedNodesInOrder.length = currentLength;
 
           frontier.push([neighbor, priority]);
-          cameFrom.set(neighbor, current);
+          cameFrom.put(neighbor, current);
         }
       }
     }
