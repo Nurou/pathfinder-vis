@@ -134,7 +134,7 @@ const App = () => {
           <Box as="label" display="flex" justifyContent="center" alignItems="center" mt={3}>
             <label>
               <Checkbox costs={costs} myRefs={myRefs} checked={checked} setChecked={setChecked} />
-              <Span fontSize={4} ml={1}>
+              <Span fontSize={[2, 3, 4]} ml={1}>
                 Show Distances
               </Span>
             </label>
