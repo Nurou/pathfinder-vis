@@ -53,7 +53,11 @@ export const gbfs = (
         // neighbor can be visited once only
         if (isWall(neighbor, myRefs) || cameFrom.get(neighbor)) continue;
 
-        visitedNodesInOrder.push(neighbor);
+        let currentLength = visitedNodesInOrder.length;
+        visitedNodesInOrder[currentLength] = neighbor;
+        currentLength++;
+        visitedNodesInOrder.length = currentLength;
+
         let priority = heuristic(endNode, neighbor);
         frontier.push([neighbor, priority]);
         cameFrom.put(neighbor, current);
