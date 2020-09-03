@@ -32,7 +32,7 @@ export const bfs = (
 
   // queue for traversing the grid
   let frontier: Node[] = [];
-  frontier.push(startNode);
+  pushToFrontier(frontier, startNode);
 
   // map preceding node to each node.
   let cameFrom = new CustomMap<Node, Node | null>();
@@ -63,7 +63,8 @@ export const bfs = (
           currentLength++;
           visitedNodesInOrder.length = currentLength;
 
-          frontier.push(neighbor);
+          // frontier.push(neighbor);
+          pushToFrontier(frontier, neighbor);
           cameFrom.put(neighbor, current);
         }
       }
@@ -82,4 +83,11 @@ export const bfs = (
     timer,
     costSoFar
   };
+};
+
+const pushToFrontier = (frontier: Node[], node: Node) => {
+  let currentLength = frontier.length;
+  frontier[currentLength] = node;
+  currentLength++;
+  frontier.length = currentLength;
 };
