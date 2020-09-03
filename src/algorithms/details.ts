@@ -5,7 +5,7 @@ export const details: IDetailsArray = {
     title: 'Breadth-first Search',
     description: 'Explores equally in all directions',
     weighted: false,
-    guarantee: false
+    guarantee: true
   },
   Ucs: {
     title: 'Uniform-cost Search',
