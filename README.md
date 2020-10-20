@@ -1,22 +1,6 @@
 # Pathfinder Visualisation ⎍
 
-A web application for visualising and observing the differences between common pathfinder algorithms. 
-
-## Documentation Links
-
-- [Project Specification](https://github.com/Nurou/pathfinder-vis/blob/master/documentation/specification.md)
-- [Project Implementation](https://github.com/Nurou/pathfinder-vis/blob/master/documentation/implementation.md)
-- [Testing](https://github.com/Nurou/pathfinder-vis/blob/master/documentation/testing.md)
-- [User Guide](https://github.com/Nurou/pathfinder-vis/blob/master/documentation/user_guide.md)
-
-### Weekly Reports
-
-- [Week 01](https://github.com/Nurou/pathfinder-vis/blob/master/documentation/reports/week01.md)
-- [Week 02](https://github.com/Nurou/pathfinder-vis/blob/master/documentation/reports/week02.md)
-- [Week 03](https://github.com/Nurou/pathfinder-vis/blob/master/documentation/reports/week03.md)
-- [Week 04](https://github.com/Nurou/pathfinder-vis/blob/master/documentation/reports/week04.md)
-- [Week 05](https://github.com/Nurou/pathfinder-vis/blob/master/documentation/reports/week05.md)
-- [Week 06](https://github.com/Nurou/pathfinder-vis/blob/master/documentation/reports/week06.md)
+A web application for visualising the differences between some common pathfinder algorithms. 
 
 ## Available Scripts
 
