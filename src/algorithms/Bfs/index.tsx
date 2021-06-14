@@ -6,6 +6,13 @@ import { CustomMap } from '../../data_structures/Map';
 /* logical implementation of BFS
  */
 
+const pushToFrontier = (frontier: Node[], node: Node) => {
+  let currentLength = frontier.length;
+  frontier[currentLength] = node;
+  currentLength++;
+  frontier.length = currentLength;
+};
+
 /**
  *  A simple breadth-first search implementation
  * @param {array} grid grid holding all the logical nodes
@@ -83,11 +90,4 @@ export const bfs = (
     timer,
     costSoFar
   };
-};
-
-const pushToFrontier = (frontier: Node[], node: Node) => {
-  let currentLength = frontier.length;
-  frontier[currentLength] = node;
-  currentLength++;
-  frontier.length = currentLength;
 };

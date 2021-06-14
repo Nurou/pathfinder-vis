@@ -22,6 +22,10 @@ export const checkArgs = (
   const MIN_ROW = 0;
   const MIN_COL = 0;
 
+  const between = (x: number, min: number, max: number) => {
+    return x >= min && x <= max;
+  };
+
   if (
     !between(startNodeCoords.row, MIN_ROW, MAX_ROW) ||
     !between(startNodeCoords.col, MIN_COL, MAX_COL) ||
@@ -30,10 +34,6 @@ export const checkArgs = (
   ) {
     throw new Error('Coordinates out of bounds!');
   }
-};
-
-const between = (x: number, min: number, max: number) => {
-  return x >= min && x <= max;
 };
 
 /**

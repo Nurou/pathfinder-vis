@@ -29,6 +29,17 @@ export const Graph = memo(
       props.myRefs && coverInTerrain(props.myRefs);
     });
 
+    const handleConversion = (row: number, col: number) => {
+      convertToType(
+        row,
+        col,
+        props.conversionType,
+        props.startNodeCoords,
+        props.endNodeCoords,
+        props.myRefs!
+      );
+    };
+
     /**
      * mousedown is fired the moment the button is initially pressed
      * @param {number} row
@@ -55,17 +66,6 @@ export const Graph = memo(
       if (mouseIsPressed) {
         handleConversion(row, col);
       }
-    };
-
-    const handleConversion = (row: number, col: number) => {
-      convertToType(
-        row,
-        col,
-        props.conversionType,
-        props.startNodeCoords,
-        props.endNodeCoords,
-        props.myRefs!
-      );
     };
 
     return (

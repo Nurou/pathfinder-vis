@@ -12,6 +12,10 @@ const InfoDisplay = ({ previous, current, children }: IStatProps) => {
   const [stepDiff, setStepDiff] = useState<number | null>(null);
   const [movementCostDiff, setMovementCostDiff] = useState<number | null>(null);
 
+  const noPath = (pathLength: number): boolean => {
+    return pathLength === -2;
+  };
+
   useEffect(() => {
     if (previous && current && !noPath(previous.shortestPathLength)) {
       setTimeDiff(current.timeTaken - previous.timeTaken);
@@ -23,10 +27,6 @@ const InfoDisplay = ({ previous, current, children }: IStatProps) => {
       setMovementCostDiff(null);
     }
   }, [previous, current]);
-
-  const noPath = (pathLength: number): boolean => {
-    return pathLength === -2;
-  };
 
   const displayNoPath = () => (
     <>

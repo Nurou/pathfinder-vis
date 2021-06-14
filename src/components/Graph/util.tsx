@@ -30,6 +30,15 @@ export const convertToType = (
   // target node
   const targetCell = myRefs!.current[`node-${row}-${col}`];
 
+  const alreadyOccupied = (targetCell: HTMLDivElement) => {
+    return (
+      targetCell.classList.contains('start') ||
+      targetCell.classList.contains('end') ||
+      targetCell.classList.contains('wall') ||
+      targetCell.classList.contains('grass')
+    );
+  };
+
   if (alreadyOccupied(targetCell) || !conversionType.current) {
     return;
   }
@@ -80,15 +89,6 @@ export const convertToType = (
   }
 
   targetCell.classList.add(conversionType.current);
-};
-
-const alreadyOccupied = (targetCell: HTMLDivElement) => {
-  return (
-    targetCell.classList.contains('start') ||
-    targetCell.classList.contains('end') ||
-    targetCell.classList.contains('wall') ||
-    targetCell.classList.contains('grass')
-  );
 };
 
 /**
@@ -158,10 +158,7 @@ export const getRandomArbitrary = (min: number, max: number): number => {
  * @param costSoFar
  * @param myRefs
  */
-export const displayDistances = (
-  costSoFar: Map<Node, number> | CustomMap<Node, number>,
-  myRefs: React.MutableRefObject<any>
-): void => {
+export const displayDistances = (costSoFar: any, myRefs: React.MutableRefObject<any>): void => {
   [...costSoFar].forEach((mapping) => {
     const domNode = myRefs.current[`node-${mapping[0].row}-${mapping[0].col}`];
     if (!domNode.classList.contains('start') && !domNode.classList.contains('end')) {

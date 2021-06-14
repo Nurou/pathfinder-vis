@@ -30,10 +30,6 @@ const Visualiser = ({
     aStar: () => aStar(grid!, startNodeCoords.current!, endNodeCoords.current!, myRefs)
   };
 
-  const handleClick = () => {
-    visualise();
-  };
-
   /**
    * determines which algorithm to run based on user selection
    */
@@ -67,6 +63,10 @@ const Visualiser = ({
       animateVisits(visitedNodesInOrder, shortestPath, myRefs, visualisationSpeed);
       setCosts(costSoFar);
     }
+  };
+
+  const handleClick = () => {
+    visualise();
   };
 
   return (

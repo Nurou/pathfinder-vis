@@ -52,7 +52,7 @@ const App = () => {
     setGrid(grid);
     // neighbors can be set once grid has been populated
     setNodeNeighbors(grid);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleClick = () => {
     createMaze(
