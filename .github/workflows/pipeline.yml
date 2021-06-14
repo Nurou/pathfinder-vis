@@ -1,0 +1,50 @@
+name: Deployment pipeline
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches: [master]
+    types: [opened, synchronize]
+
+jobs:
+  simple_deployment_pipeline:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+      - name: yarn install
+        run: yarn
+      - name: lint
+        run: yarn eslint
+      - name: test
+        run: yarn test
+      - uses: actions/checkout@v2
+      - name: Build  App
+        run: |
+          yarn 
+          CI=false yarn build
+      - name: Install Surge
+        run: yarn surge
+      - name: Deploy to Surge
+        if: ${{ github.event_name == 'push' && !contains(join(toJson(github.event.commits.*.message)), '#skip') }}
+        run: surge ./build https://pathfinderz.surge.sh/ --token ${{secrets.SURGE_TOKEN}}
+      - name: Bump version and push tag
+        uses: anothrNick/github-tag-action@eca2b69f9e2c24be7decccd0f15fdb1ea5906598
+        if: ${{ github.event_name == 'push' && !contains(join(toJson(github.event.commits.*.message)), '#skip') }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: patch
+          WITH_V: true
+          INITIAL_VERSION: 0.0.1
+      # - name: success status notifications
+      #   uses: 8398a7/action-slack@dcc8c8e9dd8802e21a712dc0c003db97b42efe43
+      #   if: ${{ ( success() || failure() ) }}
+      #   with:
+      #     status: ${{ job.status }}
+      #     fields: workflow,job,commit,repo,ref,author,took
+      #   env:
+      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
