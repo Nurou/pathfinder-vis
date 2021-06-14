@@ -24,7 +24,8 @@
     "coverage": "npm test -- --coverage --forceExit",
     "eject": "react-scripts eject",
     "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write",
-    "eslint": "eslint './**/*.{ts,tsx}'"
+    "eslint": "eslint './**/*.{ts,tsx}'",
+    "eslint:fix": "eslint --fix './**/*.{ts,tsx}'"
   },
   "eslintConfig": {
     "extends": "react-app"
