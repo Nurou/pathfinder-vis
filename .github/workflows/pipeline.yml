@@ -16,14 +16,12 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '12.x'
-      - name: yarn install
-        run: yarn
-      - name: lint
+      - name: Lint
         run: yarn eslint
-      - name: test
+      - name: Test
         run: yarn test
       - uses: actions/checkout@v2
-      - name: Build  App
+      - name: Build App
         run: |
           yarn 
           CI=false yarn build
