@@ -40,7 +40,7 @@ export const animateVisits = (
       return;
     }
     setTimeout(() => {
-      let domNode: any = myRefs.current[`node-${node.row}-${node.col}`];
+      const domNode: any = myRefs.current[`node-${node.row}-${node.col}`];
       if (isWall(node, myRefs)) return;
 
       if (!isGrass(node.row, node.col, myRefs)) {
@@ -80,7 +80,7 @@ const animateShortestPath = (
   shortestPath.forEach((node, index) => {
     setTimeout(() => {
       // exclude walls and end nodes
-      let domNode = myRefs.current[`node-${node.row}-${node.col}`];
+      const domNode = myRefs.current[`node-${node.row}-${node.col}`];
       if (!isWall(node, myRefs)) {
         domNode.classList.add('node-shortest-path');
       }

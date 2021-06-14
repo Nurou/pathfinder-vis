@@ -54,7 +54,7 @@ export class PriorityQueue {
       this.swap(top, bottom);
     }
     // simulate Array.prototype pop method
-    let len = this.heap.length - 1;
+    const len = this.heap.length - 1;
     this.heap.length = len;
     delete this.heap[len];
     //
@@ -86,7 +86,7 @@ export class PriorityQueue {
       (left(node) < this.size() && this.greater(left(node), node)) ||
       (right(node) < this.size() && this.greater(right(node), node))
     ) {
-      let maxChild =
+      const maxChild =
         right(node) < this.size() && this.greater(right(node), left(node))
           ? right(node)
           : left(node);

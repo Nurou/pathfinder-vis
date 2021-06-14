@@ -47,7 +47,7 @@ export const reconstructPath = (
   cameFrom?: CustomMap<Node, Node | null> | Map<Node, Node>
 ) => {
   // path starts out empty
-  let path: Node[] = [];
+  const path: Node[] = [];
 
   // end node was reached
   if (cameFrom?.get(endNode) !== undefined) {
@@ -70,17 +70,17 @@ export const reconstructPath = (
 };
 
 export const isStartNode = (row: number, col: number, myRefs: any): boolean => {
-  let nodeClassList = myRefs.current[`node-${row}-${col}`].classList;
+  const nodeClassList = myRefs.current[`node-${row}-${col}`].classList;
   return nodeClassList.contains('start');
 };
 
 export const isEndNode = (row: number, col: number, myRefs: any): boolean => {
-  let nodeClassList = myRefs.current[`node-${row}-${col}`].classList;
+  const nodeClassList = myRefs.current[`node-${row}-${col}`].classList;
   return nodeClassList.contains('end');
 };
 
 export const isGrass = (row: number, col: number, myRefs: any): boolean => {
-  let nodeClassList = myRefs.current[`node-${row}-${col}`].classList;
+  const nodeClassList = myRefs.current[`node-${row}-${col}`].classList;
   return nodeClassList.contains('grass');
 };
 
@@ -91,7 +91,7 @@ export const isGrass = (row: number, col: number, myRefs: any): boolean => {
  */
 
 export const isWall = (node: Node, myRefs: any): boolean => {
-  let nodeClassList = myRefs!.current[`node-${node.row}-${node.col}`].classList;
+  const nodeClassList = myRefs!.current[`node-${node.row}-${node.col}`].classList;
 
   // for test/mocking
   if (typeof nodeClassList.contains == undefined || nodeClassList.length === 0) return false;
@@ -108,7 +108,7 @@ export const getMovementCost = (node: Node, myRefs: any): number => {
   const GRASS_COST = 5;
   const TERRAIN_COST = 1;
 
-  let nodeClassList = myRefs!.current[`node-${node.row}-${node.col}`].classList;
+  const nodeClassList = myRefs!.current[`node-${node.row}-${node.col}`].classList;
 
   // for test/mocking
   if (typeof nodeClassList.contains == undefined || nodeClassList.length === 0) return 0;

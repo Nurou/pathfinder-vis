@@ -43,7 +43,7 @@ const handleRef = (
   myRefs: React.MutableRefObject<any>
 ) => {
   // get existing refs
-  let newRefs = { ...myRefs.current };
+  const newRefs = { ...myRefs.current };
 
   // add ref to new element
   newRefs[`node-${row}-${col}`] = el;

@@ -9,8 +9,9 @@
     "prettier"
   ],
   "rules": {
-    "no-console": 1, // Means warning
-    "prettier/prettier": 2, // Means error
-    "no-restricted-globals": 0
+    "no-console": 1,
+    "prettier/prettier": 2,
+    "no-restricted-globals": 0,
+    "@typescript-eslint/interface-name-prefix": "off"
   }
 }

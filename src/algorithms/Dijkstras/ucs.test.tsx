@@ -2,8 +2,8 @@ import { dijkstras } from '.';
 import { Node } from '../../data_structures/Node';
 import { setNodeNeighbors } from '../../components/Graph/util';
 
-let grid: any = [];
-let mockRefs: any = { current: {} };
+const grid: any = [];
+const mockRefs: any = { current: {} };
 const GRID_ROWS = 20;
 const GRID_COLS = 30;
 
@@ -13,7 +13,7 @@ beforeAll(() => {
     const currentRow = [];
     for (let col = 0; col < GRID_COLS; col++) {
       // add a node for each row column
-      let newNode = new Node(row, col);
+      const newNode = new Node(row, col);
       currentRow.push(newNode);
       mockRefs.current[`node-${row}-${col}`] = { classList: [] };
     }

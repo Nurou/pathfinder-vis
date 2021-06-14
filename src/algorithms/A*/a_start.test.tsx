@@ -2,8 +2,8 @@ import { Node } from '../../data_structures/Node';
 import { setNodeNeighbors } from '../../components/Graph/util';
 import { aStar } from '.';
 
-let grid: any = [];
-let mockRefs: any = { current: {} };
+const grid: any = [];
+const mockRefs: any = { current: {} };
 
 describe('verify initial state of grid', () => {
   /* Runs before all tests */
@@ -14,7 +14,7 @@ describe('verify initial state of grid', () => {
       const currentRow = [];
       for (let col = 0; col < GRID_COLS; col++) {
         // add a node for each row column
-        let newNode = new Node(row, col);
+        const newNode = new Node(row, col);
         currentRow.push(newNode);
         mockRefs.current[`node-${row}-${col}`] = { classList: [] };
       }

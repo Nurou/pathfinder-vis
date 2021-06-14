@@ -11,7 +11,7 @@ beforeAll(() => {
 describe('initially', () => {
   test('node has no neighbors ', () => {
     // get some node from grid
-    let someNode = grid[10][15];
+    const someNode = grid[10][15];
     // check its neighbors
     expect(someNode.getNeighbors()).toBeNull;
   });
@@ -27,7 +27,7 @@ describe('once neighbors set', () => {
 
     for (const row of grid) {
       for (const node of row) {
-        let neighborCount = node.getNeighbors().length;
+        const neighborCount = node.getNeighbors().length;
         if (neighborCount >= maxNumberOfNeighbors) {
           maxNumberOfNeighbors = neighborCount;
         }
@@ -41,7 +41,7 @@ describe('once neighbors set', () => {
 
     for (const row of grid) {
       for (const node of row) {
-        let neighborCount = node.getNeighbors().length;
+        const neighborCount = node.getNeighbors().length;
         if (neighborCount <= minNumberOfNeighbors) {
           minNumberOfNeighbors = neighborCount;
         }

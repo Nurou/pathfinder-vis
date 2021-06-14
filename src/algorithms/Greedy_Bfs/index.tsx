@@ -19,29 +19,29 @@ export const gbfs = (
 ) => {
   checkArgs(grid, startNodeCoords, endNodeCoords);
 
-  let visitedNodesInOrder: Node[] = [];
+  const visitedNodesInOrder: Node[] = [];
 
   // get logical start and end nodes by coordinates
-  let startNode: Node = grid[startNodeCoords.row][startNodeCoords.col];
-  let endNode: Node = grid[endNodeCoords.row][endNodeCoords.col];
+  const startNode: Node = grid[startNodeCoords.row][startNodeCoords.col];
+  const endNode: Node = grid[endNodeCoords.row][endNodeCoords.col];
 
   // clock performance
   let timer: number = -performance.now();
 
-  let frontier = new PriorityQueue((a, b) => a[1] < b[1]);
+  const frontier = new PriorityQueue((a, b) => a[1] < b[1]);
   frontier.push([startNode, 0]);
 
-  let cameFrom = new CustomMap<Node, Node | null>();
+  const cameFrom = new CustomMap<Node, Node | null>();
   cameFrom.put(startNode, null);
 
   // cost tracked comparison purposes only - does not affect heuristic
-  let costSoFar = new CustomMap<Node, number>();
+  const costSoFar = new CustomMap<Node, number>();
   costSoFar.put(startNode, 0);
 
   // keep on checking the queue until it's empty
   while (frontier && frontier.size()) {
     // pop queue
-    let current: Node | undefined = frontier.pop()[0];
+    const current: Node | undefined = frontier.pop()[0];
 
     // early exit conditional
     if (current === endNode) {
@@ -58,12 +58,12 @@ export const gbfs = (
         currentLength++;
         visitedNodesInOrder.length = currentLength;
 
-        let priority = heuristic(endNode, neighbor);
+        const priority = heuristic(endNode, neighbor);
         frontier.push([neighbor, priority]);
         cameFrom.put(neighbor, current);
 
         // movement costs not accounted for by Bfs - tracked for comparison purposes
-        let newCost = costSoFar.get(current)! + getMovementCost(neighbor, myRefs);
+        const newCost = costSoFar.get(current)! + getMovementCost(neighbor, myRefs);
         costSoFar.put(neighbor, newCost);
       }
     }
@@ -73,7 +73,7 @@ export const gbfs = (
   timer += performance.now();
   console.log('Time: ' + (timer / 1000).toFixed(5) + ' sec.');
 
-  let shortestPath = reconstructPath(startNode, endNode, cameFrom);
+  const shortestPath = reconstructPath(startNode, endNode, cameFrom);
 
   return {
     visitedNodesInOrder,

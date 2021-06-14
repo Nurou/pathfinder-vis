@@ -64,7 +64,7 @@ export class CustomMap<K, V> {
   }
 
   keySet(): Array<K> {
-    let keys = new Array<K>();
+    const keys = new Array<K>();
     let arrIndex = 0;
     for (let index = 0; index < this.size; index++) {
       keys[arrIndex++] = this.values[index]!.getKey();
