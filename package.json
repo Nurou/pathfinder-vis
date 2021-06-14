@@ -20,7 +20,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --watchAll",
+    "test:watch": "react-scripts test --watchAll",
+    "test": "react-scripts test",
     "coverage": "npm test -- --coverage --forceExit",
     "eject": "react-scripts eject",
     "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write",
