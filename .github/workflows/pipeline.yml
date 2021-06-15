@@ -38,6 +38,10 @@ jobs:
           DEFAULT_BUMP: patch
           WITH_V: true
           INITIAL_VERSION: 0.0.1
+      - name: URL Health Check
+        uses: jtalk/url-health-check-action@0195e0d5f1cf2ebcfdbb05b6c070b61479ebb75a
+        with:
+          url: https://pathfinderz.surge.sh/|http://pathfinderz.surge.sh/
       # - name: success status notifications
       #   uses: 8398a7/action-slack@dcc8c8e9dd8802e21a712dc0c003db97b42efe43
       #   if: ${{ ( success() || failure() ) }}
