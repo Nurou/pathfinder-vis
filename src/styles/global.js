@@ -4,7 +4,6 @@ export const GlobalStyle = createGlobalStyle`
 
 
   body {
-    background-color: #E2E8F0;
     font-family: 'Source Code Pro', sans-serif;
     margin: 0;
   }

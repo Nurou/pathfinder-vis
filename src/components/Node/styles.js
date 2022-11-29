@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const NodeWrapper = styled('div')`
+export const NodeWrapper = styled('td')`
   position: relative;
   width: auto;
   height: 2rem;

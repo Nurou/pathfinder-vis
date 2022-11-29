@@ -37,9 +37,8 @@ const Visualiser = ({
     // given we have what we need
     if (grid && startNodeCoords.current && endNodeCoords.current && currentPathFinder) {
       // call the selected algorithm
-      const { visitedNodesInOrder, shortestPath, timer, costSoFar } = mapAlgoNameToAlgo[
-        currentPathFinder
-      ]();
+      const { visitedNodesInOrder, shortestPath, timer, costSoFar } =
+        mapAlgoNameToAlgo[currentPathFinder]();
 
       const stats = {
         pathfinder: currentPathFinder,

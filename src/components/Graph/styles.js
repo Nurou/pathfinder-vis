@@ -13,7 +13,7 @@ export const Grid = memo(styled(Box)`
   border-bottom: 0.3rem hsl(55, 30%, 80%) solid;
 `);
 
-export const GridRow = memo(styled.div`
+export const GridRow = memo(styled.tr`
   border-collapse: collapse;
   display: grid;
   grid-template-columns: repeat(${(props) => props.columns}, 1fr);
