@@ -19,10 +19,11 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "preinstall": "npx only-allow pnpm", 
     "build": "react-scripts build",
     "test:watch": "react-scripts test --watchAll",
     "test": "react-scripts test",
-    "coverage": "npm test -- --coverage --forceExit",
+    "coverage": "pnpm test -- --coverage --forceExit",
     "eject": "react-scripts eject",
     "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write",
     "eslint": "eslint './**/*.{ts,tsx}'",
