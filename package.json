@@ -11,20 +11,19 @@
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1",
     "react-switch": "^5.0.1",
     "styled-components": "^5.1.1",
     "styled-system": "^5.1.5",
     "typescript": "~3.7.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "preinstall": "npx only-allow pnpm", 
-    "build": "react-scripts build",
-    "test:watch": "react-scripts test --watchAll",
-    "test": "react-scripts test",
-    "coverage": "pnpm test -- --coverage --forceExit",
-    "eject": "react-scripts eject",
+    "start": "vite",
+    "build": "tsc && vite build",
+    "serve": "vite preview",
+    "preinstall": "npx only-allow pnpm",
+    "test:watch": "pnpm test --watchAll",
+    "test": "vitest",
+    "coverage": "vitest run --coverage",
     "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write",
     "eslint": "eslint './**/*.{ts,tsx}'",
     "eslint:fix": "eslint --fix './**/*.{ts,tsx}'"
@@ -47,8 +46,14 @@
   "devDependencies": {
     "@types/react": "^16.9.43",
     "@types/react-dom": "^16.9.8",
+    "@vitejs/plugin-react": "^2.2.0",
+    "@vitest/ui": "^0.25.3",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
-    "prettier": "^2.0.5"
+    "prettier": "^2.0.5",
+    "vite": "^3.2.4",
+    "vite-plugin-svgr": "^2.2.2",
+    "vite-tsconfig-paths": "^3.6.0",
+    "vitest": "^0.25.3"
   }
 }
