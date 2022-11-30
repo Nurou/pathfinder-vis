@@ -1,3 +1,4 @@
+import { beforeAll, describe, expect, test } from 'vitest';
 import { Entry } from './Entry';
 import Node from '../Node';
 

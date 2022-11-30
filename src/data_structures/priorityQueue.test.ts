@@ -1,3 +1,4 @@
+import { beforeEach, afterEach, describe, expect, test } from 'vitest';
 import { PriorityQueue } from './PriorityQueue';
 
 let pq: any = null;
