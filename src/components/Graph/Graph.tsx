@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo, useCallback, useEffect } from 'react';
 import Node from '../../data_structures/Node';
 import { TableGrid, GridRow } from './styles';
 import { GridNode } from '../Node';
@@ -25,9 +25,9 @@ export const Graph = memo((props: IGridProps): JSX.Element => {
 
   useEffect(() => {
     props.myRefs && coverInTerrain(props.myRefs);
-  }, [props.myRefs, coverInTerrain]);
+  }, []);
 
-  const handleConversion = (row: number, col: number) => {
+  const handleConversion = useCallback((row: number, col: number) => {
     convertToType(
       row,
       col,
@@ -36,17 +36,17 @@ export const Graph = memo((props: IGridProps): JSX.Element => {
       props.endNodeCoords,
       props.myRefs!
     );
-  };
+  }, []);
 
   /**
    * mousedown is fired the moment the button is initially pressed
    * @param {number} row
    * @param {number} col
    */
-  const handleMouseDown = (row: number, col: number): void => {
+  const handleMouseDown = useCallback((row: number, col: number): void => {
     mouseIsPressed = true;
     handleConversion(row, col);
-  };
+  }, []);
 
   /**
    *  fired when a button on a pointing device is released while the pointer is located inside it - counterpoint to mousedown
@@ -60,11 +60,11 @@ export const Graph = memo((props: IGridProps): JSX.Element => {
    * @param {number} row
    * @param {number} col
    */
-  const handleMouseEnter = (row: number, col: number) => {
+  const handleMouseEnter = useCallback((row: number, col: number) => {
     if (mouseIsPressed) {
       handleConversion(row, col);
     }
-  };
+  }, []);
 
   return (
     <TableGrid>
