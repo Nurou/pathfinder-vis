@@ -1,6 +1,7 @@
 lockfileVersion: 5.3
 
 specifiers:
+  '@fontsource/space-mono': ^4.5.10
   '@testing-library/jest-dom': ^4.2.4
   '@testing-library/react': ^9.3.2
   '@testing-library/user-event': ^7.1.2
@@ -28,6 +29,7 @@ specifiers:
   vitest: ^0.25.3
 
 dependencies:
+  '@fontsource/space-mono': 4.5.10
   '@testing-library/jest-dom': 4.2.4
   '@testing-library/react': 9.5.0_react-dom@18.2.0+react@18.2.0
   '@testing-library/user-event': 7.2.1
@@ -379,6 +381,10 @@ packages:
     os: [linux]
     dev: true
     optional: true
+
+  /@fontsource/space-mono/4.5.10:
+    resolution: {integrity: sha512-OTrWNdcPp01bZjEbSu52vMu9PaReUFylHAMI4lctKVbYUnm+e7a4eG6YcnRvDrJEMYHBDtEWLAsqGVldV5r1EQ==}
+    dev: false
 
   /@jest/types/24.9.0:
     resolution: {integrity: sha512-XKK7ze1apu5JWQ5eZjHITP66AX+QsLlbaJRBGYr8pNzwcAE2JVkwnf0yqjHTsDRcjR0mujy/NmZMXw5kl+kGBw==}
