@@ -1,19 +1,25 @@
 import React, { memo } from 'react';
-import { NodeWrapper } from './styles';
+import styled from 'styled-components';
 import { useTraceUpdate } from '../../hooks/useTraceUpdate';
 
-interface HTMLDivElement {
-  type: string;
-}
+export const NodeWrapper = styled<any>('td')`
+  width: 30px;
+  height: 30px;
+
+  background: none;
+  border-radius: 4px;
+  margin: 2px;
+  /* border: 1px solid #f0f0f0; */
+`;
 
 /**
  *
- * @param {HTMLDivElement} el - DOM element representing node
- * @param {number} row
- * @param {number} col
+ * @param {HTMLButtonElement} el - DOM element representing node
+ * @param {number} row - row index of node
+ * @param {number} col - column index of node
  */
 const handleRef = (
-  el: HTMLDivElement,
+  el: HTMLButtonElement,
   row: number,
   col: number,
   myRefs: React.MutableRefObject<any>
@@ -27,7 +33,7 @@ const handleRef = (
   myRefs.current = newRefs;
 };
 
-type TNodeProps = {
+type NodeProps = {
   row: number;
   col: number;
   onMouseDown: (row: number, col: number) => void;
@@ -37,7 +43,7 @@ type TNodeProps = {
 };
 
 export const GridNode = memo(
-  ({ row, col, onMouseDown, onMouseEnter, onMouseUp, myRefs }: TNodeProps) => {
+  ({ row, col, onMouseDown, onMouseEnter, onMouseUp, myRefs }: NodeProps) => {
     useTraceUpdate({ row, col, onMouseDown, onMouseEnter, onMouseUp, myRefs });
     return (
       <NodeWrapper

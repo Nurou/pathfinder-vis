@@ -4,7 +4,8 @@ import { Box, Span, Spacer, H2, H1, Text } from '../Shared';
 import { StatsWrapper, Statistic } from './styles';
 
 /**
- * Component for displaying pathfinder algorithm run statistics
+ * Component for displaying run statistics
+ * for the algorithm runs
  */
 
 const InfoDisplay = ({ previous, current, children }: IStatProps) => {
@@ -53,10 +54,9 @@ const InfoDisplay = ({ previous, current, children }: IStatProps) => {
         alignItems="center"
         width="100%"
         height="auto"
-        bg="rgba(0, 0, 0, 0.7)"
         p={3}
       >
-        <Box color="#FFFFFF" px={5}>
+        <Box px={5}>
           <H1 fontSize={5}>Pathfinder Visualiser</H1>
           <Text fontWeight={600} py={3} maxWidth="20rem">
             To get started, choose a pathfinder from the available options, create a maze or

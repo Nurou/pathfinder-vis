@@ -110,6 +110,7 @@ const App = () => {
       alignItems="center"
       justifyContent="center"
       overflow="hidden"
+      bg="#ECEFF4"
     >
       <InfoDisplay previous={prevRun} current={currentRun} />
       {grid && (
@@ -121,7 +122,6 @@ const App = () => {
           myRefs={myRefs}
         />
       )}
-      <pre>{JSON.stringify(gridDimensions, null, 2)}</pre>
       {currentPathFinder && (
         <Description details={details[currentPathFinder]}>
           <PathFinderSelector

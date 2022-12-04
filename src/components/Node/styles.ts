@@ -1,9 +1,0 @@
-import styled from 'styled-components';
-
-export const NodeWrapper = styled<any>('td')`
-  width: 30px;
-  height: 30px;
-
-  background: none;
-  border-radius: 4px;
-`;

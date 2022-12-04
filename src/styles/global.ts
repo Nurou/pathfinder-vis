@@ -3,32 +3,16 @@ import { createGlobalStyle } from 'styled-components';
 export const GlobalStyle = createGlobalStyle`
 
 
-  body {
-    font-family: 'Source Code Pro', sans-serif;
-    margin: 0;
-  }
-
-
-  .start{
-    background-color: hsl(0, 11%, 88%);
-
-  }
-
-  .end{
-    background-color: hsl(0, 11%, 88%);
-
-  }
-
-  /* .regular {
-    background-color: hsl(0, 11%, 88%);
-  } */
+  .regular, .start, .end {
+    background-color: #E5E9F0;
+  } 
 
   .wall {
-    background-color: hsl(60, 5%, 50%);
+    background-color: #4C566A;
   }
 
   .grass {
-    background-color: hsl(111, 20%, 60%);
+    background-color: #8FBCBB;
   }
 
 
@@ -54,8 +38,7 @@ export const GlobalStyle = createGlobalStyle`
 
   100% {
     transform: scale(1);
-    /* background-color: hsl(30, 20%, 75%); */
-    background-color: hsl(42, 93%, 39%);
+    background-color: #D8DEE9;
   }
 }
 
@@ -72,15 +55,13 @@ export const GlobalStyle = createGlobalStyle`
 
 @keyframes shortestPath {
   0% {
-    background-color: hsl(0, 0%, 96%);
-
+  box-shadow: none;
   }
 
-  50% {
-  }
+ 
 
   100% {
-    background-color: hsl(47, 81%, 61%);
+    box-shadow: 0 0 0 4px #2E3440;
   }
 
 }
