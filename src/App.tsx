@@ -1,4 +1,4 @@
-import React, { useState, useRef, useLayoutEffect } from 'react';
+import React, { useState, useRef, useLayoutEffect, useEffect, RefObject, useCallback } from 'react';
 import Node from './data_structures/Node';
 import { Box, Span } from './components/Shared';
 import { Button } from './components/Visualiser/styles';
@@ -14,6 +14,7 @@ import { PathFinderSelector } from './components/PathFinderSelector';
 import { Graph } from './components/Graph/Graph';
 import Visualiser from './components/Visualiser';
 import { CustomMap } from './data_structures/Map';
+import { useResizeObserver } from './hooks/useResizeObserver';
 
 const availablePathfinders = [
   { value: 'Bfs', label: 'Breadth-First Search' },
@@ -26,9 +27,9 @@ const App = () => {
   const [grid, setGrid] = useState<Node[][] | null>([]);
   const startNodeCoords = useRef(null);
   const endNodeCoords = useRef(null);
-  const [gridDimensions] = useState<IGridDimensions>({
-    rows: 25,
-    cols: 65
+  const [gridDimensions, setGridDimensions] = useState<IGridDimensions>({
+    rows: 10,
+    cols: 10
   });
   const [mazeGenerated, setMazeGenerated] = useState<boolean>(false);
   const [costs, setCosts] = useState<Map<Node, number> | CustomMap<Node, number> | null>(null);
@@ -45,6 +46,23 @@ const App = () => {
   const [prevRun, setPrevRun] = useStickyState(null, 'previous_run');
   const [currentRun, setCurrentRun] = useStickyState(null, 'current_run');
 
+  /**
+   * set the grid dimensions
+   * based on the size of
+   * window.innerWidth
+   * */
+  useResizeObserver((dimensions) => {
+    if (dimensions.width < 450) {
+      setGridDimensions({ rows: 30, cols: 10 });
+    }
+    if (dimensions.width > 600) {
+      setGridDimensions({ rows: 20, cols: 15 });
+    }
+    if (dimensions.width > 900) {
+      setGridDimensions({ rows: 20, cols: 30 });
+    }
+  });
+
   // grid initialised after visual is rendered
   useLayoutEffect(() => {
     const grid = populateGrid(gridDimensions);
@@ -52,9 +70,10 @@ const App = () => {
     setGrid(grid);
     // neighbors can be set once grid has been populated
     setNodeNeighbors(grid);
-  }, []);
+  }, [gridDimensions]);
 
-  const handleClick = () => {
+  const handleGenerateMazeClick = () => {
+    console.log('generating maze');
     createMaze(
       mazeGenerated,
       grid,
@@ -75,6 +94,10 @@ const App = () => {
     setChecked(false);
     clear(grid, myRefs, all);
   };
+
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  const canvas = canvasRef.current;
 
   return (
     <Box
@@ -112,8 +135,10 @@ const App = () => {
         p={5}
         bg="#E2E8F0"
       >
-        <Box display="flex" justifyContent="center" alignItems="center">
-          <Button onClick={handleClick}>{mazeGenerated ? 'Regenerate' : 'Generate'} Maze </Button>
+        <Box>
+          <Button onClick={handleGenerateMazeClick}>
+            {mazeGenerated ? 'Regenerate' : 'Generate'} Maze{' '}
+          </Button>
           <Button onClick={() => (conversionType.current = 'start')}>Start </Button>
           <Button onClick={() => (conversionType.current = 'end')}>Finish</Button>
           <Button onClick={() => (conversionType.current = 'wall')}>Add Walls </Button>
@@ -131,7 +156,7 @@ const App = () => {
             setPrevRun={setPrevRun}
             setCosts={setCosts}
           />
-          <Box as="label" display="flex" justifyContent="center" alignItems="center" mt={3}>
+          <Box as="label" display="flex" justifyContent="center" alignItems="center">
             <label>
               <Checkbox costs={costs} myRefs={myRefs} checked={checked} setChecked={setChecked} />
               <Span fontSize={[2, 3, 4]} ml={1}>

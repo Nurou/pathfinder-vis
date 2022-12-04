@@ -9,10 +9,6 @@ export const GlobalStyle = createGlobalStyle`
   }
 
 
-  pre {
-    color: white;
-  }
-
   .start{
     background-color: hsl(0, 11%, 88%);
 
@@ -23,9 +19,9 @@ export const GlobalStyle = createGlobalStyle`
 
   }
 
-  .regular {
+  /* .regular {
     background-color: hsl(0, 11%, 88%);
-  }
+  } */
 
   .wall {
     background-color: hsl(60, 5%, 50%);

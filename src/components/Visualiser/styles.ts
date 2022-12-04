@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Button = styled.button`
+export const Button = styled.button<{ main?: boolean; onClick: () => void }>`
   padding: ${(props) => (props.main ? '1.5rem' : '1rem')};
   margin: 0 0.5rem;
   font-family: 'Source Code Pro', sans-serif;

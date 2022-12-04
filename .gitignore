@@ -29,3 +29,6 @@ react-app-env.d.ts
 
 .vscode
 .pnpm-debug.log
+
+dist
+

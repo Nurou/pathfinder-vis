@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button } from './styles';
 import { bfs, dijkstras, gbfs, aStar } from '../../algorithms';
 import { IDynFunctions, TAnimationSpeed } from '../../types';

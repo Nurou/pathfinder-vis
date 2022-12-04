@@ -14,7 +14,7 @@ import {
   grid
 } from 'styled-system';
 
-export const Box = styled.div`
+export const Box = styled.div<any>`
   ${color}
   ${space}
   ${typography}
@@ -28,7 +28,7 @@ export const Box = styled.div`
   ${shadow}
   ${grid}
 `;
-export const Flex = styled.div`
+export const Flex = styled.div<any>`
   ${color}
   ${space}
   ${typography}

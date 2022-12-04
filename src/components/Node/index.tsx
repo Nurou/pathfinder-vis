@@ -41,11 +41,11 @@ export const GridNode = memo(
     useTraceUpdate({ row, col, onMouseDown, onMouseEnter, onMouseUp, myRefs });
     return (
       <NodeWrapper
-        ref={(el: HTMLDivElement) => handleRef(el, row, col, myRefs)}
+        ref={(el: HTMLButtonElement) => handleRef(el, row, col, myRefs)}
         onMouseDown={() => onMouseDown(row, col)}
         onMouseEnter={() => onMouseEnter(row, col)}
         onMouseUp={() => onMouseUp()}
-      />
+      ></NodeWrapper>
     );
   }
 );
