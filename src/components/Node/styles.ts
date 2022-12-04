@@ -5,6 +5,5 @@ export const NodeWrapper = styled<any>('td')`
   height: 30px;
 
   background: none;
-  border: 1px white ridge;
-  border-radius: 50%;
+  border-radius: 4px;
 `;

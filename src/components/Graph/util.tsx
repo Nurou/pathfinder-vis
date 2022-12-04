@@ -30,6 +30,8 @@ export const convertToType = (
   // target node
   const targetCell = myRefs!.current[`node-${row}-${col}`];
 
+  if (!targetCell) return;
+
   const alreadyOccupied = (targetCell: HTMLDivElement) => {
     return (
       targetCell.classList.contains('start') ||
@@ -228,7 +230,7 @@ export const createMaze = (
   };
 
   // add start and end nodes
-  if (SN_COORDS && EN_COORDS) {
+  if (Object.keys(myRefs.current).length !== 0 && SN_COORDS && EN_COORDS) {
     conversionType.current = 'start';
     convertToType(
       SN_COORDS.row,

@@ -1,20 +1,20 @@
-import React, { useState, useRef, useLayoutEffect, useEffect, RefObject, useCallback } from 'react';
-import Node from './data_structures/Node';
-import { Box, Span } from './components/Shared';
-import { Button } from './components/Visualiser/styles';
-import { IGridDimensions } from './types';
-import InfoDisplay from './components/InfoDisplay';
-import { setNodeNeighbors, populateGrid, clear, createMaze } from './components/Graph/util';
-import { useStickyState } from './hooks/useStickyState';
-import Description from './components/Description';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { details } from './algorithms/details';
-import ControlPanel from './components/ControlPanel';
 import Checkbox from './components/Checkbox';
-import { PathFinderSelector } from './components/PathFinderSelector';
+import ControlPanel from './components/ControlPanel';
+import Description from './components/Description';
 import { Graph } from './components/Graph/Graph';
+import { clear, createMaze, populateGrid, setNodeNeighbors } from './components/Graph/util';
+import InfoDisplay from './components/InfoDisplay';
+import { PathFinderSelector } from './components/PathFinderSelector';
+import { Box, Span } from './components/Shared';
 import Visualiser from './components/Visualiser';
+import { Button } from './components/Visualiser/styles';
 import { CustomMap } from './data_structures/Map';
+import Node from './data_structures/Node';
 import { useResizeObserver } from './hooks/useResizeObserver';
+import { useStickyState } from './hooks/useStickyState';
+import { IGridDimensions } from './types';
 
 const availablePathfinders = [
   { value: 'Bfs', label: 'Breadth-First Search' },
@@ -27,9 +27,12 @@ const App = () => {
   const [grid, setGrid] = useState<Node[][] | null>([]);
   const startNodeCoords = useRef(null);
   const endNodeCoords = useRef(null);
-  const [gridDimensions, setGridDimensions] = useState<IGridDimensions>({
-    rows: 10,
-    cols: 10
+  const [gridDimensions, setGridDimensions] = useState<IGridDimensions>(() => {
+    const width = document.body.getClientRects()[0].width;
+    return {
+      rows: 20,
+      cols: Math.round(width / 50)
+    };
   });
   const [mazeGenerated, setMazeGenerated] = useState<boolean>(false);
   const [costs, setCosts] = useState<Map<Node, number> | CustomMap<Node, number> | null>(null);
@@ -39,12 +42,25 @@ const App = () => {
   // this is here (and not in checkbox component) so that it can be unchecked when the grid is cleared
   const [checked, setChecked] = useState<boolean>(false);
 
-  const myRefs = useRef({});
+  let myRefs = useRef({});
   const conversionType = useRef('');
 
   // local storage items
   const [prevRun, setPrevRun] = useStickyState(null, 'previous_run');
   const [currentRun, setCurrentRun] = useStickyState(null, 'current_run');
+
+  useEffect(() => {
+    createMaze(
+      mazeGenerated,
+      grid,
+      myRefs,
+      gridDimensions,
+      conversionType,
+      startNodeCoords,
+      endNodeCoords,
+      setMazeGenerated
+    );
+  }, [gridDimensions]);
 
   /**
    * set the grid dimensions
@@ -52,15 +68,7 @@ const App = () => {
    * window.innerWidth
    * */
   useResizeObserver((dimensions) => {
-    if (dimensions.width < 450) {
-      setGridDimensions({ rows: 30, cols: 10 });
-    }
-    if (dimensions.width > 600) {
-      setGridDimensions({ rows: 20, cols: 15 });
-    }
-    if (dimensions.width > 900) {
-      setGridDimensions({ rows: 20, cols: 30 });
-    }
+    setGridDimensions({ rows: 20, cols: Math.round(dimensions.width / 55) });
   });
 
   // grid initialised after visual is rendered
@@ -73,7 +81,6 @@ const App = () => {
   }, [gridDimensions]);
 
   const handleGenerateMazeClick = () => {
-    console.log('generating maze');
     createMaze(
       mazeGenerated,
       grid,
@@ -90,14 +97,10 @@ const App = () => {
    *
    * @param all - if flag is present, the graph is completely cleared
    */
-  const clearGraph = (all?: true) => {
+  const clearGraph = (all: boolean = false) => {
     setChecked(false);
     clear(grid, myRefs, all);
   };
-
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  const canvas = canvasRef.current;
 
   return (
     <Box
@@ -118,6 +121,7 @@ const App = () => {
           myRefs={myRefs}
         />
       )}
+      <pre>{JSON.stringify(gridDimensions, null, 2)}</pre>
       {currentPathFinder && (
         <Description details={details[currentPathFinder]}>
           <PathFinderSelector
