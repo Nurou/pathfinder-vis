@@ -1,7 +1,12 @@
 import { createGlobalStyle } from 'styled-components';
+// import space mono from font source
 
 export const GlobalStyle = createGlobalStyle`
+  body {
+    font-family: 'Space Mono', sans-serif;
+    background-color: #ECEFF4
 
+  }
 
   .regular, .start, .end {
     background-color: #E5E9F0;

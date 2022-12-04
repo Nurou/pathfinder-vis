@@ -110,7 +110,6 @@ const App = () => {
       alignItems="center"
       justifyContent="center"
       overflow="hidden"
-      bg="#ECEFF4"
     >
       <InfoDisplay previous={prevRun} current={currentRun} />
       {grid && (
