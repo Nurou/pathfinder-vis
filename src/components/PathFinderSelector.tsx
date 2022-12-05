@@ -1,13 +1,13 @@
 import { Box } from './Shared';
 import React from 'react';
 
-interface IPathFinderProps {
+interface PathFinderProps {
   currentPathfinder: string;
-  setCurrentPathfinder: React.Dispatch<React.SetStateAction<string | null>>;
-  availablePathfinders: TPathFinderObject[];
+  setCurrentPathfinder: React.Dispatch<React.SetStateAction<string>>;
+  availablePathfinders: PathFinderObject[];
 }
 
-type TPathFinderObject = {
+type PathFinderObject = {
   value: string;
   label: string;
 };
@@ -16,7 +16,7 @@ type TPathFinderObject = {
  * Component for user to select the pathfinder to run
  * @param props
  */
-export const PathFinderSelector = (props: IPathFinderProps) => (
+export const PathFinderSelector = (props: PathFinderProps) => (
   <Box display="flex" flexDirection="column">
     <label htmlFor="algo-select">Choose a pathfinder</label>
     <select

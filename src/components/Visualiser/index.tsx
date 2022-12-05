@@ -1,33 +1,51 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Button } from './styles';
 import { bfs, dijkstras, gbfs, aStar } from '../../algorithms';
-import { IDynFunctions, TAnimationSpeed } from '../../types';
+import { DynamicFunctions, AnimationSpeed, Coordinates } from '../../types';
 import { animateVisits } from '../Animate';
 import SpeedSelector from '../SpeedSelector';
-import { IVisualiserProps } from '../../types';
+import { CustomMap } from '../../data_structures/Map';
+import GridNode from '../../data_structures/Node';
+
+interface VisualiserProps {
+  grid: GridNode[][];
+  startNodeCoords: React.MutableRefObject<Coordinates | null>;
+  endNodeCoords: React.MutableRefObject<Coordinates | null>;
+  gridCellDOMElementRefs: any;
+  currentRun: any;
+  setCurrentRun: React.Dispatch<any>;
+  setPrevRun: React.Dispatch<any>;
+  setCosts: React.Dispatch<
+    React.SetStateAction<Map<GridNode, number> | CustomMap<GridNode, number> | null>
+  >;
+  currentPathFinder?: string | null;
+}
 
 const Visualiser = ({
   grid,
   startNodeCoords,
   endNodeCoords,
-  myRefs,
+  gridCellDOMElementRefs: gridCellDOMElementRefs,
   currentPathFinder,
   currentRun,
   setCurrentRun,
   setPrevRun,
   setCosts
-}: IVisualiserProps) => {
+}: VisualiserProps) => {
   const [hasRan, setHasRan] = useState<boolean>(false);
-  const [visualisationSpeed, setVisualisationSpeed] = useState<TAnimationSpeed>('fast');
+  const [visualisationSpeed, setVisualisationSpeed] = useState<AnimationSpeed>('fast');
 
   /**
    * Enables individual algorithms to be run based on the name of the one currently selected
    */
-  const mapAlgoNameToAlgo: IDynFunctions = {
-    Bfs: () => bfs(grid!, startNodeCoords.current!, endNodeCoords.current!, myRefs),
-    Ucs: () => dijkstras(grid!, startNodeCoords.current!, endNodeCoords.current!, myRefs),
-    Gbfs: () => gbfs(grid!, startNodeCoords.current!, endNodeCoords.current!, myRefs),
-    aStar: () => aStar(grid!, startNodeCoords.current!, endNodeCoords.current!, myRefs)
+  const mapAlgoNameToAlgo: DynamicFunctions = {
+    Bfs: () => bfs(grid, startNodeCoords.current!, endNodeCoords.current!, gridCellDOMElementRefs),
+    Ucs: () =>
+      dijkstras(grid, startNodeCoords.current!, endNodeCoords.current!, gridCellDOMElementRefs),
+    Gbfs: () =>
+      gbfs(grid, startNodeCoords.current!, endNodeCoords.current!, gridCellDOMElementRefs),
+    aStar: () =>
+      aStar(grid, startNodeCoords.current!, endNodeCoords.current!, gridCellDOMElementRefs)
   };
 
   /**
@@ -59,7 +77,7 @@ const Visualiser = ({
         setCurrentRun(stats);
       }
 
-      animateVisits(visitedNodesInOrder, shortestPath, myRefs, visualisationSpeed);
+      animateVisits(visitedNodesInOrder, shortestPath, gridCellDOMElementRefs, visualisationSpeed);
       setCosts(costSoFar);
     }
   };

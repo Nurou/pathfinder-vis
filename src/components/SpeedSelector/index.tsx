@@ -1,11 +1,11 @@
 import React from 'react';
-import { TAnimationSpeed } from '../../types';
+import { AnimationSpeed } from '../../types';
 import { Box, Span } from '../Shared';
 
 export const SpeedSelector = ({
   setVisualisationSpeed
 }: {
-  setVisualisationSpeed: React.Dispatch<React.SetStateAction<TAnimationSpeed>>;
+  setVisualisationSpeed: React.Dispatch<React.SetStateAction<AnimationSpeed>>;
 }) => {
   /**
    * update animation speed to suit user preference
@@ -13,7 +13,7 @@ export const SpeedSelector = ({
    */
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const { value } = event.target;
-    setVisualisationSpeed(value as TAnimationSpeed);
+    setVisualisationSpeed(value as AnimationSpeed);
   };
 
   return (

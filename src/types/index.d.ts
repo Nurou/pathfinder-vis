@@ -1,63 +1,47 @@
 import { CustomMap } from './../data_structures/Map/index';
-import { Node } from './../data_structures/Node';
-export interface ICoordinates {
+import { GridNode } from './../data_structures/Node';
+export interface Coordinates {
   row: number;
   col: number;
 }
 
-export interface IGridDimensions {
+export type CoordToNodeDOMElementMap = Record<string, HTMLElement>;
+
+export interface GridDimensions {
   rows: number;
   cols: number;
 }
 
 export interface ReturnedStats {
-  visitedNodesInOrder: Node[];
-  shortestPath: Node[];
+  visitedNodesInOrder: GridNode[];
+  shortestPath: GridNode[];
   timer: number;
-  costSoFar: Map<Node, number> | CustomMap<Node, number>;
+  costSoFar: Map<GridNode, number> | CustomMap<GridNode, number>;
 }
 
-export interface IDynFunctions {
-  [key: string]: () => ReturnedStats;
-}
-
-export interface IStatItems {
+export type DynamicFunctions = Record<string, () => ReturnedStats>;
+export interface StatItems {
   pathfinder: string;
   shortestPathLength: number;
   timeTaken: number;
   totalMovementCost: number;
 }
 
-export interface IStatProps {
-  previous?: IStatItems;
-  current?: IStatItems;
-  children?: any;
+export interface StatProps {
+  previous?: StatItems;
+  current?: StatItems;
+  children?: JSX.Element;
 }
 
-export type TAnimationSpeed = 'fast' | 'medium' | 'slow';
+export type AnimationSpeed = 'fast' | 'medium' | 'slow';
 
-export interface IDetailsArray {
-  [k: string]: IDetails;
+export interface DetailsArray {
+  [k: string]: Details;
 }
 
-export interface IDetails {
+export interface Details {
   title: string;
   description: string;
   weighted: boolean;
   guarantee: boolean;
-}
-
-//TODO: add proper types in place of any
-export interface IVisualiserProps {
-  grid: Node[][] | null;
-  startNodeCoords: React.MutableRefObject<ICoordinates | null>;
-  endNodeCoords: React.MutableRefObject<ICoordinates | null>;
-  myRefs: any;
-  currentRun: any;
-  setCurrentRun: React.Dispatch<any>;
-  setPrevRun: React.Dispatch<any>;
-  setCosts: React.Dispatch<
-    React.SetStateAction<Map<Node, number> | CustomMap<Node, number> | null>
-  >;
-  currentPathFinder?: string | null;
 }

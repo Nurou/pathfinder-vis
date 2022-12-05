@@ -11,10 +11,10 @@ import { Box, Span } from './components/Shared';
 import Visualiser from './components/Visualiser';
 import { Button } from './components/Visualiser/styles';
 import { CustomMap } from './data_structures/Map';
-import Node from './data_structures/Node';
+import GridNode from './data_structures/Node';
 import { useResizeObserver } from './hooks/useResizeObserver';
 import { useStickyState } from './hooks/useStickyState';
-import { IGridDimensions } from './types';
+import { Coordinates, CoordToNodeDOMElementMap, GridDimensions } from './types';
 
 const availablePathfinders = [
   { value: 'Bfs', label: 'Breadth-First Search' },
@@ -24,10 +24,11 @@ const availablePathfinders = [
 ];
 
 const App = () => {
-  const [grid, setGrid] = useState<Node[][] | null>([]);
-  const startNodeCoords = useRef(null);
-  const endNodeCoords = useRef(null);
-  const [gridDimensions, setGridDimensions] = useState<IGridDimensions>(() => {
+  const [grid, setGrid] = useState<GridNode[][] | null>(null);
+  const startNodeCoords = useRef<Coordinates>(null);
+  const endNodeCoords = useRef<Coordinates>(null);
+  const [gridDimensions, setGridDimensions] = useState<GridDimensions>(() => {
+    // initialise grid dimensions based on device width
     const width = document.body.getClientRects()[0].width;
     return {
       rows: 20,
@@ -35,31 +36,34 @@ const App = () => {
     };
   });
   const [mazeGenerated, setMazeGenerated] = useState<boolean>(false);
-  const [costs, setCosts] = useState<Map<Node, number> | CustomMap<Node, number> | null>(null);
-  const [currentPathFinder, setCurrentPathFinder] = useState<string | null>(
-    availablePathfinders[0].value
+  const [costs, setCosts] = useState<Map<GridNode, number> | CustomMap<GridNode, number> | null>(
+    null
   );
+  const [currentPathFinder, setCurrentPathFinder] = useState<string>(availablePathfinders[0].value);
   // this is here (and not in checkbox component) so that it can be unchecked when the grid is cleared
   const [checked, setChecked] = useState<boolean>(false);
 
-  let myRefs = useRef({});
-  const conversionType = useRef('');
+  const gridCellDOMElementRefs = useRef<CoordToNodeDOMElementMap>(null);
+  const conversionType = useRef<string>('');
 
   // local storage items
-  const [prevRun, setPrevRun] = useStickyState(null, 'previous_run');
-  const [currentRun, setCurrentRun] = useStickyState(null, 'current_run');
+  const [prevRun, setPrevRun] = useStickyState(null, 'previousRun');
+  const [currentRun, setCurrentRun] = useStickyState(null, 'currentRun');
 
+  // set up board on initial render
   useEffect(() => {
-    createMaze(
-      mazeGenerated,
-      grid,
-      myRefs,
-      gridDimensions,
-      conversionType,
-      startNodeCoords,
-      endNodeCoords,
-      setMazeGenerated
-    );
+    if (grid) {
+      createMaze(
+        mazeGenerated,
+        grid,
+        gridCellDOMElementRefs,
+        gridDimensions,
+        conversionType,
+        startNodeCoords,
+        endNodeCoords,
+        setMazeGenerated
+      );
+    }
   }, [gridDimensions]);
 
   /**
@@ -81,16 +85,18 @@ const App = () => {
   }, [gridDimensions]);
 
   const handleGenerateMazeClick = () => {
-    createMaze(
-      mazeGenerated,
-      grid,
-      myRefs,
-      gridDimensions,
-      conversionType,
-      startNodeCoords,
-      endNodeCoords,
-      setMazeGenerated
-    );
+    if (grid) {
+      createMaze(
+        mazeGenerated,
+        grid,
+        gridCellDOMElementRefs,
+        gridDimensions,
+        conversionType,
+        startNodeCoords,
+        endNodeCoords,
+        setMazeGenerated
+      );
+    }
   };
 
   /**
@@ -99,7 +105,9 @@ const App = () => {
    */
   const clearGraph = (all: boolean = false) => {
     setChecked(false);
-    clear(grid, myRefs, all);
+    if (grid && gridCellDOMElementRefs.current != null) {
+      clear(grid, gridCellDOMElementRefs, all);
+    }
   };
 
   return (
@@ -118,7 +126,7 @@ const App = () => {
           conversionType={conversionType}
           startNodeCoords={startNodeCoords}
           endNodeCoords={endNodeCoords}
-          myRefs={myRefs}
+          gridCellDOMElementRefs={gridCellDOMElementRefs}
         />
       )}
       {currentPathFinder && (
@@ -136,7 +144,6 @@ const App = () => {
         alignItems="center"
         width="100%"
         p={5}
-        bg="#E2E8F0"
       >
         <Box>
           <Button onClick={handleGenerateMazeClick}>
@@ -147,27 +154,34 @@ const App = () => {
           <Button onClick={() => (conversionType.current = 'wall')}>Add Walls </Button>
           <Button onClick={() => (conversionType.current = 'grass')}>Add Grass</Button>
         </Box>
-        <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
-          <Visualiser
-            grid={grid}
-            startNodeCoords={startNodeCoords}
-            endNodeCoords={endNodeCoords}
-            myRefs={myRefs}
-            currentPathFinder={currentPathFinder!}
-            currentRun={currentRun}
-            setCurrentRun={setCurrentRun}
-            setPrevRun={setPrevRun}
-            setCosts={setCosts}
-          />
-          <Box as="label" display="flex" justifyContent="center" alignItems="center">
-            <label>
-              <Checkbox costs={costs} myRefs={myRefs} checked={checked} setChecked={setChecked} />
-              <Span fontSize={[2, 3, 4]} ml={1}>
-                Show Distances
-              </Span>
-            </label>
+        {grid && (
+          <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
+            <Visualiser
+              grid={grid}
+              startNodeCoords={startNodeCoords}
+              endNodeCoords={endNodeCoords}
+              gridCellDOMElementRefs={gridCellDOMElementRefs}
+              currentPathFinder={currentPathFinder!}
+              currentRun={currentRun}
+              setCurrentRun={setCurrentRun}
+              setPrevRun={setPrevRun}
+              setCosts={setCosts}
+            />
+            <Box as="label" display="flex" justifyContent="center" alignItems="center">
+              <label>
+                <Checkbox
+                  costs={costs}
+                  gridCellDOMElementRefs={gridCellDOMElementRefs}
+                  checked={checked}
+                  setChecked={setChecked}
+                />
+                <Span fontSize={[2, 3, 4]} ml={1}>
+                  Show Distances
+                </Span>
+              </label>
+            </Box>
           </Box>
-        </Box>
+        )}
         <Box display="flex" justifyContent="center" alignItems="center">
           <Button onClick={() => clearGraph()}>Reset Pathfinder</Button>
           <Button onClick={() => clearGraph(true)}>Clear All</Button>

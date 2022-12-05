@@ -1,7 +1,7 @@
-import { ICoordinates } from '../../types';
+import { Coordinates } from '../../types';
 import { PriorityQueue } from '../../data_structures/PriorityQueue';
 import { checkArgs, reconstructPath, isWall, getMovementCost, heuristic } from '../util';
-import Node from '../../data_structures/Node';
+import GridNode from '../../data_structures/Node';
 import { CustomMap } from '../../data_structures/Map';
 
 /**
@@ -12,36 +12,36 @@ import { CustomMap } from '../../data_structures/Map';
  * @param {object} endNodeCoords
  */
 export const gbfs = (
-  grid: Node[][],
-  startNodeCoords: ICoordinates,
-  endNodeCoords: ICoordinates,
-  myRefs: any
+  grid: GridNode[][],
+  startNodeCoords: Coordinates,
+  endNodeCoords: Coordinates,
+  gridCellDOMElementRefs: any
 ) => {
   checkArgs(grid, startNodeCoords, endNodeCoords);
 
-  const visitedNodesInOrder: Node[] = [];
+  const visitedNodesInOrder: GridNode[] = [];
 
   // get logical start and end nodes by coordinates
-  const startNode: Node = grid[startNodeCoords.row][startNodeCoords.col];
-  const endNode: Node = grid[endNodeCoords.row][endNodeCoords.col];
+  const startNode: GridNode = grid[startNodeCoords.row][startNodeCoords.col];
+  const endNode: GridNode = grid[endNodeCoords.row][endNodeCoords.col];
 
   // clock performance
   let timer: number = -performance.now();
 
-  const frontier = new PriorityQueue((a, b) => a[1] < b[1]);
+  const frontier = new PriorityQueue<[GridNode, number]>((a, b) => a[1] < b[1]);
   frontier.push([startNode, 0]);
 
-  const cameFrom = new CustomMap<Node, Node | null>();
+  const cameFrom = new CustomMap<GridNode, GridNode | null>();
   cameFrom.put(startNode, null);
 
   // cost tracked comparison purposes only - does not affect heuristic
-  const costSoFar = new CustomMap<Node, number>();
+  const costSoFar = new CustomMap<GridNode, number>();
   costSoFar.put(startNode, 0);
 
   // keep on checking the queue until it's empty
   while (frontier && frontier.size()) {
     // pop queue
-    const current: Node | undefined = frontier.pop()[0];
+    const current: GridNode | undefined = frontier.pop()[0];
 
     // early exit conditional
     if (current === endNode) {
@@ -51,7 +51,7 @@ export const gbfs = (
     if (current?.neighbors) {
       for (const neighbor of current.neighbors) {
         // neighbor can be visited once only
-        if (isWall(neighbor, myRefs) || cameFrom.get(neighbor)) continue;
+        if (isWall(neighbor, gridCellDOMElementRefs) || cameFrom.get(neighbor)) continue;
 
         let currentLength = visitedNodesInOrder.length;
         visitedNodesInOrder[currentLength] = neighbor;
@@ -63,7 +63,7 @@ export const gbfs = (
         cameFrom.put(neighbor, current);
 
         // movement costs not accounted for by Bfs - tracked for comparison purposes
-        const newCost = costSoFar.get(current)! + getMovementCost(neighbor, myRefs);
+        const newCost = costSoFar.get(current)! + getMovementCost(neighbor, gridCellDOMElementRefs);
         costSoFar.put(neighbor, newCost);
       }
     }

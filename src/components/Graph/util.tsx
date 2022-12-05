@@ -1,7 +1,10 @@
-import { ICoordinates, IGridDimensions } from '../../types';
-import Node from '../../data_structures/Node';
-import { isStartNode, isEndNode } from '../../algorithms/util';
-import { CustomMap } from '../../data_structures/Map';
+import { isEndNode, isStartNode } from '../../algorithms/util';
+import GridNode from '../../data_structures/Node';
+import {
+  Coordinates,
+  CoordToNodeDOMElementMap,
+  GridDimensions as GridDimensions
+} from '../../types';
 
 const END_NODE_SVG =
   '<svg version="1.1" id="Icons" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 32 32" style="enable-background:new 0 0 32 32;" xml:space="preserve"><style type="text/css">.st0{fill:none;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}.st1{fill:none;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}.st2{fill:none;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:5.2066,0;}</style><polyline class="st0" points="3,29 5,29 16,18 27,29 29,29 "/><path class="st0" d="M11,23L11,23c3.1,1.8,6.9,1.8,10,0l0,0"/><line class="st0" x1="16" y1="4" x2="16" y2="18"/><rect x="16" y="4" class="st0" width="10" height="9"/><polyline class="st0" points="26,7 30,7 30,16 21,16 26,13 "/></svg>';
@@ -23,12 +26,12 @@ export const convertToType = (
   row: number,
   col: number,
   conversionType: React.MutableRefObject<string>,
-  startNodeCoords: React.MutableRefObject<ICoordinates>,
-  endNodeCoords: React.MutableRefObject<ICoordinates>,
-  myRefs: React.MutableRefObject<any>
+  startNodeCoords: React.MutableRefObject<Coordinates>,
+  endNodeCoords: React.MutableRefObject<Coordinates>,
+  gridCellDOMElementRefs: React.MutableRefObject<any>
 ): void => {
   // target node
-  const targetCell = myRefs!.current[`node-${row}-${col}`];
+  const targetCell = gridCellDOMElementRefs.current[`node-${row}-${col}`];
 
   if (!targetCell) return;
 
@@ -52,7 +55,9 @@ export const convertToType = (
     if (startNodeCoords.current) {
       // get current start node and convert back to regular
       const currentStartNode =
-        myRefs!.current[`node-${startNodeCoords.current.row}-${startNodeCoords.current.col}`];
+        gridCellDOMElementRefs!.current[
+          `node-${startNodeCoords.current.row}-${startNodeCoords.current.col}`
+        ];
       currentStartNode.classList.remove('start');
       currentStartNode.classList.add('regular');
       currentStartNode.innerHTML = null;
@@ -71,18 +76,18 @@ export const convertToType = (
     if (endNodeCoords.current) {
       // get current end node and remove class
       const currentEndNode =
-        myRefs!.current[`node-${endNodeCoords.current.row}-${endNodeCoords.current.col}`];
+        gridCellDOMElementRefs!.current[
+          `node-${endNodeCoords.current.row}-${endNodeCoords.current.col}`
+        ];
 
       currentEndNode.classList.remove('end');
       currentEndNode.classList.add('regular');
       currentEndNode.innerHTML = null;
     }
 
-    // update end node
     targetCell.classList.add('end');
     endNodeCoords.current = { row: row, col: col };
 
-    // add icon
     addIcon(targetCell, 'end');
 
     return;
@@ -93,24 +98,28 @@ export const convertToType = (
 
 /**
  * covers each of the grid cells in regular terrain
- * @param myRefs
+ * @param gridCellDOMElementRefs
  */
-export const coverInTerrain = (myRefs: React.MutableRefObject<any>): void => {
-  Object.values(myRefs!.current).forEach((el: any) => {
+export const coverInTerrain = (
+  gridCellDOMElementRefs: React.MutableRefObject<Record<string, HTMLElement> | null>
+): void => {
+  if (!gridCellDOMElementRefs.current) return;
+
+  Object.values(gridCellDOMElementRefs.current).forEach((el: any) => {
     if (!el.classList.contains('start') && !el.classList.contains('end')) {
       el.classList.add('regular');
     }
   });
 };
 
-export const populateGrid = (gridDimensions: IGridDimensions): Node[][] => {
-  const grid: Node[][] = [];
+export const populateGrid = (gridDimensions: GridDimensions): GridNode[][] => {
+  const grid: GridNode[][] = [];
 
   for (let row = 0; row < gridDimensions.rows; row++) {
-    const currentRow: Node[] = [];
+    const currentRow: GridNode[] = [];
     for (let col = 0; col < gridDimensions.cols; col++) {
       // add a node for each row column
-      const newNode = new Node(row, col);
+      const newNode = new GridNode(row, col);
       currentRow.push(newNode);
     }
     // add the whole row
@@ -121,14 +130,18 @@ export const populateGrid = (gridDimensions: IGridDimensions): Node[][] => {
 };
 
 export const addWallsRandomly = (
-  grid: Node[][] | null,
-  myRefs: React.MutableRefObject<any>
+  grid: GridNode[][] | null,
+  gridCellDOMElementRefs: React.MutableRefObject<any>
 ): void => {
   for (let row = 0; row < grid!.length; row++) {
     for (let col = 0; col < grid![row].length; col++) {
       const randomBoolean = Math.random() >= 0.75;
-      if (randomBoolean && !isStartNode(row, col, myRefs) && !isEndNode(row, col, myRefs)) {
-        myRefs.current[`node-${row}-${col}`].classList.add('wall');
+      if (
+        randomBoolean &&
+        !isStartNode(row, col, gridCellDOMElementRefs) &&
+        !isEndNode(row, col, gridCellDOMElementRefs)
+      ) {
+        gridCellDOMElementRefs.current[`node-${row}-${col}`].classList.add('wall');
       }
     }
   }
@@ -136,9 +149,9 @@ export const addWallsRandomly = (
 
 /**
  * register neighbors for each node
- * @param {Node[][]} grid
+ * @param {GridNode[][]} grid
  */
-export const setNodeNeighbors = (grid: Node[][]): void => {
+export const setNodeNeighbors = (grid: GridNode[][]): void => {
   for (const row of grid) {
     for (const node of row) {
       node.setNeighbors(grid);
@@ -156,11 +169,14 @@ export const getRandomArbitrary = (min: number, max: number): number => {
 /**
  * Enables movement costs to be displayed on the grid
  * @param costSoFar
- * @param myRefs
+ * @param gridCellDOMElementRefs
  */
-export const displayDistances = (costSoFar: any, myRefs: React.MutableRefObject<any>): void => {
+export const displayDistances = (
+  costSoFar: any,
+  gridCellDOMElementRefs: React.MutableRefObject<any>
+): void => {
   [...costSoFar].forEach((mapping) => {
-    const domNode = myRefs.current[`node-${mapping[0].row}-${mapping[0].col}`];
+    const domNode = gridCellDOMElementRefs.current[`node-${mapping[0].row}-${mapping[0].col}`];
     if (!domNode.classList.contains('start') && !domNode.classList.contains('end')) {
       domNode.innerHTML = domNode.innerHTML ? null : mapping[1];
     }
@@ -168,21 +184,22 @@ export const displayDistances = (costSoFar: any, myRefs: React.MutableRefObject<
 };
 
 /**
- * clears the graph/grid so algorithm can be run again or a different one
+ * clears the grid for algo re-run
  * @param {object} grid - 2D array of the logical grid nodes in their current state (after algorithm has run)
- * @param {object} myRefs
+ * @param {object} gridCellDOMElementRefs - refs for all grid DOM elements
  */
 export const clear = (
-  grid: Node[][] | null,
-  myRefs: React.MutableRefObject<any>,
+  grid: GridNode[][],
+  gridCellDOMElementRefs: React.RefObject<CoordToNodeDOMElementMap>,
   all?: boolean
 ): void => {
-  if (!grid) return;
   for (const row of grid) {
     for (const node of row) {
-      const domNode = myRefs.current[`node-${node.row}-${node.col}`];
-      if (!isNaN(domNode.innerHTML)) {
-        domNode.innerHTML = null;
+      const domNode = gridCellDOMElementRefs.current?.[`node-${node.row}-${node.col}`];
+      if (!domNode) return;
+
+      if (!isNaN(parseInt(domNode.innerHTML))) {
+        domNode.innerHTML = '';
       }
       // when clearing the whole graph
       if (all) {
@@ -200,37 +217,40 @@ export const clear = (
 };
 
 /**
- * Generates a random maze using walls and positions both the start and end nodes on the grid
+ * Generates a random maze using walls and positions
+ *  both the start and end nodes on the grid
  */
 export const createMaze = (
-  mazeGenerated: boolean,
-  grid: Node[][] | null,
-  myRefs: React.MutableRefObject<any>,
-  gridDimensions: IGridDimensions,
+  mazeIsGenerated: boolean,
+  grid: GridNode[][],
+  gridCellDOMElementRefs: React.MutableRefObject<CoordToNodeDOMElementMap | null>,
+  gridDimensions: GridDimensions,
   conversionType: React.MutableRefObject<string>,
   startNodeCoords: React.MutableRefObject<any>,
   endNodeCoords: React.MutableRefObject<any>,
   setMazeGenerated: React.Dispatch<React.SetStateAction<boolean>>
 ): void => {
+  if (!gridCellDOMElementRefs.current) return;
+
   // if maze already generated, clear previous
-  if (mazeGenerated) {
-    clear(grid, myRefs, true);
+  if (mazeIsGenerated) {
+    clear(grid, gridCellDOMElementRefs, true);
   }
 
   // restrict to LHS of grid
-  const SN_COORDS: ICoordinates = {
+  const SN_COORDS: Coordinates = {
     row: getRandomArbitrary(0, gridDimensions!.rows),
     col: getRandomArbitrary(0, gridDimensions!.cols / 2)
   };
 
   // restrict to RHS of grid
-  const EN_COORDS: ICoordinates = {
+  const EN_COORDS: Coordinates = {
     row: getRandomArbitrary(0, gridDimensions!.rows),
     col: getRandomArbitrary(gridDimensions!.cols / 2, gridDimensions!.cols)
   };
 
   // add start and end nodes
-  if (Object.keys(myRefs.current).length !== 0 && SN_COORDS && EN_COORDS) {
+  if (Object.keys(gridCellDOMElementRefs.current).length !== 0 && SN_COORDS && EN_COORDS) {
     conversionType.current = 'start';
     convertToType(
       SN_COORDS.row,
@@ -238,7 +258,7 @@ export const createMaze = (
       conversionType,
       startNodeCoords,
       endNodeCoords,
-      myRefs
+      gridCellDOMElementRefs
     );
     conversionType.current = 'end';
     convertToType(
@@ -247,11 +267,11 @@ export const createMaze = (
       conversionType,
       startNodeCoords,
       endNodeCoords,
-      myRefs
+      gridCellDOMElementRefs
     );
   }
 
-  addWallsRandomly(grid, myRefs);
+  addWallsRandomly(grid, gridCellDOMElementRefs);
 
   setMazeGenerated(true);
 };

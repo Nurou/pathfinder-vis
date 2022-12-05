@@ -1,11 +1,10 @@
-// import { Coordinates } from '../../types';
 /**
- * Represents a logical graph/grid node
+ * Represents a logical grid node
  */
-export class Node {
+export class GridNode {
   row: number;
   col: number;
-  neighbors: any;
+  neighbors: GridNode[] | null;
 
   /**
    *
@@ -23,7 +22,7 @@ export class Node {
    * Neighbor nodes are those that are located directly to the right, left, above, or below the node in the grid
    * @param {object} grid
    */
-  setNeighbors(grid: Node[][]): void {
+  setNeighbors(grid: GridNode[][]): void {
     const neighbors = [];
     let index = 0;
     if (this.row > 0) {
@@ -46,7 +45,7 @@ export class Node {
     this.neighbors = neighbors;
   }
 
-  getNeighbors(): Node[] | null {
+  getNeighbors(): GridNode[] | null {
     return this.neighbors;
   }
 
@@ -55,4 +54,4 @@ export class Node {
   }
 }
 
-export default Node;
+export default GridNode;

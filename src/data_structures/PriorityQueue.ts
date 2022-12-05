@@ -13,11 +13,13 @@ const parent = (i: number) => ((i + 1) >>> 1) - 1;
 const left = (i: number) => (i << 1) + 1;
 const right = (i: number) => (i + 1) << 1;
 
-export class PriorityQueue {
-  heap: any[];
-  comparator: (a: any, b: any) => boolean;
+type Comparator<T> = (a: T, b: T) => boolean;
 
-  constructor(comparator = (a: any, b: any) => a > b) {
+export class PriorityQueue<T> {
+  heap: T[];
+  comparator: Comparator<T>;
+
+  constructor(comparator: Comparator<T>) {
     this.heap = [];
     this.comparator = comparator;
   }
@@ -34,7 +36,7 @@ export class PriorityQueue {
     return this.heap[top];
   }
 
-  push(...values: any[]) {
+  push(...values: T[]) {
     for (let index = 0; index < values.length; index++) {
       let currentLength = this.heap.length;
       // simulate Array.prototype push method
@@ -61,7 +63,7 @@ export class PriorityQueue {
     this.siftDown();
     return poppedValue;
   }
-  replace(value: any) {
+  replace(value: T) {
     const replacedValue = this.peek();
     this.heap[top] = value;
     this.siftDown();

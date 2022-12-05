@@ -1,7 +1,7 @@
-import { ICoordinates } from '../../types';
+import { Coordinates } from '../../types';
 import { PriorityQueue } from '../../data_structures/PriorityQueue';
 import { checkArgs, reconstructPath, isWall, getMovementCost, heuristic } from '../util';
-import Node from '../../data_structures/Node';
+import Node, { GridNode } from '../../data_structures/Node';
 import { CustomMap } from '../../data_structures/Map';
 
 /**
@@ -13,8 +13,8 @@ import { CustomMap } from '../../data_structures/Map';
  */
 export const aStar = (
   grid: Node[][],
-  startNodeCoords: ICoordinates,
-  endNodeCoords: ICoordinates,
+  startNodeCoords: Coordinates,
+  endNodeCoords: Coordinates,
   myRefs: any
 ) => {
   checkArgs(grid, startNodeCoords, endNodeCoords);
@@ -28,7 +28,7 @@ export const aStar = (
   // clock performance
   let timer: number = -performance.now();
 
-  const frontier = new PriorityQueue((a, b) => a[1] < b[1]);
+  const frontier = new PriorityQueue<[GridNode, number]>((a, b) => a[1] < b[1]);
   frontier.push([startNode, 0]);
   console.log('\nInitial contents:');
   console.log(frontier.peek()[0]); //=>
