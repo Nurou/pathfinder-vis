@@ -2,11 +2,9 @@
 
 The goal is to implement and compare the execution of some common pathfinder algorithms. The pathfinders operate on a graph of interconnected nodes. The graph in this project is represented by a 2D array that forms a grid.
 
-As for the traversal of nodes and figuring out the shortest path, implementations of a queue and priority queue are used since these are more performant in comparison to using a regular array.
+For node traversal and calculating the shortest path, queue and priority queue implementations have been used since these are more performant in comparison to a using a standard array.
 
-JavaScript maps and arrays will be used throughout the program to hold variables and mappings. Built in array methods may eventually be replaced by custom ones if necessary.
-
-The algorithms were chosen due to their prevalence and my personal familiarity with them.
+JavaScript maps and arrays are used throughout the program to hold variables and mappings. Built-in array methods may eventually be replaced by custom ones if necessary.
 
 ## Data Structures
 
