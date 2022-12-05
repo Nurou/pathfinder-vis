@@ -1,6 +1,6 @@
-import { IDetailsArray } from './../types/index.d';
+import { DetailsArray } from './../types/index.d';
 
-export const details: IDetailsArray = {
+export const details: DetailsArray = {
   Bfs: {
     title: 'Breadth-first Search',
     description: 'Explores equally in all directions',

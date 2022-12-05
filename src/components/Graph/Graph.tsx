@@ -1,30 +1,30 @@
 import React, { memo, useCallback, useEffect } from 'react';
-import Node from '../../data_structures/Node';
+import GridNode from '../../data_structures/Node';
 import { TableGrid, GridRow } from './styles';
-import { GridNode } from '../Node';
+import { NodeComponent } from '../Node';
 import { useTraceUpdate } from '../../hooks/useTraceUpdate';
 import { coverInTerrain, convertToType } from './util';
 
-interface IGridProps {
-  grid: Node[][];
+interface GridProps {
+  grid: GridNode[][];
   conversionType: any;
   startNodeCoords: any;
   endNodeCoords: any;
-  myRefs: React.MutableRefObject<any>;
+  gridCellDOMElementRefs: React.MutableRefObject<any>;
 }
 
 /**
  * Renders the logical nodes as div elements
  */
 
-export const Graph = memo((props: IGridProps): JSX.Element => {
+export const Graph = memo((props: GridProps): JSX.Element => {
   useTraceUpdate(props);
 
   // setState not used due to avoid unnecessary grid re-renders
   let mouseIsPressed = false;
 
   useEffect(() => {
-    props.myRefs && coverInTerrain(props.myRefs);
+    props.gridCellDOMElementRefs && coverInTerrain(props.gridCellDOMElementRefs);
   }, []);
 
   const handleConversion = useCallback((row: number, col: number) => {
@@ -34,7 +34,7 @@ export const Graph = memo((props: IGridProps): JSX.Element => {
       props.conversionType,
       props.startNodeCoords,
       props.endNodeCoords,
-      props.myRefs!
+      props.gridCellDOMElementRefs!
     );
   }, []);
 
@@ -69,16 +69,16 @@ export const Graph = memo((props: IGridProps): JSX.Element => {
   return (
     <TableGrid>
       <tbody>
-        {props.grid.map((row: Node[], rowIdx: number) => (
+        {props.grid.map((row: GridNode[], rowIdx: number) => (
           <GridRow key={rowIdx} columns={props.grid[0].length}>
-            {row.map((node: Node) => {
+            {row.map((node: GridNode) => {
               const { row, col } = node;
               return (
-                <GridNode
+                <NodeComponent
                   key={`${row}-${col}`}
                   col={col}
                   row={row}
-                  myRefs={props.myRefs}
+                  gridCellDOMElementRefs={props.gridCellDOMElementRefs}
                   onMouseEnter={(row, col) => handleMouseEnter(row, col)}
                   onMouseDown={(row, col) => handleMouseDown(row, col)}
                   onMouseUp={() => handleMouseUp()}

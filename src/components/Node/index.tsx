@@ -22,15 +22,15 @@ const handleRef = (
   el: HTMLButtonElement,
   row: number,
   col: number,
-  myRefs: React.MutableRefObject<any>
+  gridCellDOMElementRefs: React.MutableRefObject<any>
 ) => {
   // get existing refs
-  const newRefs = { ...myRefs.current };
+  const newRefs = { ...gridCellDOMElementRefs.current };
 
   // add ref to new element
   newRefs[`node-${row}-${col}`] = el;
 
-  myRefs.current = newRefs;
+  gridCellDOMElementRefs.current = newRefs;
 };
 
 type NodeProps = {
@@ -39,15 +39,15 @@ type NodeProps = {
   onMouseDown: (row: number, col: number) => void;
   onMouseEnter: (row: number, col: number) => void;
   onMouseUp: () => void;
-  myRefs: React.MutableRefObject<any>;
+  gridCellDOMElementRefs: React.MutableRefObject<any>;
 };
 
-export const GridNode = memo(
-  ({ row, col, onMouseDown, onMouseEnter, onMouseUp, myRefs }: NodeProps) => {
-    useTraceUpdate({ row, col, onMouseDown, onMouseEnter, onMouseUp, myRefs });
+export const NodeComponent = memo(
+  ({ row, col, onMouseDown, onMouseEnter, onMouseUp, gridCellDOMElementRefs }: NodeProps) => {
+    useTraceUpdate({ row, col, onMouseDown, onMouseEnter, onMouseUp, gridCellDOMElementRefs });
     return (
       <NodeWrapper
-        ref={(el: HTMLButtonElement) => handleRef(el, row, col, myRefs)}
+        ref={(el: HTMLButtonElement) => handleRef(el, row, col, gridCellDOMElementRefs)}
         onMouseDown={() => onMouseDown(row, col)}
         onMouseEnter={() => onMouseEnter(row, col)}
         onMouseUp={() => onMouseUp()}

@@ -1,6 +1,6 @@
 import { CustomMap } from './../data_structures/Map/index';
-import { ICoordinates } from '../types';
-import { Node } from '../data_structures/Node';
+import { Coordinates } from '../types';
+import { GridNode } from '../data_structures/Node';
 
 /**
  *
@@ -9,9 +9,9 @@ import { Node } from '../data_structures/Node';
  * @param endNodeCoords
  */
 export const checkArgs = (
-  grid: Node[][],
-  startNodeCoords: ICoordinates,
-  endNodeCoords: ICoordinates
+  grid: GridNode[][],
+  startNodeCoords: Coordinates,
+  endNodeCoords: Coordinates
 ) => {
   if (!grid || !startNodeCoords || !endNodeCoords) {
     throw new Error('Missing arguments!');
@@ -42,12 +42,12 @@ export const checkArgs = (
  * @param {number} endNode
  */
 export const reconstructPath = (
-  startNode: Node,
-  endNode: Node,
-  cameFrom?: CustomMap<Node, Node | null> | Map<Node, Node>
+  startNode: GridNode,
+  endNode: GridNode,
+  cameFrom?: CustomMap<GridNode, GridNode | null> | Map<GridNode, GridNode>
 ) => {
   // path starts out empty
-  const path: Node[] = [];
+  const path: GridNode[] = [];
 
   // end node was reached
   if (cameFrom?.get(endNode) !== undefined) {
@@ -69,29 +69,29 @@ export const reconstructPath = (
   return path;
 };
 
-export const isStartNode = (row: number, col: number, myRefs: any): boolean => {
-  const nodeClassList = myRefs.current[`node-${row}-${col}`].classList;
+export const isStartNode = (row: number, col: number, gridCellDOMElementRefs: any): boolean => {
+  const nodeClassList = gridCellDOMElementRefs.current[`node-${row}-${col}`].classList;
   return nodeClassList.contains('start');
 };
 
-export const isEndNode = (row: number, col: number, myRefs: any): boolean => {
-  const nodeClassList = myRefs.current[`node-${row}-${col}`].classList;
+export const isEndNode = (row: number, col: number, gridCellDOMElementRefs: any): boolean => {
+  const nodeClassList = gridCellDOMElementRefs.current[`node-${row}-${col}`].classList;
   return nodeClassList.contains('end');
 };
 
-export const isGrass = (row: number, col: number, myRefs: any): boolean => {
-  const nodeClassList = myRefs.current[`node-${row}-${col}`].classList;
+export const isGrass = (row: number, col: number, gridCellDOMElementRefs: any): boolean => {
+  const nodeClassList = gridCellDOMElementRefs.current[`node-${row}-${col}`].classList;
   return nodeClassList.contains('grass');
 };
 
 /**
  *
  * @param node - for coordinates
- * @param myRefs
+ * @param gridCellDOMElementRefs
  */
 
-export const isWall = (node: Node, myRefs: any): boolean => {
-  const nodeClassList = myRefs!.current[`node-${node.row}-${node.col}`].classList;
+export const isWall = (node: GridNode, gridCellDOMElementRefs: any): boolean => {
+  const nodeClassList = gridCellDOMElementRefs.current[`node-${node.row}-${node.col}`]?.classList;
 
   // for test/mocking
   if (typeof nodeClassList.contains == undefined || nodeClassList.length === 0) return false;
@@ -102,13 +102,13 @@ export const isWall = (node: Node, myRefs: any): boolean => {
 /**
  * returns the cost of traversing the potential neighbor
  * @param node
- * @param myRefs
+ * @param gridCellDOMElementRefs
  */
-export const getMovementCost = (node: Node, myRefs: any): number => {
+export const getMovementCost = (node: GridNode, gridCellDOMElementRefs: any): number => {
   const GRASS_COST = 5;
   const TERRAIN_COST = 1;
 
-  const nodeClassList = myRefs!.current[`node-${node.row}-${node.col}`].classList;
+  const nodeClassList = gridCellDOMElementRefs!.current[`node-${node.row}-${node.col}`].classList;
 
   // for test/mocking
   if (typeof nodeClassList.contains == undefined || nodeClassList.length === 0) return 0;
@@ -121,7 +121,7 @@ export const getMovementCost = (node: Node, myRefs: any): number => {
  * @param a
  * @param b
  */
-export const heuristic = (a: Node, b: Node): number => {
+export const heuristic = (a: GridNode, b: GridNode): number => {
   let xDist = a.col - b.col;
   let yDist = a.row - b.row;
 

@@ -1,6 +1,6 @@
 import { beforeAll, expect, test } from 'vitest';
 import { dijkstras } from '.';
-import { Node } from '../../data_structures/Node';
+import { GridNode } from '../../data_structures/Node';
 import { setNodeNeighbors } from '../../components/Graph/util';
 
 const grid: any = [];
@@ -14,7 +14,7 @@ beforeAll(() => {
     const currentRow = [];
     for (let col = 0; col < GRID_COLS; col++) {
       // add a node for each row column
-      const newNode = new Node(row, col);
+      const newNode = new GridNode(row, col);
       currentRow.push(newNode);
       mockRefs.current[`node-${row}-${col}`] = { classList: [] };
     }

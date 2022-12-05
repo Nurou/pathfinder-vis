@@ -1,5 +1,8 @@
 lockfileVersion: 5.3
 
+overrides:
+  '@types/react': ^18.0.26
+
 specifiers:
   '@fontsource/space-mono': ^4.5.10
   '@testing-library/jest-dom': ^4.2.4
@@ -737,7 +740,7 @@ packages:
   /@types/hoist-non-react-statics/3.3.1:
     resolution: {integrity: sha512-iMIqiko6ooLrTh1joXodJK5X9xeEALT1kM5G3ZLhD3hszxBdIEd5C75U834D9mLcINgD4OyZf5uQXjkuYydWvA==}
     dependencies:
-      '@types/react': 16.14.34
+      '@types/react': 18.0.26
       hoist-non-react-statics: 3.3.2
     dev: true
 
@@ -782,7 +785,7 @@ packages:
   /@types/react-dom/16.9.17:
     resolution: {integrity: sha512-qSRyxEsrm5btPXnowDOs5jSkgT8ldAA0j6Qp+otHUh+xHzy3sXmgNfyhucZjAjkgpdAUw9rJe0QRtX/l+yaS4g==}
     dependencies:
-      '@types/react': 16.14.34
+      '@types/react': 18.0.26
     dev: false
 
   /@types/react-dom/18.0.9:
@@ -791,20 +794,12 @@ packages:
       '@types/react': 18.0.26
     dev: true
 
-  /@types/react/16.14.34:
-    resolution: {integrity: sha512-b99nWeGGReLh6aKBppghVqp93dFJtgtDOzc8NXM6hewD8PQ2zZG5kBLgbx+VJr7Q7WBMjHxaIl3dwpwwPIUgyA==}
-    dependencies:
-      '@types/prop-types': 15.7.5
-      '@types/scheduler': 0.16.2
-      csstype: 3.1.1
-
   /@types/react/18.0.26:
     resolution: {integrity: sha512-hCR3PJQsAIXyxhTNSiDFY//LhnMZWpNNr5etoCqx/iUfGc5gXWtQR2Phl908jVR6uPXacojQWTg4qRpkxTuGug==}
     dependencies:
       '@types/prop-types': 15.7.5
       '@types/scheduler': 0.16.2
       csstype: 3.1.1
-    dev: true
 
   /@types/scheduler/0.16.2:
     resolution: {integrity: sha512-hppQEBDmlwhFAXKJX2KnWLYu5yMfi91yazPb2l+lbJiwW+wdo1gNeRA+3RgNSO39WYX2euey41KEwnqesU2Jew==}
@@ -813,7 +808,7 @@ packages:
     resolution: {integrity: sha512-KuKJ9Z6xb93uJiIyxo/+ksS7yLjS1KzG6iv5i78dhVg/X3u5t1H7juRWqVmodIdz6wGVaIApo1u01kmFRdJHVw==}
     dependencies:
       '@types/hoist-non-react-statics': 3.3.1
-      '@types/react': 16.14.34
+      '@types/react': 18.0.26
       csstype: 3.1.1
     dev: true
 

@@ -1,18 +1,24 @@
 import React from 'react';
 import { CheckboxContainer, HiddenCheckbox, StyledCheckbox, Icon } from './styles';
 import { displayDistances } from '../Graph/util';
-import Node from '../../data_structures/Node';
+import GridNode from '../../data_structures/Node';
 import { CustomMap } from '../../data_structures/Map';
 
 interface ICheckBoxProps {
-  costs: Map<Node, number> | CustomMap<Node, number> | null;
-  myRefs: React.MutableRefObject<any>;
+  costs: Map<GridNode, number> | CustomMap<GridNode, number> | null;
+  gridCellDOMElementRefs: React.MutableRefObject<any>;
   checked: boolean;
   setChecked: React.Dispatch<React.SetStateAction<boolean>>;
   props?: any;
 }
 
-export const Checkbox = ({ costs, myRefs, checked, setChecked, ...props }: ICheckBoxProps) => {
+export const Checkbox = ({
+  costs,
+  gridCellDOMElementRefs,
+  checked,
+  setChecked,
+  ...props
+}: ICheckBoxProps) => {
   /**
    * toggle the display of distance values
    * @param event - checkbox toggle
@@ -20,7 +26,7 @@ export const Checkbox = ({ costs, myRefs, checked, setChecked, ...props }: IChec
   const handleCheckChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setChecked(event.target.checked);
     if (costs !== null) {
-      displayDistances(costs, myRefs);
+      displayDistances(costs, gridCellDOMElementRefs);
     }
   };
 

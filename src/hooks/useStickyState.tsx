@@ -6,7 +6,6 @@ export const useStickyState = (defaultValue: any, key: any) => {
     return stickyValue !== null ? JSON.parse(stickyValue) : defaultValue;
   });
 
-  // runs first
   useEffect(() => {
     window.localStorage.setItem(key, JSON.stringify(value));
   }, [key, value]);

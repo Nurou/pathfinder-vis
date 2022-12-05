@@ -1,12 +1,12 @@
-import { Node } from '../../data_structures/Node';
+import { GridNode } from '../../data_structures/Node';
 import { reconstructPath, checkArgs, isWall, getMovementCost } from '../util';
-import { ICoordinates } from '../../types';
+import { Coordinates } from '../../types';
 import { CustomMap } from '../../data_structures/Map';
 
 /* logical implementation of BFS
  */
 
-const pushToFrontier = (frontier: Node[], node: Node) => {
+const pushToFrontier = (frontier: GridNode[], node: GridNode) => {
   let currentLength = frontier.length;
   frontier[currentLength] = node;
   currentLength++;
@@ -20,38 +20,38 @@ const pushToFrontier = (frontier: Node[], node: Node) => {
  * @param {object} endNodeCoords
  */
 export const bfs = (
-  grid: Node[][],
-  startNodeCoords: ICoordinates,
-  endNodeCoords: ICoordinates,
-  myRefs?: React.MutableRefObject<any> | object
+  grid: GridNode[][],
+  startNodeCoords: Coordinates,
+  endNodeCoords: Coordinates,
+  gridCellDOMElementRefs?: React.MutableRefObject<any> | object
 ) => {
   checkArgs(grid, startNodeCoords, endNodeCoords);
 
   // uses to animating flood/frontier
-  const visitedNodesInOrder: Node[] = [];
+  const visitedNodesInOrder: GridNode[] = [];
 
   // get logical start and end nodes by coordinates
-  const startNode: Node = grid[startNodeCoords.row][startNodeCoords.col];
-  const endNode: Node = grid[endNodeCoords.row][endNodeCoords.col];
+  const startNode: GridNode = grid[startNodeCoords.row][startNodeCoords.col];
+  const endNode: GridNode = grid[endNodeCoords.row][endNodeCoords.col];
 
   // clock performance
   let timer: number = -performance.now();
 
   // queue for traversing the grid
-  const frontier: Node[] = [];
+  const frontier: GridNode[] = [];
   pushToFrontier(frontier, startNode);
 
   // map preceding node to each node.
-  const cameFrom = new CustomMap<Node, Node | null>();
+  const cameFrom = new CustomMap<GridNode, GridNode | null>();
   cameFrom.put(startNode, null);
 
-  const costSoFar = new CustomMap<Node, number>();
+  const costSoFar = new CustomMap<GridNode, number>();
   costSoFar.put(startNode, 0);
 
   // keep on checking the queue until it's empty
   while (frontier && frontier.length) {
     // pop queue
-    const current: Node | undefined = frontier.shift();
+    const current: GridNode | undefined = frontier.shift();
     // early exit conditional
     if (current === endNode) {
       break;
@@ -60,9 +60,10 @@ export const bfs = (
     if (current?.neighbors) {
       for (let index = 0; index < current.neighbors.length; index++) {
         const neighbor = current.neighbors[index];
-        if (!cameFrom.get(neighbor) && !isWall(neighbor, myRefs)) {
+        if (!cameFrom.get(neighbor) && !isWall(neighbor, gridCellDOMElementRefs)) {
           // movement costs not accounted for by Bfs - tracked for comparison purposes
-          const newCost = costSoFar.get(current)! + getMovementCost(neighbor, myRefs);
+          const newCost =
+            costSoFar.get(current)! + getMovementCost(neighbor, gridCellDOMElementRefs);
           costSoFar.put(neighbor, newCost);
 
           let currentLength = visitedNodesInOrder.length;

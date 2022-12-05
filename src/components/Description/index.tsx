@@ -1,9 +1,9 @@
 import React from 'react';
 import { Span } from '../Shared';
 import { AlgoInfo } from './styles';
-import { IDetails } from '../../types';
+import { Details } from '../../types';
 
-const Description = ({ details, children }: { details: IDetails; children: any }) => {
+const Description = ({ details, children }: { details: Details; children: any }) => {
   return (
     <AlgoInfo
       display="flex"

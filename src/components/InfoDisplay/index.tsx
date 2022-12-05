@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { IStatProps } from '../../types';
+import { StatProps } from '../../types';
 import { Box, Span, Spacer, H2, H1, Text } from '../Shared';
 import { StatsWrapper, Statistic } from './styles';
 
@@ -8,7 +8,7 @@ import { StatsWrapper, Statistic } from './styles';
  * for the algorithm runs
  */
 
-const InfoDisplay = ({ previous, current, children }: IStatProps) => {
+const InfoDisplay = ({ previous, current, children }: StatProps) => {
   const [timeDiff, setTimeDiff] = useState<number | null>(null);
   const [stepDiff, setStepDiff] = useState<number | null>(null);
   const [movementCostDiff, setMovementCostDiff] = useState<number | null>(null);
