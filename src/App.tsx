@@ -107,7 +107,7 @@ const App = () => {
   };
 
   return (
-    <main className="flex flex-col justify-center items-center overflow-hidden p-20">
+    <main className="flex flex-col justify-center items-center overflow-hidden py-20 px-10">
       <InfoDisplay previous={prevRun} current={currentRun} />
       {grid && (
         <>

@@ -13,7 +13,10 @@ module.exports = {
         polar0: '#4C566A',
         polar1: '#434C5E',
         polar2: '#3B4252',
-        polar3: '#2E3440'
+        polar3: '#2E3440',
+        grass: '#8fbcbb',
+        start: '#22c55e',
+        end: '#dc2626'
       }
     },
     fontFamily: {

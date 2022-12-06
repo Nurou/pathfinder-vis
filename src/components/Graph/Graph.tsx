@@ -67,6 +67,27 @@ export const Graph = memo((props: GridProps): JSX.Element => {
 
   return (
     <table className="flex flex-col py-8 self-start">
+      <caption className="self-start py-6 ">
+        <div className="flex flex-col lg:flex-row justify-center items-baseline gap-4">
+          <span className="pr-3">Click to add to grid:</span>
+          <button className="bg-snow0 hover:bg-snow1 text-black font-bold py-2 px-2 rounded mt-4">
+            <span className="before:content-['con'] before:text-start  before:inline before:bg-start before:rounded before:mx-3" />
+            <span>source</span>
+          </button>
+          <button className="bg-snow0 hover:bg-snow1 text-black font-bold py-2 px-2 rounded mt-4">
+            <span className="before:content-['con'] before:text-end  before:inline before:bg-end before:rounded before:mx-3" />
+            <span>destination</span>
+          </button>
+          <button className="bg-snow0 hover:bg-snow1 text-black font-bold py-2 px-2 rounded mt-4">
+            <span className="before:content-['con'] before:text-polar1  before:inline before:bg-polar1 before:rounded before:mx-3" />
+            <span>wall</span>
+          </button>
+          <button className="bg-snow0 hover:bg-snow1 text-black font-bold py-2 px-2 rounded mt-4">
+            <span className="before:content-['con'] before:text-grass  before:inline before:bg-grass before:rounded before:mx-3" />
+            <span>grass</span>
+          </button>
+        </div>
+      </caption>
       <tbody>
         {props.grid.map((row: GridNode[], rowIdx: number) => (
           <tr key={rowIdx} className="flex flex-nowrap">

@@ -2,17 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
-.regular,
-.start,
-.end {
+.regular {
   background-color: #e5e9f0 !important;
+}
+
+.end {
+  background-color: #dc2626 !important;
+}
+
+.start {
+  background-color: #22c55e !important;
 }
 
 .wall {
   background-color: #4c566a !important;
 }
-
-.grass {
+j .grass {
   background-color: #8fbcbb !important;
 }
 
