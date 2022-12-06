@@ -108,6 +108,7 @@ export const coverInTerrain = (
   Object.values(gridCellDOMElementRefs.current).forEach((el: any) => {
     if (!el.classList.contains('start') && !el.classList.contains('end')) {
       el.classList.add('regular');
+      el.classList.add('haha');
     }
   });
 };
