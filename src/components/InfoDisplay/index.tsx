@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StatProps } from '../../types';
-import { Box, Span, Spacer, H2, H1, Text } from '../Shared';
+import { Box, Span, Spacer, H2 } from '../Shared';
 import { StatsWrapper, Statistic } from './styles';
 
 /**
@@ -46,24 +46,9 @@ const InfoDisplay = ({ previous, current, children }: StatProps) => {
   );
 
   return (
-    <>
-      <Box
-        display="flex"
-        flexDirection={['column', 'column', 'row']}
-        justifyContent="space-around"
-        alignItems="center"
-        width="100%"
-        height="auto"
-        p={3}
-      >
-        <Box px={5}>
-          <H1 fontSize={5}>Pathfinder Visualiser</H1>
-          <Text fontWeight={600} py={3} maxWidth="20rem">
-            To get started, choose a pathfinder from the available options, create a maze or
-            generate one and hit visualise!
-          </Text>
-        </Box>
-        {previous && (
+    <header className="self-start">
+      <h1 className="text-6xl">Pathfinder Visualiser</h1>
+      {/* {previous && (
           <StatsWrapper fontSize={[1, 2, 3]} mr={4} maxWidth="300px">
             <H2>Previous Run</H2>
             <Statistic>
@@ -154,10 +139,8 @@ const InfoDisplay = ({ previous, current, children }: StatProps) => {
               </Statistic>
             </>
           )}
-        </StatsWrapper>
-        {children}
-      </Box>
-    </>
+        </StatsWrapper> */}
+    </header>
   );
 };
 

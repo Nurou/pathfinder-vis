@@ -7,10 +7,6 @@ export const SpeedSelector = ({
 }: {
   setVisualisationSpeed: React.Dispatch<React.SetStateAction<AnimationSpeed>>;
 }) => {
-  /**
-   * update animation speed to suit user preference
-   * @param event - radio button selection
-   */
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const { value } = event.target;
     setVisualisationSpeed(value as AnimationSpeed);
@@ -18,15 +14,15 @@ export const SpeedSelector = ({
 
   return (
     <Box>
-      <Span p={4}>Select speed:</Span>
-      <Box onChange={handleRadioChange} style={{ transform: 'scale(1)' }}>
+      {/* <Span p={4}>Select speed:</Span> */}
+      {/* <Box onChange={handleRadioChange} style={{ transform: 'scale(1)' }}>
         <input type="radio" id="fast" value="fast" name="speed" defaultChecked />
         <label htmlFor="fast">fast</label>
         <input type="radio" id="medium" value="medium" name="speed" />
         <label htmlFor="medium">medium</label>
         <input type="radio" id="slow" value="slow" name="speed" />
         <label htmlFor="slow">slow</label>
-      </Box>
+      </Box> */}
     </Box>
   );
 };

@@ -1,6 +1,5 @@
 import React, { memo, useCallback, useEffect } from 'react';
 import GridNode from '../../data_structures/Node';
-import { TableGrid, GridRow } from './styles';
 import { NodeComponent } from '../Node';
 import { useTraceUpdate } from '../../hooks/useTraceUpdate';
 import { coverInTerrain, convertToType } from './util';
@@ -67,10 +66,10 @@ export const Graph = memo((props: GridProps): JSX.Element => {
   }, []);
 
   return (
-    <TableGrid>
+    <table className="flex flex-col py-8 self-start">
       <tbody>
         {props.grid.map((row: GridNode[], rowIdx: number) => (
-          <GridRow key={rowIdx} columns={props.grid[0].length}>
+          <tr key={rowIdx} className="flex flex-nowrap">
             {row.map((node: GridNode) => {
               const { row, col } = node;
               return (
@@ -85,9 +84,9 @@ export const Graph = memo((props: GridProps): JSX.Element => {
                 />
               );
             })}
-          </GridRow>
+          </tr>
         ))}
       </tbody>
-    </TableGrid>
+    </table>
   );
 });

@@ -1,6 +1,5 @@
 import { GridNode } from '../data_structures/Node';
 import { isWall, isGrass } from '../algorithms/util';
-import { AnimationSpeed } from '../types';
 
 /**
  * This animates the shortest path once the visitation of nodes has concluded animating
@@ -10,25 +9,8 @@ import { AnimationSpeed } from '../types';
 const animateShortestPath = (
   shortestPath: GridNode[],
   gridCellDOMElementRefs: React.MutableRefObject<any>,
-  animationSpeed?: AnimationSpeed
+  ANIMATION_TIMEOUT: number
 ) => {
-  let ANIMATION_TIMEOUT: number;
-
-  switch (animationSpeed) {
-    case 'fast':
-      ANIMATION_TIMEOUT = 20;
-      break;
-    case 'medium':
-      ANIMATION_TIMEOUT = 30;
-      break;
-    case 'slow':
-      ANIMATION_TIMEOUT = 40;
-      break;
-    default:
-      ANIMATION_TIMEOUT = 30;
-      break;
-  }
-
   shortestPath.forEach((node, index) => {
     setTimeout(() => {
       // exclude walls and end nodes
@@ -51,30 +33,18 @@ export const animateVisits = (
   nodesVisitedInOrder: GridNode[],
   shortestPath: GridNode[],
   gridCellDOMElementRefs: React.MutableRefObject<any>,
-  animationSpeed?: AnimationSpeed
+  animationSpeed = 50
 ) => {
-  let ANIMATION_TIMEOUT: number;
-
-  switch (animationSpeed) {
-    case 'fast':
-      ANIMATION_TIMEOUT = 3;
-      break;
-    case 'medium':
-      ANIMATION_TIMEOUT = 10;
-      break;
-    case 'slow':
-      ANIMATION_TIMEOUT = 30;
-      break;
-    default:
-      ANIMATION_TIMEOUT = 15;
-      break;
-  }
+  // animationSpeed is a number between 0 and 100
+  // subtract from 100 to reverse slider values
+  const ANIMATION_TIMEOUT_SHORTEST_PATH = 100 - animationSpeed;
+  const ANIMATION_TIMEOUT_VISITS = ANIMATION_TIMEOUT_SHORTEST_PATH / 10;
 
   nodesVisitedInOrder.forEach((node, index) => {
     if (index === nodesVisitedInOrder.length - 1) {
       setTimeout(() => {
-        animateShortestPath(shortestPath, gridCellDOMElementRefs);
-      }, ANIMATION_TIMEOUT * index);
+        animateShortestPath(shortestPath, gridCellDOMElementRefs, ANIMATION_TIMEOUT_SHORTEST_PATH);
+      }, ANIMATION_TIMEOUT_VISITS * index);
       return;
     }
     setTimeout(() => {
@@ -84,6 +54,6 @@ export const animateVisits = (
       if (!isGrass(node.row, node.col, gridCellDOMElementRefs)) {
         domNode.classList.add('node-visited');
       }
-    }, ANIMATION_TIMEOUT * index);
+    }, ANIMATION_TIMEOUT_VISITS * index);
   });
 };

@@ -1,19 +1,15 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { details } from './algorithms/details';
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import Checkbox from './components/Checkbox';
 import ControlPanel from './components/ControlPanel';
-import Description from './components/Description';
 import { Graph } from './components/Graph/Graph';
 import { clear, createMaze, populateGrid, setNodeNeighbors } from './components/Graph/util';
 import InfoDisplay from './components/InfoDisplay';
-import { PathFinderSelector } from './components/PathFinderSelector';
+import { PathfinderSelector } from './components/PathfinderSelector';
 import { Box, Span } from './components/Shared';
-import Visualiser from './components/Visualiser';
-import { Button } from './components/Visualiser/styles';
 import { CustomMap } from './data_structures/Map';
 import GridNode from './data_structures/Node';
-import { useResizeObserver } from './hooks/useResizeObserver';
 import { useStickyState } from './hooks/useStickyState';
+import { useWindowSize } from './hooks/useWindowResize';
 import { Coordinates, CoordToNodeDOMElementMap, GridDimensions } from './types';
 
 const availablePathfinders = [
@@ -68,11 +64,11 @@ const App = () => {
 
   /**
    * set the grid dimensions
-   * based on the size of
-   * window.innerWidth
+   * based on the window size
    * */
-  useResizeObserver((dimensions) => {
-    setGridDimensions({ rows: 20, cols: Math.round(dimensions.width / 55) });
+  useWindowSize((dimensions) => {
+    if (!dimensions.height || !dimensions.width) return;
+    setGridDimensions({ rows: 20, cols: Math.round(dimensions.width / 45) });
   });
 
   // grid initialised after visual is rendered
@@ -111,25 +107,33 @@ const App = () => {
   };
 
   return (
-    <Box
-      as="main"
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      justifyContent="center"
-      overflow="hidden"
-    >
+    <main className="flex flex-col justify-center items-center overflow-hidden p-20">
       <InfoDisplay previous={prevRun} current={currentRun} />
       {grid && (
-        <Graph
-          grid={grid}
-          conversionType={conversionType}
-          startNodeCoords={startNodeCoords}
-          endNodeCoords={endNodeCoords}
-          gridCellDOMElementRefs={gridCellDOMElementRefs}
-        />
+        <>
+          <PathfinderSelector
+            currentPathfinder={currentPathFinder}
+            setCurrentPathfinder={setCurrentPathFinder}
+            grid={grid}
+            startNodeCoords={startNodeCoords}
+            endNodeCoords={endNodeCoords}
+            gridCellDOMElementRefs={gridCellDOMElementRefs}
+            currentPathFinder={currentPathFinder!}
+            currentRun={currentRun}
+            setCurrentRun={setCurrentRun}
+            setPrevRun={setPrevRun}
+            setCosts={setCosts}
+          />
+          <Graph
+            grid={grid}
+            conversionType={conversionType}
+            startNodeCoords={startNodeCoords}
+            endNodeCoords={endNodeCoords}
+            gridCellDOMElementRefs={gridCellDOMElementRefs}
+          />
+        </>
       )}
-      {currentPathFinder && (
+      {/* {currentPathFinder && (
         <Description details={details[currentPathFinder]}>
           <PathFinderSelector
             currentPathfinder={currentPathFinder}
@@ -137,7 +141,7 @@ const App = () => {
             availablePathfinders={availablePathfinders}
           />
         </Description>
-      )}
+      )} */}
       <ControlPanel
         display="flex"
         justifyContent="space-around"
@@ -146,27 +150,16 @@ const App = () => {
         p={5}
       >
         <Box>
-          <Button onClick={handleGenerateMazeClick}>
+          <button onClick={handleGenerateMazeClick}>
             {mazeGenerated ? 'Regenerate' : 'Generate'} Maze{' '}
-          </Button>
-          <Button onClick={() => (conversionType.current = 'start')}>Start </Button>
-          <Button onClick={() => (conversionType.current = 'end')}>Finish</Button>
-          <Button onClick={() => (conversionType.current = 'wall')}>Add Walls </Button>
-          <Button onClick={() => (conversionType.current = 'grass')}>Add Grass</Button>
+          </button>
+          <button onClick={() => (conversionType.current = 'start')}>Start </button>
+          <button onClick={() => (conversionType.current = 'end')}>Finish</button>
+          <button onClick={() => (conversionType.current = 'wall')}>Add Walls </button>
+          <button onClick={() => (conversionType.current = 'grass')}>Add Grass</button>
         </Box>
         {grid && (
           <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
-            <Visualiser
-              grid={grid}
-              startNodeCoords={startNodeCoords}
-              endNodeCoords={endNodeCoords}
-              gridCellDOMElementRefs={gridCellDOMElementRefs}
-              currentPathFinder={currentPathFinder!}
-              currentRun={currentRun}
-              setCurrentRun={setCurrentRun}
-              setPrevRun={setPrevRun}
-              setCosts={setCosts}
-            />
             <Box as="label" display="flex" justifyContent="center" alignItems="center">
               <label>
                 <Checkbox
@@ -183,11 +176,11 @@ const App = () => {
           </Box>
         )}
         <Box display="flex" justifyContent="center" alignItems="center">
-          <Button onClick={() => clearGraph()}>Reset Pathfinder</Button>
-          <Button onClick={() => clearGraph(true)}>Clear All</Button>
+          <button onClick={() => clearGraph()}>Reset Pathfinder</button>
+          <button onClick={() => clearGraph(true)}>Clear All</button>
         </Box>
       </ControlPanel>
-    </Box>
+    </main>
   );
 };
 
