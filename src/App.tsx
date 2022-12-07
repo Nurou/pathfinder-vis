@@ -2,10 +2,15 @@ import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from
 import Checkbox from './components/Checkbox';
 import ControlPanel from './components/ControlPanel';
 import { Graph } from './components/Graph/Graph';
-import { clear, createMaze, populateGrid, setNodeNeighbors } from './components/Graph/util';
+import {
+  clear,
+  convertToType,
+  createMaze,
+  populateGrid,
+  setNodeNeighbors
+} from './components/Graph/util';
 import InfoDisplay from './components/InfoDisplay';
 import { PathfinderSelector } from './components/PathfinderSelector';
-import { Box, Span } from './components/Shared';
 import { CustomMap } from './data_structures/Map';
 import GridNode from './data_structures/Node';
 import { useStickyState } from './hooks/useStickyState';
@@ -21,8 +26,8 @@ const availablePathfinders = [
 
 const App = () => {
   const [grid, setGrid] = useState<GridNode[][] | null>(null);
-  const startNodeCoords = useRef<Coordinates>(null);
-  const endNodeCoords = useRef<Coordinates>(null);
+  const startNodeCoords = useRef<Coordinates | null>(null);
+  const endNodeCoords = useRef<Coordinates | null>(null);
   const [gridDimensions, setGridDimensions] = useState<GridDimensions>(() => {
     // initialise grid dimensions based on device width
     const width = document.body.getClientRects()[0].width;
@@ -39,7 +44,7 @@ const App = () => {
   // this is here (and not in checkbox component) so that it can be unchecked when the grid is cleared
   const [checked, setChecked] = useState<boolean>(false);
 
-  const gridCellDOMElementRefs = useRef<CoordToNodeDOMElementMap>(null);
+  const gridCellDOMElementRefs = useRef<CoordToNodeDOMElementMap | null>(null);
   const conversionType = useRef<string>('');
 
   // local storage items
@@ -106,6 +111,19 @@ const App = () => {
     }
   };
 
+  const handleGridNodeConversion = useCallback((row: number, col: number) => {
+    if (startNodeCoords.current && endNodeCoords.current) {
+      convertToType(
+        row,
+        col,
+        conversionType,
+        startNodeCoords,
+        endNodeCoords,
+        gridCellDOMElementRefs
+      );
+    }
+  }, []);
+
   return (
     <main className="flex flex-col justify-center items-center overflow-hidden py-20 px-10">
       <InfoDisplay previous={prevRun} current={currentRun} />
@@ -118,7 +136,7 @@ const App = () => {
             startNodeCoords={startNodeCoords}
             endNodeCoords={endNodeCoords}
             gridCellDOMElementRefs={gridCellDOMElementRefs}
-            currentPathFinder={currentPathFinder!}
+            currentPathFinder={currentPathFinder}
             currentRun={currentRun}
             setCurrentRun={setCurrentRun}
             setPrevRun={setPrevRun}
@@ -126,10 +144,10 @@ const App = () => {
           />
           <Graph
             grid={grid}
-            conversionType={conversionType}
             startNodeCoords={startNodeCoords}
             endNodeCoords={endNodeCoords}
             gridCellDOMElementRefs={gridCellDOMElementRefs}
+            handleGridNodeConversion={handleGridNodeConversion}
           />
         </>
       )}
@@ -149,7 +167,7 @@ const App = () => {
         width="100%"
         p={5}
       >
-        <Box>
+        <div>
           <button onClick={handleGenerateMazeClick}>
             {mazeGenerated ? 'Regenerate' : 'Generate'} Maze{' '}
           </button>
@@ -157,10 +175,10 @@ const App = () => {
           <button onClick={() => (conversionType.current = 'end')}>Finish</button>
           <button onClick={() => (conversionType.current = 'wall')}>Add Walls </button>
           <button onClick={() => (conversionType.current = 'grass')}>Add Grass</button>
-        </Box>
+        </div>
         {grid && (
-          <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
-            <Box as="label" display="flex" justifyContent="center" alignItems="center">
+          <div>
+            <div>
               <label>
                 <Checkbox
                   costs={costs}
@@ -168,17 +186,15 @@ const App = () => {
                   checked={checked}
                   setChecked={setChecked}
                 />
-                <Span fontSize={[2, 3, 4]} ml={1}>
-                  Show Distances
-                </Span>
+                <span>Show Distances</span>
               </label>
-            </Box>
-          </Box>
+            </div>
+          </div>
         )}
-        <Box display="flex" justifyContent="center" alignItems="center">
+        <div>
           <button onClick={() => clearGraph()}>Reset Pathfinder</button>
           <button onClick={() => clearGraph(true)}>Clear All</button>
-        </Box>
+        </div>
       </ControlPanel>
     </main>
   );

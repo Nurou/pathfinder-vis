@@ -1,10 +1,35 @@
-import { isEndNode, isStartNode } from '../../algorithms/util';
+import { isEndNode, isStartNode } from '../../algorithms/shared';
 import GridNode from '../../data_structures/Node';
 import {
   Coordinates,
   CoordToNodeDOMElementMap,
   GridDimensions as GridDimensions
 } from '../../types';
+
+// enum GridCellType {
+//   Start = 'start',
+//   End = 'end',
+//   Wall = 'wall',
+//   Grass = 'grass',
+//   Visited = 'visited'
+// }
+
+// function updateStyles(domNode: HTMLElement, type: GridCellType) {
+//   switch (type) {
+//     case 'start':
+//       domNode.style.setProperty('background-color', '#22c55e');
+//       break;
+//     case 'end':
+//       domNode.style.setProperty('background-color', '#dc2626');
+//       break;
+//     case 'visited':
+//       domNode.classList.add('animate-pulse');
+//       break;
+
+//     default:
+//       break;
+//   }
+// }
 
 /**
  * Converts a node into wall or grass type by modifying
@@ -16,16 +41,16 @@ export const convertToType = (
   row: number,
   col: number,
   conversionType: React.MutableRefObject<string>,
-  startNodeCoords: React.MutableRefObject<Coordinates>,
-  endNodeCoords: React.MutableRefObject<Coordinates>,
-  gridCellDOMElementRefs: React.MutableRefObject<any>
+  startNodeCoords: React.MutableRefObject<Coordinates | null>,
+  endNodeCoords: React.MutableRefObject<Coordinates | null>,
+  gridCellDOMElementRefs: React.MutableRefObject<CoordToNodeDOMElementMap | null>
 ): void => {
   // target node
-  const targetCell = gridCellDOMElementRefs.current[`node-${row}-${col}`];
+  const targetCell = gridCellDOMElementRefs.current?.[`node-${row}-${col}`];
 
   if (!targetCell) return;
 
-  const alreadyOccupied = (targetCell: HTMLDivElement) => {
+  const alreadyOccupied = (targetCell: HTMLElement) => {
     return (
       targetCell.classList.contains('start') ||
       targetCell.classList.contains('end') ||
@@ -40,17 +65,18 @@ export const convertToType = (
 
   targetCell.classList.remove('regular');
 
+  if (!gridCellDOMElementRefs.current) return;
+
   if (conversionType.current === 'start') {
     // if start node already set, move it
     if (startNodeCoords.current) {
       // get current start node and convert back to regular
       const currentStartNode =
-        gridCellDOMElementRefs!.current[
+        gridCellDOMElementRefs.current[
           `node-${startNodeCoords.current.row}-${startNodeCoords.current.col}`
         ];
       currentStartNode.classList.remove('start');
       currentStartNode.classList.add('regular');
-      currentStartNode.innerHTML = null;
     }
 
     targetCell.classList.add('start');
@@ -64,13 +90,12 @@ export const convertToType = (
     if (endNodeCoords.current) {
       // get current end node and remove class
       const currentEndNode =
-        gridCellDOMElementRefs!.current[
+        gridCellDOMElementRefs.current[
           `node-${endNodeCoords.current.row}-${endNodeCoords.current.col}`
         ];
 
       currentEndNode.classList.remove('end');
       currentEndNode.classList.add('regular');
-      currentEndNode.innerHTML = null;
     }
 
     targetCell.classList.add('end');
@@ -176,7 +201,7 @@ export const displayDistances = (
  */
 export const clear = (
   grid: GridNode[][],
-  gridCellDOMElementRefs: React.RefObject<CoordToNodeDOMElementMap>,
+  gridCellDOMElementRefs: React.MutableRefObject<CoordToNodeDOMElementMap | null>,
   all?: boolean
 ): void => {
   for (const row of grid) {
@@ -189,13 +214,13 @@ export const clear = (
       }
       // when clearing the whole graph
       if (all) {
-        domNode.classList.remove('node-visited', 'node-shortest-path', 'wall', 'grass');
+        domNode.classList.remove('visited', 'node-shortest-path', 'wall', 'grass');
         domNode.classList.add('regular');
       } else if (
-        domNode.classList.contains('node-visited') ||
+        domNode.classList.contains('visited') ||
         domNode.classList.contains('node-shortest-path')
       ) {
-        domNode.classList.remove('node-visited', 'node-shortest-path');
+        domNode.classList.remove('visited', 'node-shortest-path');
         domNode.classList.add('regular');
       }
     }

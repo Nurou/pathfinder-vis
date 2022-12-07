@@ -2,7 +2,11 @@ import React, { useState } from 'react';
 import { aStar, bfs, dijkstras, gbfs } from '../algorithms';
 import { CustomMap } from '../data_structures/Map';
 import GridNode from '../data_structures/Node';
-import { Coordinates, DynamicFunctions as AlgoLabelToFunction } from '../types';
+import {
+  Coordinates,
+  CoordToNodeDOMElementMap,
+  DynamicFunctions as AlgoLabelToFunction
+} from '../types';
 import { animateVisits } from './Animate';
 import Slider from './Slider';
 import SpeedSelector from './SpeedSelector';
@@ -18,9 +22,9 @@ interface Props {
   currentPathfinder: string;
   setCurrentPathfinder: React.Dispatch<React.SetStateAction<string>>;
   grid: GridNode[][];
-  startNodeCoords: React.MutableRefObject<Coordinates | null>;
-  endNodeCoords: React.MutableRefObject<Coordinates | null>;
-  gridCellDOMElementRefs: any;
+  startNodeCoords: React.RefObject<Coordinates>;
+  endNodeCoords: React.RefObject<Coordinates>;
+  gridCellDOMElementRefs: React.MutableRefObject<CoordToNodeDOMElementMap | null>;
   currentRun: any;
   setCurrentRun: React.Dispatch<any>;
   setPrevRun: React.Dispatch<any>;
@@ -35,7 +39,7 @@ export const PathfinderSelector = (props: Props) => {
     grid,
     startNodeCoords,
     endNodeCoords,
-    gridCellDOMElementRefs: gridCellDOMElementRefs,
+    gridCellDOMElementRefs,
     currentPathFinder,
     currentRun,
     setCurrentRun,
@@ -46,17 +50,12 @@ export const PathfinderSelector = (props: Props) => {
   const [visualisationSpeed, setVisualisationSpeed] = useState(80);
   const [hasRan, setHasRan] = useState<boolean>(false);
 
-  /**
-   * Enables individual algorithms to be run based on the name of the one currently selected
-   */
   const mapAlgoLabelToFunction: AlgoLabelToFunction = {
-    Bfs: () => bfs(grid, startNodeCoords.current!, endNodeCoords.current!, gridCellDOMElementRefs),
+    Bfs: () => bfs(grid, startNodeCoords.current, endNodeCoords.current, gridCellDOMElementRefs),
     Ucs: () =>
-      dijkstras(grid, startNodeCoords.current!, endNodeCoords.current!, gridCellDOMElementRefs),
-    Gbfs: () =>
-      gbfs(grid, startNodeCoords.current!, endNodeCoords.current!, gridCellDOMElementRefs),
-    aStar: () =>
-      aStar(grid, startNodeCoords.current!, endNodeCoords.current!, gridCellDOMElementRefs)
+      dijkstras(grid, startNodeCoords.current, endNodeCoords.current, gridCellDOMElementRefs),
+    Gbfs: () => gbfs(grid, startNodeCoords.current, endNodeCoords.current, gridCellDOMElementRefs),
+    aStar: () => aStar(grid, startNodeCoords.current, endNodeCoords.current, gridCellDOMElementRefs)
   };
 
   /**

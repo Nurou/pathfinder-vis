@@ -1,6 +1,7 @@
-import { CustomMap } from './../data_structures/Map/index';
-import { Coordinates } from '../types';
+import { CustomMap } from '../data_structures/Map/index';
+import { Coordinates, CoordToNodeDOMElementMap } from '../types';
 import { GridNode } from '../data_structures/Node';
+import React from 'react';
 
 /**
  *
@@ -69,19 +70,32 @@ export const reconstructPath = (
   return path;
 };
 
-export const isStartNode = (row: number, col: number, gridCellDOMElementRefs: any): boolean => {
-  const nodeClassList = gridCellDOMElementRefs.current[`node-${row}-${col}`].classList;
-  return nodeClassList.contains('start');
+export const isStartNode = (
+  row: number,
+  col: number,
+  gridCellDOMElementRefs: React.MutableRefObject<CoordToNodeDOMElementMap | null>
+): boolean => {
+  const nodeClassList: DOMTokenList | undefined =
+    gridCellDOMElementRefs.current?.[`node-${row}-${col}`].classList;
+  return !!nodeClassList?.contains('start');
 };
 
-export const isEndNode = (row: number, col: number, gridCellDOMElementRefs: any): boolean => {
-  const nodeClassList = gridCellDOMElementRefs.current[`node-${row}-${col}`].classList;
-  return nodeClassList.contains('end');
+export const isEndNode = (
+  row: number,
+  col: number,
+  gridCellDOMElementRefs: React.MutableRefObject<CoordToNodeDOMElementMap | null>
+): boolean => {
+  const nodeClassList = gridCellDOMElementRefs.current?.[`node-${row}-${col}`].classList;
+  return !!nodeClassList?.contains('end');
 };
 
-export const isGrass = (row: number, col: number, gridCellDOMElementRefs: any): boolean => {
-  const nodeClassList = gridCellDOMElementRefs.current[`node-${row}-${col}`].classList;
-  return nodeClassList.contains('grass');
+export const isGrass = (
+  row: number,
+  col: number,
+  gridCellDOMElementRefs: React.MutableRefObject<CoordToNodeDOMElementMap | null>
+): boolean => {
+  const nodeClassList = gridCellDOMElementRefs.current?.[`node-${row}-${col}`].classList;
+  return !!nodeClassList?.contains('grass');
 };
 
 /**
@@ -90,13 +104,16 @@ export const isGrass = (row: number, col: number, gridCellDOMElementRefs: any): 
  * @param gridCellDOMElementRefs
  */
 
-export const isWall = (node: GridNode, gridCellDOMElementRefs: any): boolean => {
-  const nodeClassList = gridCellDOMElementRefs.current[`node-${node.row}-${node.col}`]?.classList;
+export const isWall = (
+  node: GridNode,
+  gridCellDOMElementRefs: React.MutableRefObject<CoordToNodeDOMElementMap | null>
+): boolean => {
+  const nodeClassList = gridCellDOMElementRefs.current?.[`node-${node.row}-${node.col}`].classList;
 
   // for test/mocking
-  if (typeof nodeClassList.contains == undefined || nodeClassList.length === 0) return false;
+  if (typeof nodeClassList?.contains == undefined || nodeClassList?.length === 0) return false;
 
-  return nodeClassList.contains('wall');
+  return !!nodeClassList?.contains('wall');
 };
 
 /**
@@ -104,16 +121,19 @@ export const isWall = (node: GridNode, gridCellDOMElementRefs: any): boolean => 
  * @param node
  * @param gridCellDOMElementRefs
  */
-export const getMovementCost = (node: GridNode, gridCellDOMElementRefs: any): number => {
+export const getMovementCost = (
+  node: GridNode,
+  gridCellDOMElementRefs: React.MutableRefObject<CoordToNodeDOMElementMap | null>
+): number => {
   const GRASS_COST = 5;
   const TERRAIN_COST = 1;
 
-  const nodeClassList = gridCellDOMElementRefs!.current[`node-${node.row}-${node.col}`].classList;
+  const nodeClassList = gridCellDOMElementRefs.current?.[`node-${node.row}-${node.col}`].classList;
 
   // for test/mocking
-  if (typeof nodeClassList.contains == undefined || nodeClassList.length === 0) return 0;
+  if (typeof nodeClassList?.contains == undefined || nodeClassList?.length === 0) return 0;
 
-  return nodeClassList.contains('grass') ? GRASS_COST : TERRAIN_COST;
+  return nodeClassList?.contains('grass') ? GRASS_COST : TERRAIN_COST;
 };
 
 /**

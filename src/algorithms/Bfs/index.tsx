@@ -1,6 +1,6 @@
 import { GridNode } from '../../data_structures/Node';
-import { reconstructPath, checkArgs, isWall, getMovementCost } from '../util';
-import { Coordinates } from '../../types';
+import { reconstructPath, checkArgs, isWall, getMovementCost } from '../shared';
+import { Coordinates, CoordToNodeDOMElementMap } from '../../types';
 import { CustomMap } from '../../data_structures/Map';
 
 /* logical implementation of BFS
@@ -23,7 +23,7 @@ export const bfs = (
   grid: GridNode[][],
   startNodeCoords: Coordinates,
   endNodeCoords: Coordinates,
-  gridCellDOMElementRefs?: React.MutableRefObject<any> | object
+  gridCellDOMElementRefs?: React.MutableRefObject<CoordToNodeDOMElementMap | null> | undefined
 ) => {
   checkArgs(grid, startNodeCoords, endNodeCoords);
 
@@ -48,11 +48,15 @@ export const bfs = (
   const costSoFar = new CustomMap<GridNode, number>();
   costSoFar.put(startNode, 0);
 
+  if (!gridCellDOMElementRefs) {
+    return;
+  }
+
   // keep on checking the queue until it's empty
   while (frontier && frontier.length) {
     // pop queue
     const current: GridNode | undefined = frontier.shift();
-    // early exit conditional
+
     if (current === endNode) {
       break;
     }

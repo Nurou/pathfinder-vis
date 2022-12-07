@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StatProps } from '../../types';
-import { Box, Span, Spacer, H2 } from '../Shared';
-import { StatsWrapper, Statistic } from './styles';
+import { Statistic } from './styles';
 
 /**
  * Component for displaying run statistics
@@ -32,15 +31,15 @@ const InfoDisplay = ({ previous, current, children }: StatProps) => {
   const displayNoPath = () => (
     <>
       <Statistic>
-        Time (sec): <Span className="na">N/A</Span>
+        Time (sec): <span className="na">N/A</span>
       </Statistic>{' '}
-      <Spacer my={3} />
+      <span />
       <Statistic>
-        Number of steps: <Span className="na">N/A</Span>
+        Number of steps: <span className="na">N/A</span>
       </Statistic>
-      <Spacer my={3} />
+      <span />
       <Statistic>
-        Total Movement Cost: <Span className="na">N/A</Span>
+        Total Movement Cost: <span className="na">N/A</span>
       </Statistic>
     </>
   );

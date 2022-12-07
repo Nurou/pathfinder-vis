@@ -1,7 +1,6 @@
 import styled from 'styled-components';
-import { Box } from '../Shared';
 
-export const AlgoInfo = styled(Box)`
+export const AlgoInfo = styled.div`
   strong {
     font-weight: bold;
     color: #888888;

@@ -1,16 +1,6 @@
 import React, { memo } from 'react';
-import styled from 'styled-components';
 import { useTraceUpdate } from '../../hooks/useTraceUpdate';
-
-export const NodeWrapper = styled<any>('td')`
-  width: 30px;
-  height: 30px;
-
-  background: none;
-  border-radius: 4px;
-  margin: 2px;
-  /* border: 1px solid #f0f0f0; */
-`;
+import { CoordToNodeDOMElementMap } from '../../types';
 
 /**
  *
@@ -39,19 +29,21 @@ type NodeProps = {
   onMouseDown: (row: number, col: number) => void;
   onMouseEnter: (row: number, col: number) => void;
   onMouseUp: () => void;
-  gridCellDOMElementRefs: React.MutableRefObject<any>;
+  gridCellDOMElementRefs: React.MutableRefObject<CoordToNodeDOMElementMap | null>;
 };
 
 export const NodeComponent = memo(
   ({ row, col, onMouseDown, onMouseEnter, onMouseUp, gridCellDOMElementRefs }: NodeProps) => {
     useTraceUpdate({ row, col, onMouseDown, onMouseEnter, onMouseUp, gridCellDOMElementRefs });
     return (
-      <NodeWrapper
+      <td
+        className="w-8 h-8 bg-none rounded m-1"
+        role="cell"
         ref={(el: HTMLButtonElement) => handleRef(el, row, col, gridCellDOMElementRefs)}
         onMouseDown={() => onMouseDown(row, col)}
         onMouseEnter={() => onMouseEnter(row, col)}
         onMouseUp={() => onMouseUp()}
-      ></NodeWrapper>
+      ></td>
     );
   }
 );

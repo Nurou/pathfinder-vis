@@ -1,6 +1,6 @@
 import { Coordinates } from '../../types';
 import { PriorityQueue } from '../../data_structures/PriorityQueue';
-import { checkArgs, reconstructPath, isWall, getMovementCost, heuristic } from '../util';
+import { checkArgs, reconstructPath, isWall, getMovementCost, heuristic } from '../shared';
 import GridNode from '../../data_structures/Node';
 import { CustomMap } from '../../data_structures/Map';
 

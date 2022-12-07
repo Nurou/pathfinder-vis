@@ -3,25 +3,26 @@
 @tailwind utilities;
 
 .regular {
-  background-color: #e5e9f0 !important;
+  background-color: #eceff4;
 }
 
 .end {
-  background-color: #dc2626 !important;
+  background-color: #dc2626;
 }
 
 .start {
-  background-color: #22c55e !important;
+  background-color: #22c55e;
 }
 
 .wall {
-  background-color: #4c566a !important;
-}
-j .grass {
-  background-color: #8fbcbb !important;
+  background-color: #4c566a;
 }
 
-.node-visited {
+.grass {
+  background-color: #8fbcbb;
+}
+
+.visited {
   animation-name: visitedAnimation;
   animation-duration: 1.5s;
   animation-timing-function: ease-out;
@@ -42,7 +43,7 @@ j .grass {
 
   100% {
     transform: scale(1);
-    background-color: #d8dee9 !important;
+    background-color: #d4d4d8;
   }
 }
 
