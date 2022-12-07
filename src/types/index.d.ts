@@ -20,17 +20,11 @@ export interface ReturnedStats {
 }
 
 export type DynamicFunctions = Record<string, () => ReturnedStats>;
-export interface StatItems {
+export interface PathfinderRunStatistics {
   pathfinder: string;
   shortestPathLength: number;
   timeTaken: number;
   totalMovementCost: number;
-}
-
-export interface StatProps {
-  previous?: StatItems;
-  current?: StatItems;
-  children?: JSX.Element;
 }
 
 export type AnimationSpeed = 'fast' | 'medium' | 'slow';

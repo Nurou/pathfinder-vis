@@ -9,13 +9,18 @@ import {
   populateGrid,
   setNodeNeighbors
 } from './components/Graph/util';
-import InfoDisplay from './components/InfoDisplay';
+import StatsDisplay from './components/StatsDisplay';
 import { PathfinderSelector } from './components/PathfinderSelector';
 import { CustomMap } from './data_structures/Map';
 import GridNode from './data_structures/Node';
 import { useStickyState } from './hooks/useStickyState';
 import { useWindowSize } from './hooks/useWindowResize';
-import { Coordinates, CoordToNodeDOMElementMap, GridDimensions } from './types';
+import {
+  Coordinates,
+  CoordToNodeDOMElementMap,
+  GridDimensions,
+  PathfinderRunStatistics
+} from './types';
 
 const availablePathfinders = [
   { value: 'Bfs', label: 'Breadth-First Search' },
@@ -48,8 +53,14 @@ const App = () => {
   const conversionType = useRef<string>('');
 
   // local storage items
-  const [prevRun, setPrevRun] = useStickyState(null, 'previousRun');
-  const [currentRun, setCurrentRun] = useStickyState(null, 'currentRun');
+  const [previousRun, setPrevRun] = useStickyState<PathfinderRunStatistics | null>(
+    null,
+    'previousRun'
+  );
+  const [currentRun, setCurrentRun] = useStickyState<PathfinderRunStatistics | null>(
+    null,
+    'currentRun'
+  );
 
   // set up board on initial render
   useEffect(() => {
@@ -124,33 +135,36 @@ const App = () => {
     }
   }, []);
 
+  if (!grid) return null;
+
   return (
-    <main className="flex flex-col justify-center items-center overflow-hidden py-20 px-10">
-      <InfoDisplay previous={prevRun} current={currentRun} />
-      {grid && (
-        <>
-          <PathfinderSelector
-            currentPathfinder={currentPathFinder}
-            setCurrentPathfinder={setCurrentPathFinder}
-            grid={grid}
-            startNodeCoords={startNodeCoords}
-            endNodeCoords={endNodeCoords}
-            gridCellDOMElementRefs={gridCellDOMElementRefs}
-            currentPathFinder={currentPathFinder}
-            currentRun={currentRun}
-            setCurrentRun={setCurrentRun}
-            setPrevRun={setPrevRun}
-            setCosts={setCosts}
-          />
-          <Graph
-            grid={grid}
-            startNodeCoords={startNodeCoords}
-            endNodeCoords={endNodeCoords}
-            gridCellDOMElementRefs={gridCellDOMElementRefs}
-            handleGridNodeConversion={handleGridNodeConversion}
-          />
-        </>
-      )}
+    <main className="flex flex-col justify-center items-start overflow-hidden py-20 px-10">
+      <header>
+        <h1 className="text-6xl">Pathfinder Visualiser</h1>
+      </header>
+      <div className="flex flex-col lg:flex-row justify-center items-baseline gap-10 mt-10">
+        <PathfinderSelector
+          currentPathfinder={currentPathFinder}
+          setCurrentPathfinder={setCurrentPathFinder}
+          grid={grid}
+          startNodeCoords={startNodeCoords}
+          endNodeCoords={endNodeCoords}
+          gridCellDOMElementRefs={gridCellDOMElementRefs}
+          currentPathFinder={currentPathFinder}
+          currentRun={currentRun}
+          setCurrentRun={setCurrentRun}
+          setPrevRun={setPrevRun}
+          setCosts={setCosts}
+        />
+        <StatsDisplay previous={previousRun} current={currentRun} />
+      </div>
+      <Graph
+        grid={grid}
+        startNodeCoords={startNodeCoords}
+        endNodeCoords={endNodeCoords}
+        gridCellDOMElementRefs={gridCellDOMElementRefs}
+        handleGridNodeConversion={handleGridNodeConversion}
+      />
       {/* {currentPathFinder && (
         <Description details={details[currentPathFinder]}>
           <PathFinderSelector

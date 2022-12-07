@@ -94,10 +94,10 @@ export const PathfinderSelector = (props: Props) => {
   };
 
   return (
-    <div className="flex gap-8 self-start flex-wrap mt-4">
+    <div className="flex gap-8 self-start flex-wrap">
       <div className="flex flex-col self-start">
         <fieldset>
-          <legend>Choose pathfinder:</legend>
+          <legend className="text-lg font-bold">Choose pathfinder:</legend>
           <div className="flex flex-col gap-4 mt-2">
             {availablePathfinders.map((pathfinder) => (
               <div key={pathfinder.label} className="flex gap-4 justify-start items-center ">
@@ -117,13 +117,13 @@ export const PathfinderSelector = (props: Props) => {
         </fieldset>
       </div>
       <div className="flex flex-col">
-        <span>Select speed:</span>
+        <span className="text-lg font-bold">Select speed:</span>
         <Slider onChangeCb={setVisualisationSpeed} value={visualisationSpeed} />
         <button
-          className="bg-polar1 hover:bg-polar2 text-white font-bold py-2 px-4 rounded mt-4"
+          className="bg-polar1 hover:bg-polar2 text-white py-2 px-4 rounded mt-4"
           onClick={() => visualise()}
         >
-          Visualize
+          Visualise
         </button>
       </div>
     </div>
