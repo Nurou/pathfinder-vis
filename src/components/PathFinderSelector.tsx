@@ -9,7 +9,6 @@ import {
 } from '../types';
 import { animateVisits } from './Animate';
 import Slider from './Slider';
-import SpeedSelector from './SpeedSelector';
 
 const availablePathfinders = [
   { value: 'Bfs', label: 'Breadth-First Search' },
@@ -22,8 +21,8 @@ interface Props {
   currentPathfinder: string;
   setCurrentPathfinder: React.Dispatch<React.SetStateAction<string>>;
   grid: GridNode[][];
-  startNodeCoords: React.RefObject<Coordinates>;
-  endNodeCoords: React.RefObject<Coordinates>;
+  startNodeCoords: React.RefObject<Coordinates | null>;
+  endNodeCoords: React.RefObject<Coordinates | null>;
   gridCellDOMElementRefs: React.MutableRefObject<CoordToNodeDOMElementMap | null>;
   currentRun: any;
   setCurrentRun: React.Dispatch<any>;
@@ -51,11 +50,13 @@ export const PathfinderSelector = (props: Props) => {
   const [hasRan, setHasRan] = useState<boolean>(false);
 
   const mapAlgoLabelToFunction: AlgoLabelToFunction = {
-    Bfs: () => bfs(grid, startNodeCoords.current, endNodeCoords.current, gridCellDOMElementRefs),
+    Bfs: () => bfs(grid, startNodeCoords.current!, endNodeCoords.current!, gridCellDOMElementRefs),
     Ucs: () =>
-      dijkstras(grid, startNodeCoords.current, endNodeCoords.current, gridCellDOMElementRefs),
-    Gbfs: () => gbfs(grid, startNodeCoords.current, endNodeCoords.current, gridCellDOMElementRefs),
-    aStar: () => aStar(grid, startNodeCoords.current, endNodeCoords.current, gridCellDOMElementRefs)
+      dijkstras(grid, startNodeCoords.current!, endNodeCoords.current!, gridCellDOMElementRefs),
+    Gbfs: () =>
+      gbfs(grid, startNodeCoords.current!, endNodeCoords.current!, gridCellDOMElementRefs),
+    aStar: () =>
+      aStar(grid, startNodeCoords.current!, endNodeCoords.current!, gridCellDOMElementRefs)
   };
 
   /**

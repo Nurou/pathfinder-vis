@@ -1,11 +1,10 @@
 import { GridNode } from '../../data_structures/Node';
 import { reconstructPath, checkArgs, isWall, getMovementCost } from '../shared';
-import { Coordinates, CoordToNodeDOMElementMap } from '../../types';
+import { Coordinates, CoordToNodeDOMElementMap, PathfinderArgsTuple } from '../../types';
 import { CustomMap } from '../../data_structures/Map';
 
 /* logical implementation of BFS
  */
-
 const pushToFrontier = (frontier: GridNode[], node: GridNode) => {
   let currentLength = frontier.length;
   frontier[currentLength] = node;
@@ -13,19 +12,10 @@ const pushToFrontier = (frontier: GridNode[], node: GridNode) => {
   frontier.length = currentLength;
 };
 
-/**
- *  A simple breadth-first search implementation
- * @param {array} grid grid holding all the logical nodes
- * @param {object} startNodeCoords
- * @param {object} endNodeCoords
- */
-export const bfs = (
-  grid: GridNode[][],
-  startNodeCoords: Coordinates,
-  endNodeCoords: Coordinates,
-  gridCellDOMElementRefs?: React.MutableRefObject<CoordToNodeDOMElementMap | null> | undefined
-) => {
-  checkArgs(grid, startNodeCoords, endNodeCoords);
+export const bfs = (...args: PathfinderArgsTuple) => {
+  checkArgs(...args);
+
+  const [grid, startNodeCoords, endNodeCoords, gridCellDOMElementRefs] = args;
 
   // uses to animating flood/frontier
   const visitedNodesInOrder: GridNode[] = [];
@@ -47,10 +37,6 @@ export const bfs = (
 
   const costSoFar = new CustomMap<GridNode, number>();
   costSoFar.put(startNode, 0);
-
-  if (!gridCellDOMElementRefs) {
-    return;
-  }
 
   // keep on checking the queue until it's empty
   while (frontier && frontier.length) {

@@ -1,4 +1,4 @@
-import { Coordinates } from '../../types';
+import { Coordinates, PathfinderArgsTuple } from '../../types';
 import { PriorityQueue } from '../../data_structures/PriorityQueue';
 import { checkArgs, reconstructPath, isWall, getMovementCost } from '../shared';
 import GridNode from '../../data_structures/Node';
@@ -6,19 +6,12 @@ import { CustomMap } from '../../data_structures/Map';
 
 /**
  *  An implementation of Dijkstra's algorithm for path finding that accounts for the movement costs of nodes
- *
- * @param {array} grid holds logical nodes
- * @param {object} startNodeCoords
- * @param {object} endNodeCoords
- * @param
  */
-export const dijkstras = (
-  grid: GridNode[][],
-  startNodeCoords: Coordinates,
-  endNodeCoords: Coordinates,
-  gridCellDOMElementRefs: React.MutableRefObject<any>
-) => {
-  checkArgs(grid, startNodeCoords, endNodeCoords);
+
+export const dijkstras = (...args: PathfinderArgsTuple) => {
+  checkArgs(...args);
+
+  const [grid, startNodeCoords, endNodeCoords, gridCellDOMElementRefs] = args;
 
   const visitedNodesInOrder: GridNode[] = [];
 

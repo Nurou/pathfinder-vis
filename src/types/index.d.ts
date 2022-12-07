@@ -45,3 +45,10 @@ export interface Details {
   weighted: boolean;
   guarantee: boolean;
 }
+
+export type PathfinderArgsTuple = [
+  grid: GridNode[][],
+  startNodeCoords: Coordinates,
+  endNodeCoords: Coordinates,
+  gridCellDOMElementRefs: React.MutableRefObject<CoordToNodeDOMElementMap | null>
+];

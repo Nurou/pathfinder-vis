@@ -1,4 +1,4 @@
-import { Coordinates } from '../../types';
+import { Coordinates, PathfinderArgsTuple } from '../../types';
 import { PriorityQueue } from '../../data_structures/PriorityQueue';
 import { checkArgs, reconstructPath, isWall, getMovementCost, heuristic } from '../shared';
 import GridNode from '../../data_structures/Node';
@@ -6,18 +6,11 @@ import { CustomMap } from '../../data_structures/Map';
 
 /**
  *  An implementation of the Greedy Best-Fist Search, which uses a heuristic function to approximate the goal
- *
- * @param {array} grid grid holding all the logical nodes
- * @param {object} startNodeCoords
- * @param {object} endNodeCoords
  */
-export const gbfs = (
-  grid: GridNode[][],
-  startNodeCoords: Coordinates,
-  endNodeCoords: Coordinates,
-  gridCellDOMElementRefs: any
-) => {
-  checkArgs(grid, startNodeCoords, endNodeCoords);
+export const gbfs = (...args: PathfinderArgsTuple) => {
+  checkArgs(...args);
+
+  const [grid, startNodeCoords, endNodeCoords, gridCellDOMElementRefs] = args;
 
   const visitedNodesInOrder: GridNode[] = [];
 

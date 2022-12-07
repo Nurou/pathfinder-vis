@@ -1,4 +1,4 @@
-import { Coordinates } from '../../types';
+import { Coordinates, PathfinderArgsTuple } from '../../types';
 import { PriorityQueue } from '../../data_structures/PriorityQueue';
 import { checkArgs, reconstructPath, isWall, getMovementCost, heuristic } from '../shared';
 import Node, { GridNode } from '../../data_structures/Node';
@@ -6,18 +6,11 @@ import { CustomMap } from '../../data_structures/Map';
 
 /**
  *  An implementation of the A* algorithm, which uses the actual distance from the start and the estimated distance to the goal.
- *
- * @param {array} grid grid holding all the logical nodes
- * @param {object} startNodeCoords
- * @param {object} endNodeCoords
  */
-export const aStar = (
-  grid: Node[][],
-  startNodeCoords: Coordinates,
-  endNodeCoords: Coordinates,
-  myRefs: any
-) => {
-  checkArgs(grid, startNodeCoords, endNodeCoords);
+export const aStar = (...args: PathfinderArgsTuple) => {
+  checkArgs(...args);
+
+  const [grid, startNodeCoords, endNodeCoords, gridCellDOMElementRefs] = args;
 
   const visitedNodesInOrder: Node[] = [];
 
@@ -54,8 +47,8 @@ export const aStar = (
     if (current.neighbors) {
       for (let index = 0; index < current.neighbors.length; index++) {
         const neighbor = current.neighbors[index];
-        if (isWall(neighbor, myRefs)) continue;
-        const newCost = costSoFar.get(current)! + getMovementCost(neighbor, myRefs);
+        if (isWall(neighbor, gridCellDOMElementRefs)) continue;
+        const newCost = costSoFar.get(current)! + getMovementCost(neighbor, gridCellDOMElementRefs);
         if (!costSoFar.has(neighbor) || newCost < costSoFar.get(neighbor)!) {
           // update cost
           costSoFar.put(neighbor, newCost);

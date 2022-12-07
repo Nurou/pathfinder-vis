@@ -3,12 +3,12 @@ import GridNode from '../../data_structures/Node';
 import { NodeComponent } from '../Node';
 import { useTraceUpdate } from '../../hooks/useTraceUpdate';
 import { coverInTerrain } from './util';
-import { CoordToNodeDOMElementMap } from '../../types';
+import { Coordinates, CoordToNodeDOMElementMap } from '../../types';
 
 interface GridProps {
   grid: GridNode[][];
-  startNodeCoords: any;
-  endNodeCoords: any;
+  startNodeCoords: React.MutableRefObject<Coordinates | null>;
+  endNodeCoords: React.MutableRefObject<Coordinates | null>;
   gridCellDOMElementRefs: React.MutableRefObject<CoordToNodeDOMElementMap | null>;
   handleGridNodeConversion: (row: number, col: number) => void;
 }

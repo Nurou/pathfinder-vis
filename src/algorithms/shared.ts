@@ -3,18 +3,16 @@ import { Coordinates, CoordToNodeDOMElementMap } from '../types';
 import { GridNode } from '../data_structures/Node';
 import React from 'react';
 
-/**
- *
- * @param grid
- * @param startNodeCoords
- * @param endNodeCoords
- */
-export const checkArgs = (
+type ArgsTuple = [
   grid: GridNode[][],
   startNodeCoords: Coordinates,
-  endNodeCoords: Coordinates
-) => {
-  if (!grid || !startNodeCoords || !endNodeCoords) {
+  endNodeCoords: Coordinates,
+  gridCellDOMElementRefs: React.MutableRefObject<CoordToNodeDOMElementMap | null>
+];
+
+export const checkArgs = (...args: ArgsTuple) => {
+  const [grid, startNodeCoords, endNodeCoords, gridCellDOMElementRefs] = args;
+  if (!grid || !startNodeCoords || !endNodeCoords || !gridCellDOMElementRefs) {
     throw new Error('Missing arguments!');
   }
 
