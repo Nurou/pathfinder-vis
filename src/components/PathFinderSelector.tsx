@@ -6,7 +6,8 @@ import GridNode from '../data_structures/Node';
 import {
   Coordinates,
   CoordToNodeDOMElementMap,
-  DynamicFunctions as AlgoLabelToFunction
+  DynamicFunctions as AlgoLabelToFunction,
+  PathfinderRunStatistics
 } from '../types';
 import { animateVisits } from './Animate';
 import Slider from './Slider';
@@ -26,9 +27,9 @@ interface Props {
   startNodeCoords: React.RefObject<Coordinates | null>;
   endNodeCoords: React.RefObject<Coordinates | null>;
   gridCellDOMElementRefs: React.MutableRefObject<CoordToNodeDOMElementMap | null>;
-  currentRun: any;
-  setCurrentRun: React.Dispatch<any>;
-  setPrevRun: React.Dispatch<any>;
+  currentRun: PathfinderRunStatistics | null;
+  setCurrentRun: React.Dispatch<React.SetStateAction<PathfinderRunStatistics | null>>;
+  setPrevRun: React.Dispatch<React.SetStateAction<PathfinderRunStatistics | null>>;
   setCosts: React.Dispatch<
     React.SetStateAction<Map<GridNode, number> | CustomMap<GridNode, number> | null>
   >;

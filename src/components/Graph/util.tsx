@@ -40,7 +40,7 @@ import {
 export const convertToType = (
   row: number,
   col: number,
-  conversionType: React.MutableRefObject<string>,
+  conversionType: React.MutableRefObject<string | null>,
   startNodeCoords: React.MutableRefObject<Coordinates | null>,
   endNodeCoords: React.MutableRefObject<Coordinates | null>,
   gridCellDOMElementRefs: React.MutableRefObject<CoordToNodeDOMElementMap | null>
@@ -50,7 +50,7 @@ export const convertToType = (
 
   if (!targetCell) return;
 
-  const alreadyOccupied = (targetCell: HTMLElement) => {
+  const alreadyOccupied = (targetCell: HTMLTableCellElement) => {
     return (
       targetCell.classList.contains('start') ||
       targetCell.classList.contains('end') ||
@@ -112,7 +112,7 @@ export const convertToType = (
  * @param gridCellDOMElementRefs
  */
 export const coverInTerrain = (
-  gridCellDOMElementRefs: React.MutableRefObject<Record<string, HTMLElement> | null>
+  gridCellDOMElementRefs: React.MutableRefObject<Record<string, HTMLTableCellElement> | null>
 ): void => {
   if (!gridCellDOMElementRefs.current) return;
 
@@ -236,11 +236,12 @@ export const createMaze = (
   grid: GridNode[][],
   gridCellDOMElementRefs: React.MutableRefObject<CoordToNodeDOMElementMap | null>,
   gridDimensions: GridDimensions,
-  conversionType: React.MutableRefObject<string>,
-  startNodeCoords: React.MutableRefObject<any>,
-  endNodeCoords: React.MutableRefObject<any>,
+  conversionType: React.MutableRefObject<string | null>,
+  startNodeCoords: React.MutableRefObject<Coordinates | null>,
+  endNodeCoords: React.MutableRefObject<Coordinates | null>,
   setMazeGenerated: React.Dispatch<React.SetStateAction<boolean>>
 ): void => {
+  console.log('💩 ~ file: util.tsx:244 ~ conversionType', conversionType);
   if (!gridCellDOMElementRefs.current) return;
 
   // if maze already generated, clear previous

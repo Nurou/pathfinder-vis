@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import Checkbox from './components/Checkbox';
 import ControlPanel from './components/ControlPanel';
-import { Graph } from './components/Graph/Graph';
+import { Grid } from './components/Graph/Graph';
 import {
   clear,
   convertToType,
@@ -18,6 +18,7 @@ import { useWindowSize } from './hooks/useWindowResize';
 import {
   Coordinates,
   CoordToNodeDOMElementMap,
+  GridCellConversionTypes as GridCellConversionType,
   GridDimensions,
   PathfinderRunStatistics
 } from './types';
@@ -50,7 +51,8 @@ const App = () => {
   const [checked, setChecked] = useState<boolean>(false);
 
   const gridCellDOMElementRefs = useRef<CoordToNodeDOMElementMap | null>(null);
-  const conversionType = useRef<string>('');
+  const selectedCellConversionType = useRef<string | null>(null);
+  console.log('💩 ~ file: App.tsx:55 ~ selectedCellConversionType', selectedCellConversionType);
 
   // local storage items
   const [previousRun, setPrevRun] = useStickyState<PathfinderRunStatistics | null>(
@@ -70,7 +72,7 @@ const App = () => {
         grid,
         gridCellDOMElementRefs,
         gridDimensions,
-        conversionType,
+        selectedCellConversionType,
         startNodeCoords,
         endNodeCoords,
         setMazeGenerated
@@ -103,7 +105,7 @@ const App = () => {
         grid,
         gridCellDOMElementRefs,
         gridDimensions,
-        conversionType,
+        selectedCellConversionType,
         startNodeCoords,
         endNodeCoords,
         setMazeGenerated
@@ -122,12 +124,12 @@ const App = () => {
     }
   };
 
-  const handleGridNodeConversion = useCallback((row: number, col: number) => {
+  const handleGridCellConversion = useCallback((row: number, col: number) => {
     if (startNodeCoords.current && endNodeCoords.current) {
       convertToType(
         row,
         col,
-        conversionType,
+        selectedCellConversionType,
         startNodeCoords,
         endNodeCoords,
         gridCellDOMElementRefs
@@ -161,12 +163,15 @@ const App = () => {
         />
         <StatsDisplay previous={previousRun} current={currentRun} />
       </div>
-      <Graph
+      <Grid
         grid={grid}
         startNodeCoords={startNodeCoords}
         endNodeCoords={endNodeCoords}
         gridCellDOMElementRefs={gridCellDOMElementRefs}
-        handleGridNodeConversion={handleGridNodeConversion}
+        handleGridCellConversion={handleGridCellConversion}
+        updateGridCellConversionType={(type: GridCellConversionType) => {
+          selectedCellConversionType.current = type;
+        }}
       />
       {/* {currentPathFinder && (
         <Description details={details[currentPathFinder]}>
@@ -177,19 +182,7 @@ const App = () => {
           />
         </Description>
       )} */}
-      <ControlPanel
-        display="flex"
-        justifyContent="space-around"
-        alignItems="center"
-        width="100%"
-        p={5}
-      >
-        <div>
-          <button onClick={() => (conversionType.current = 'start')}>Start </button>
-          <button onClick={() => (conversionType.current = 'end')}>Finish</button>
-          <button onClick={() => (conversionType.current = 'wall')}>Add Walls </button>
-          <button onClick={() => (conversionType.current = 'grass')}>Add Grass</button>
-        </div>
+      <ControlPanel>
         {grid && (
           <div>
             <div>

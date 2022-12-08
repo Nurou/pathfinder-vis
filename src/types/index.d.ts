@@ -7,6 +7,8 @@ export interface Coordinates {
 
 export type CoordToNodeDOMElementMap = Record<string, HTMLTableCellElement>;
 
+export type GridCellConversionTypes = 'start' | 'end' | 'wall' | 'grass';
+
 export interface GridDimensions {
   rows: number;
   cols: number;

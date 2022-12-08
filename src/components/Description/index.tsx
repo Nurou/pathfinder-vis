@@ -4,18 +4,7 @@ import { Details } from '../../types';
 
 const Description = ({ details, children }: { details: Details; children: any }) => {
   return (
-    <AlgoInfo
-    // display="flex"
-    // justifyContent="space-around"
-    // alignItems="center"
-    // p={4}
-    // color="#1A202C"
-    // bg="white"
-    // width="100%"
-    // fontSize={[1, 2, 2]}
-    // lineHeight={3 / 2}
-    // height="auto"
-    >
+    <AlgoInfo>
       {children}
       <span>
         Description:
