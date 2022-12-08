@@ -115,7 +115,7 @@ const App = () => {
    *
    * @param all - if flag is present, the graph is completely cleared
    */
-  const clearGraph = (all: boolean = false) => {
+  const clearGrid = (all: boolean = false) => {
     setChecked(false);
     if (grid && gridCellDOMElementRefs.current != null) {
       clear(grid, gridCellDOMElementRefs, all);
@@ -156,6 +156,8 @@ const App = () => {
           setPrevRun={setPrevRun}
           setCosts={setCosts}
           handleGenerateMazeClick={handleGenerateMazeClick}
+          handleClearGridClick={() => clearGrid(true)}
+          handleResetPathfinder={() => clearGrid()}
         />
         <StatsDisplay previous={previousRun} current={currentRun} />
       </div>
@@ -203,10 +205,6 @@ const App = () => {
             </div>
           </div>
         )}
-        <div>
-          <button onClick={() => clearGraph()}>Reset Pathfinder</button>
-          <button onClick={() => clearGraph(true)}>Clear All</button>
-        </div>
       </ControlPanel>
     </main>
   );

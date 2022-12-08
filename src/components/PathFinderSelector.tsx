@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { RefreshCw } from 'lucide-react';
+import { RefreshCw, XCircle, Grid } from 'lucide-react';
 import { aStar, bfs, dijkstras, gbfs } from '../algorithms';
 import { CustomMap } from '../data_structures/Map';
 import GridNode from '../data_structures/Node';
@@ -10,6 +10,7 @@ import {
 } from '../types';
 import { animateVisits } from './Animate';
 import Slider from './Slider';
+import { TooltipWrapper } from './TooltipWrapper';
 
 const availablePathfinders = [
   { value: 'Bfs', label: 'Breadth-First Search' },
@@ -33,6 +34,8 @@ interface Props {
   >;
   currentPathFinder?: string | null;
   handleGenerateMazeClick: () => void;
+  handleClearGridClick: () => void;
+  handleResetPathfinder: () => void;
 }
 
 export const PathfinderSelector = (props: Props) => {
@@ -46,7 +49,9 @@ export const PathfinderSelector = (props: Props) => {
     setCurrentRun,
     setPrevRun,
     setCosts,
-    handleGenerateMazeClick
+    handleGenerateMazeClick,
+    handleClearGridClick,
+    handleResetPathfinder
   } = props;
 
   const [visualisationSpeed, setVisualisationSpeed] = useState(80);
@@ -119,7 +124,7 @@ export const PathfinderSelector = (props: Props) => {
           </div>
         </fieldset>
       </div>
-      <div className="flex flex-col">
+      <div className="flex flex-col ">
         <span className="text-lg font-bold">Select speed:</span>
         <Slider onChangeCb={setVisualisationSpeed} value={visualisationSpeed} />
         <button
@@ -128,13 +133,32 @@ export const PathfinderSelector = (props: Props) => {
         >
           Visualise
         </button>
-        <button
-          className="bg-polar1 hover:bg-polar2 text-white py-2 px-4 rounded mt-4 flex items-center justify-center gap-2"
-          onClick={handleGenerateMazeClick}
-        >
-          <span>Regenerate Maze</span>
-          <RefreshCw size={20} strokeWidth={1.5} color="white" />
-        </button>
+        <div className="flex flex-wrap justify-start  max-w-fit pt-1 gap-1 my-2 ">
+          <TooltipWrapper tooltipText="Reset pathfinder">
+            <button
+              className="bg-polar1 hover:bg-polar2 text-white py-2 px-4 rounded mt-4 flex items-center justify-center gap-2"
+              onClick={handleResetPathfinder}
+            >
+              <RefreshCw size={20} strokeWidth={1.5} color="white" />
+            </button>
+          </TooltipWrapper>
+          <TooltipWrapper tooltipText="Regenerate maze">
+            <button
+              className="bg-polar1 hover:bg-polar2 text-white py-2 px-4 rounded mt-4 flex items-center justify-center gap-2"
+              onClick={handleGenerateMazeClick}
+            >
+              <Grid size={20} strokeWidth={1.5} color="white" />
+            </button>
+          </TooltipWrapper>
+          <TooltipWrapper tooltipText="Clear grid">
+            <button
+              className="bg-polar1 hover:bg-polar2 text-white py-2 px-4 rounded mt-4 flex items-center justify-center gap-2"
+              onClick={handleClearGridClick}
+            >
+              <XCircle size={20} strokeWidth={1.5} color="white" />
+            </button>
+          </TooltipWrapper>
+        </div>
       </div>
     </div>
   );

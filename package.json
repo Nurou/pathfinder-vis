@@ -6,6 +6,7 @@
     "@fontsource/space-mono": "^4.5.10",
     "@radix-ui/react-select": "^1.1.2",
     "@radix-ui/react-slider": "^1.1.0",
+    "@radix-ui/react-tooltip": "^1.0.2",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
