@@ -22,6 +22,7 @@ specifiers:
   eslint-config-prettier: ^6.11.0
   eslint-plugin-prettier: ^3.1.4
   jsdom: ^20.0.3
+  lucide-react: ^0.104.1
   postcss: ^8.4.19
   prettier: ^2.0.5
   prop-types: ^15.7.2
@@ -46,6 +47,7 @@ dependencies:
   '@types/jest': 24.9.1
   '@types/node': 18.11.10
   classnames: 2.3.2
+  lucide-react: 0.104.1_prop-types@15.8.1+react@18.2.0
   prop-types: 15.8.1
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
@@ -2416,6 +2418,16 @@ packages:
     dependencies:
       get-func-name: 2.0.0
     dev: true
+
+  /lucide-react/0.104.1_prop-types@15.8.1+react@18.2.0:
+    resolution: {integrity: sha512-BKvhulnLKmBj+6pqUN5ViYk4a5fabMgc4B0a4ZLUnbRqkDDWH3h7Iet6U4WbesJzjWauQrXUlEvQCe5XpFuRnw==}
+    peerDependencies:
+      prop-types: ^15.7.2
+      react: ^16.5.1 || ^17.0.0 || ^18.0.0
+    dependencies:
+      prop-types: 15.8.1
+      react: 18.2.0
+    dev: false
 
   /lz-string/1.4.4:
     resolution: {integrity: sha512-0ckx7ZHRPqb0oUm8zNr+90mtf9DQB60H1wMCjBtfi62Kl3a7JbHob6gA2bC+xRvZoOL+1hzUK8jeuEIQE8svEQ==}

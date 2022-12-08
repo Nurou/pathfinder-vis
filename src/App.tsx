@@ -155,6 +155,7 @@ const App = () => {
           setCurrentRun={setCurrentRun}
           setPrevRun={setPrevRun}
           setCosts={setCosts}
+          handleGenerateMazeClick={handleGenerateMazeClick}
         />
         <StatsDisplay previous={previousRun} current={currentRun} />
       </div>
@@ -182,9 +183,6 @@ const App = () => {
         p={5}
       >
         <div>
-          <button onClick={handleGenerateMazeClick}>
-            {mazeGenerated ? 'Regenerate' : 'Generate'} Maze{' '}
-          </button>
           <button onClick={() => (conversionType.current = 'start')}>Start </button>
           <button onClick={() => (conversionType.current = 'end')}>Finish</button>
           <button onClick={() => (conversionType.current = 'wall')}>Add Walls </button>

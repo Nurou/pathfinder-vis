@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { RefreshCw } from 'lucide-react';
 import { aStar, bfs, dijkstras, gbfs } from '../algorithms';
 import { CustomMap } from '../data_structures/Map';
 import GridNode from '../data_structures/Node';
@@ -31,6 +32,7 @@ interface Props {
     React.SetStateAction<Map<GridNode, number> | CustomMap<GridNode, number> | null>
   >;
   currentPathFinder?: string | null;
+  handleGenerateMazeClick: () => void;
 }
 
 export const PathfinderSelector = (props: Props) => {
@@ -43,7 +45,8 @@ export const PathfinderSelector = (props: Props) => {
     currentRun,
     setCurrentRun,
     setPrevRun,
-    setCosts
+    setCosts,
+    handleGenerateMazeClick
   } = props;
 
   const [visualisationSpeed, setVisualisationSpeed] = useState(80);
@@ -124,6 +127,13 @@ export const PathfinderSelector = (props: Props) => {
           onClick={() => visualise()}
         >
           Visualise
+        </button>
+        <button
+          className="bg-polar1 hover:bg-polar2 text-white py-2 px-4 rounded mt-4 flex items-center justify-center gap-2"
+          onClick={handleGenerateMazeClick}
+        >
+          <span>Regenerate Maze</span>
+          <RefreshCw size={20} strokeWidth={1.5} color="white" />
         </button>
       </div>
     </div>

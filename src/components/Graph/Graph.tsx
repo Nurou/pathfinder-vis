@@ -61,7 +61,7 @@ export const Graph = memo((props: GridProps): JSX.Element => {
     <table className="flex flex-col py-8 self-start">
       <caption className="self-start py-6 ">
         <div className="flex flex-col lg:flex-row justify-center items-baseline gap-4">
-          <span className="pr-3">Click to add to grid:</span>
+          <span className="pr-3 font-bold">Click to add to grid:</span>
           <button
             onClick={() => {}}
             className="bg-snow0 hover:bg-snow1 text-black  py-2 px-2 rounded mt-4"
