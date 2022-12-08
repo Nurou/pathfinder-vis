@@ -4,12 +4,12 @@ import { CoordToNodeDOMElementMap } from '../../types';
 
 /**
  *
- * @param {HTMLButtonElement} el - DOM element representing node
+ * @param {HTMLTableCellElement} el - DOM element representing node
  * @param {number} row - row index of node
  * @param {number} col - column index of node
  */
 const handleRef = (
-  el: HTMLButtonElement,
+  el: HTMLTableCellElement,
   row: number,
   col: number,
   gridCellDOMElementRefs: React.MutableRefObject<any>
@@ -39,7 +39,7 @@ export const NodeComponent = memo(
       <td
         className="w-8 h-8 bg-none rounded m-1"
         role="cell"
-        ref={(el: HTMLButtonElement) => handleRef(el, row, col, gridCellDOMElementRefs)}
+        ref={(el: HTMLTableCellElement) => handleRef(el, row, col, gridCellDOMElementRefs)}
         onMouseDown={() => onMouseDown(row, col)}
         onMouseEnter={() => onMouseEnter(row, col)}
         onMouseUp={() => onMouseUp()}

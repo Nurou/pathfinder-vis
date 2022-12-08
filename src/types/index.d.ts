@@ -5,7 +5,7 @@ export interface Coordinates {
   col: number;
 }
 
-export type CoordToNodeDOMElementMap = Record<string, HTMLElement>;
+export type CoordToNodeDOMElementMap = Record<string, HTMLTableCellElement>;
 
 export interface GridDimensions {
   rows: number;

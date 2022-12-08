@@ -3,6 +3,10 @@ import { Coordinates, CoordToNodeDOMElementMap } from '../types';
 import { GridNode } from '../data_structures/Node';
 import React from 'react';
 
+export type MockRefs = {
+  current: { [key: string]: HTMLTableCellElement };
+};
+
 type ArgsTuple = [
   grid: GridNode[][],
   startNodeCoords: Coordinates,
