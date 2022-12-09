@@ -9,8 +9,8 @@ import {
   populateGrid,
   setNodeNeighbors
 } from './components/Graph/util';
+import { PathfinderSelector } from './components/Tmp';
 import StatsDisplay from './components/StatsDisplay';
-import { PathfinderSelector } from './components/PathfinderSelector';
 import { CustomMap } from './data_structures/Map';
 import GridNode from './data_structures/Node';
 import { useStickyState } from './hooks/useStickyState';
@@ -18,7 +18,7 @@ import { useWindowSize } from './hooks/useWindowResize';
 import {
   Coordinates,
   CoordToNodeDOMElementMap,
-  GridCellConversionTypes as GridCellConversionType,
+  GridCellConversionTypes,
   GridDimensions,
   PathfinderRunStatistics
 } from './types';

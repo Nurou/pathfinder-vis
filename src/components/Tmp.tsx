@@ -10,7 +10,7 @@ import {
   PathfinderRunStatistics
 } from '../types';
 import { animateVisits } from './Animate';
-import Slider from './Slider';
+import { Slider } from './Slider';
 import { TooltipWrapper } from './TooltipWrapper';
 
 const availablePathfinders = [

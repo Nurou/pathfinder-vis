@@ -7,7 +7,7 @@ interface Props {
   value: number;
 }
 
-const Slider = (props: Props) => {
+export const Slider = (props: Props) => {
   return (
     <SliderPrimitive.Root
       defaultValue={[props.value]}
@@ -31,5 +31,3 @@ const Slider = (props: Props) => {
     </SliderPrimitive.Root>
   );
 };
-
-export default Slider;
