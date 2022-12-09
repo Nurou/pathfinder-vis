@@ -11,7 +11,6 @@ interface GridProps {
   endNodeCoords: React.MutableRefObject<Coordinates | null>;
   gridCellDOMElementRefs: React.MutableRefObject<CoordToNodeDOMElementMap | null>;
   handleGridCellConversion: (row: number, col: number) => void;
-  updateGridCellConversionType: (type: GridCellConversionTypes) => void;
 }
 
 /**
@@ -64,28 +63,28 @@ export const Grid = memo((props: GridProps): JSX.Element => {
         <div className="flex flex-col lg:flex-row justify-center items-baseline gap-4">
           <span className="pr-3 font-bold">Click to add to grid:</span>
           <button
-            onClick={() => props.updateGridCellConversionType('start')}
+            // onClick={() => props.updateGridCellConversionType('start')}
             className="bg-snow0 hover:bg-snow1 text-black  py-2 px-2 rounded mt-4"
           >
             <span className="before:content-['con'] before:text-start  before:inline before:bg-start before:rounded before:mx-3" />
             <span>source</span>
           </button>
           <button
-            onClick={() => props.updateGridCellConversionType('end')}
+            // onClick={() => props.updateGridCellConversionType('end')}
             className="bg-snow0 hover:bg-snow1 text-black  py-2 px-2 rounded mt-4"
           >
             <span className="before:content-['con'] before:text-end  before:inline before:bg-end before:rounded before:mx-3" />
             <span>destination</span>
           </button>
           <button
-            onClick={() => props.updateGridCellConversionType('wall')}
+            // onClick={() => props.updateGridCellConversionType('wall')}
             className="bg-snow0 hover:bg-snow1 text-black  py-2 px-2 rounded mt-4"
           >
             <span className="before:content-['con'] before:text-polar1  before:inline before:bg-polar1 before:rounded before:mx-3" />
             <span>wall</span>
           </button>
           <button
-            onClick={() => props.updateGridCellConversionType('grass')}
+            // onClick={() => props.updateGridCellConversionType('grass')}
             className="bg-snow0 hover:bg-snow1 text-black  py-2 px-2 rounded mt-4"
           >
             <span className="before:content-['con'] before:text-grass  before:inline before:bg-grass before:rounded before:mx-3" />

@@ -169,9 +169,6 @@ const App = () => {
         endNodeCoords={endNodeCoords}
         gridCellDOMElementRefs={gridCellDOMElementRefs}
         handleGridCellConversion={handleGridCellConversion}
-        updateGridCellConversionType={(type: GridCellConversionType) => {
-          selectedCellConversionType.current = type;
-        }}
       />
       {/* {currentPathFinder && (
         <Description details={details[currentPathFinder]}>
