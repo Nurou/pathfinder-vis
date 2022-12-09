@@ -26,7 +26,7 @@ const StatsDisplay = ({ previous, current }: Props) => {
 
   return (
     <section>
-      <h2 className="text-lg font-bold">Stats</h2>
+      {/* <h2 className="text-lg font-bold">Stats</h2> */}
       <div className="flex flex-col gap-4 mt-2">
         <span>Pathfinder: {current?.pathfinder}</span>
         {current?.timeTaken && (

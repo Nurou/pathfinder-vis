@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { RefreshCw, XCircle, Grid } from 'lucide-react';
+import { RefreshCw, XCircle, Grid, Info } from 'lucide-react';
 import { aStar, bfs, dijkstras, gbfs } from '../algorithms';
 import { CustomMap } from '../data_structures/Map';
 import GridNode from '../data_structures/Node';
@@ -14,10 +14,42 @@ import { Slider } from './Slider';
 import { TooltipWrapper } from './TooltipWrapper';
 
 const availablePathfinders = [
-  { value: 'Bfs', label: 'Breadth-First Search' },
-  { value: 'Ucs', label: 'Dijkstras (Uniform-Cost Search)' },
-  { value: 'Gbfs', label: 'Greedy Best-First Search' },
-  { value: 'aStar', label: 'A*' }
+  {
+    value: 'Bfs',
+    label: 'Breadth-First Search',
+    info: {
+      description: 'Expands the node closest to the goal',
+      weighted: false,
+      guaranteesShortestPath: true
+    }
+  },
+  {
+    value: 'Ucs',
+    label: 'Dijkstras (Uniform-Cost Search)',
+    info: {
+      description: 'Expands the node with the lowest cost',
+      weighted: true,
+      guaranteesShortestPath: true
+    }
+  },
+  {
+    value: 'Gbfs',
+    label: 'Greedy Best-First Search',
+    info: {
+      description: 'Expands the node with the lowest heuristic cost (Manhattan distance)',
+      weighted: true,
+      guaranteesShortestPath: false
+    }
+  },
+  {
+    value: 'aStar',
+    label: 'A*',
+    info: {
+      description: 'Expands the node with the lowest heuristic cost (Manhattan distance) + cost',
+      weighted: true,
+      guaranteesShortestPath: true
+    }
+  }
 ];
 
 interface Props {
@@ -38,6 +70,16 @@ interface Props {
   handleClearGridClick: () => void;
   handleResetPathfinder: () => void;
 }
+
+const renderTooltipText = (infoObj: typeof availablePathfinders[0]['info']) => {
+  return (
+    <ul className="max-w-md">
+      <li>Description: {infoObj?.description}</li>
+      <li>Weighted: {infoObj?.weighted ? 'true' : 'false'}</li>
+      <li>Guarantees shortest path: {infoObj?.guaranteesShortestPath ? 'true' : 'false'}</li>
+    </ul>
+  );
+};
 
 export const PathfinderSelector = (props: Props) => {
   const {
@@ -120,6 +162,9 @@ export const PathfinderSelector = (props: Props) => {
                   checked={props.currentPathfinder === pathfinder.value}
                 />
                 <label htmlFor={pathfinder.value}>{pathfinder.label}</label>
+                <TooltipWrapper tooltipText={renderTooltipText(pathfinder.info)}>
+                  <Info size={20} strokeWidth={1.5} />
+                </TooltipWrapper>
               </div>
             ))}
           </div>

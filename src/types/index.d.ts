@@ -35,13 +35,6 @@ export interface DetailsArray {
   [k: string]: Details;
 }
 
-export interface Details {
-  title: string;
-  description: string;
-  weighted: boolean;
-  guarantee: boolean;
-}
-
 export type PathfinderArgsTuple = [
   grid: GridNode[][],
   startNodeCoords: Coordinates,

@@ -144,7 +144,7 @@ const App = () => {
       <header>
         <h1 className="text-6xl">Pathfinder Visualiser</h1>
       </header>
-      <div className="flex flex-col lg:flex-row justify-center items-baseline gap-10 mt-10">
+      <div className="flex flex-col lg:flex-row gap-40 mt-10">
         <PathfinderSelector
           currentPathfinder={currentPathFinder}
           setCurrentPathfinder={setCurrentPathFinder}
@@ -161,7 +161,9 @@ const App = () => {
           handleClearGridClick={() => clearGrid(true)}
           handleResetPathfinder={() => clearGrid()}
         />
-        <StatsDisplay previous={previousRun} current={currentRun} />
+        <div className="shadow-inner p-6 rounded bg-snow0">
+          <StatsDisplay previous={previousRun} current={currentRun} />
+        </div>
       </div>
       <Grid
         grid={grid}

@@ -7,7 +7,7 @@ export const TooltipWrapper = ({
   tooltipText
 }: {
   children: JSX.Element;
-  tooltipText: string;
+  tooltipText: JSX.Element | string;
 }) => {
   return (
     <Tooltip.Provider>
