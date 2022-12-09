@@ -9,7 +9,7 @@ import {
   populateGrid,
   setNodeNeighbors
 } from './components/Graph/util';
-import { PathfinderSelector } from './components/Tmp';
+import { PathfinderSelector } from './components/PathfinderSelector';
 import StatsDisplay from './components/StatsDisplay';
 import { CustomMap } from './data_structures/Map';
 import GridNode from './data_structures/Node';
