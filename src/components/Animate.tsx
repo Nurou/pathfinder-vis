@@ -1,5 +1,5 @@
 import { GridNode } from '../data_structures/Node';
-import { isWall, isGrass, isStartNode } from '../algorithms/shared';
+import { isWall, isGrass, isSourceNode } from '../algorithms/shared';
 
 /**
  * This animates the shortest path once the visitation of nodes has concluded animating
@@ -53,7 +53,7 @@ export const animateVisits = (
 
       if (
         !isGrass(node.row, node.col, gridCellDOMElementRefs) &&
-        !isStartNode(node.row, node.col, gridCellDOMElementRefs)
+        !isSourceNode(node.row, node.col, gridCellDOMElementRefs)
       ) {
         domNode.classList.add('visited');
       }

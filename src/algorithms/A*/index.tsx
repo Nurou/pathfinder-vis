@@ -10,29 +10,29 @@ import { CustomMap } from '../../data_structures/Map';
 export const aStar = (...args: PathfinderArgsTuple) => {
   checkArgs(...args);
 
-  const [grid, startNodeCoords, endNodeCoords, gridCellDOMElementRefs] = args;
+  const [grid, sourceNodeCoords, destinationNodeCoords, gridCellDOMElementRefs] = args;
 
   const visitedNodesInOrder: Node[] = [];
 
   // get logical start and end nodes by coordinates
-  const startNode: Node = grid[startNodeCoords.row][startNodeCoords.col];
-  const endNode: Node = grid[endNodeCoords.row][endNodeCoords.col];
+  const sourceNode: Node = grid[sourceNodeCoords.row][sourceNodeCoords.col];
+  const destinationNode: Node = grid[destinationNodeCoords.row][destinationNodeCoords.col];
 
   // clock performance
   let timer: number = -performance.now();
 
   const frontier = new PriorityQueue<[GridNode, number]>((a, b) => a[1] < b[1]);
-  frontier.push([startNode, 0]);
+  frontier.push([sourceNode, 0]);
   console.log('\nInitial contents:');
   console.log(frontier.peek()[0]); //=>
 
   const cameFrom = new CustomMap<Node, Node>();
-  cameFrom.put(startNode, null!);
+  cameFrom.put(sourceNode, null!);
 
   // keeps track of total movement cost from the start node to all nodes
   // same node can be visited multiple times with different costs
   const costSoFar = new CustomMap<Node, number>();
-  costSoFar.put(startNode, 0);
+  costSoFar.put(sourceNode, 0);
 
   // keep on checking the queue until it's empty
   while (frontier && frontier.size()) {
@@ -40,7 +40,7 @@ export const aStar = (...args: PathfinderArgsTuple) => {
     const current: Node | undefined = frontier.pop()[0];
 
     // early exit conditional
-    if (current === endNode || !current) {
+    if (current === destinationNode || !current) {
       break;
     }
 
@@ -52,7 +52,7 @@ export const aStar = (...args: PathfinderArgsTuple) => {
         if (!costSoFar.has(neighbor) || newCost < costSoFar.get(neighbor)!) {
           // update cost
           costSoFar.put(neighbor, newCost);
-          const priority = newCost + heuristic(endNode, neighbor);
+          const priority = newCost + heuristic(destinationNode, neighbor);
 
           let currentLength = visitedNodesInOrder.length;
           visitedNodesInOrder[currentLength] = neighbor;
@@ -70,7 +70,7 @@ export const aStar = (...args: PathfinderArgsTuple) => {
   timer += performance.now();
   console.log('Time: ' + (timer / 1000).toFixed(5) + ' sec.');
 
-  const shortestPath = reconstructPath(startNode, endNode, cameFrom);
+  const shortestPath = reconstructPath(sourceNode, destinationNode, cameFrom);
 
   return {
     visitedNodesInOrder,

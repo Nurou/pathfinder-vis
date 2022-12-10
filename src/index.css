@@ -2,15 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  background-color: #f8fafc;
+}
+
 .regular {
   background-color: #eceff4;
 }
 
-.end {
+.destination {
   background-color: #dc2626;
 }
 
-.start {
+.source {
   background-color: #22c55e;
 }
 

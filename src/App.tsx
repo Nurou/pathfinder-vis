@@ -9,6 +9,7 @@ import {
   populateGrid,
   setNodeNeighbors
 } from './components/Graph/util';
+import { GridCellConversionControls } from './components/GridCellConversionControls';
 import { PathfinderSelector } from './components/PathfinderSelector';
 import StatsDisplay from './components/StatsDisplay';
 import { CustomMap } from './data_structures/Map';
@@ -18,7 +19,7 @@ import { useWindowSize } from './hooks/useWindowResize';
 import {
   Coordinates,
   CoordToNodeDOMElementMap,
-  GridCellConversionTypes,
+  CellType,
   GridDimensions,
   PathfinderRunStatistics
 } from './types';
@@ -32,8 +33,8 @@ const availablePathfinders = [
 
 const App = () => {
   const [grid, setGrid] = useState<GridNode[][] | null>(null);
-  const startNodeCoords = useRef<Coordinates | null>(null);
-  const endNodeCoords = useRef<Coordinates | null>(null);
+  const sourceNodeCoords = useRef<Coordinates | null>(null);
+  const destinationNodeCoords = useRef<Coordinates | null>(null);
   const [gridDimensions, setGridDimensions] = useState<GridDimensions>(() => {
     // initialise grid dimensions based on device width
     const width = document.body.getClientRects()[0].width;
@@ -50,9 +51,12 @@ const App = () => {
   // this is here (and not in checkbox component) so that it can be unchecked when the grid is cleared
   const [checked, setChecked] = useState<boolean>(false);
 
+  // only used to show the border around the selected button
+  const [internalSelectedCellConversionType, setInternalSelectedCellConversionType] =
+    useState<CellType | null>(null);
+
   const gridCellDOMElementRefs = useRef<CoordToNodeDOMElementMap | null>(null);
-  const selectedCellConversionType = useRef<string | null>(null);
-  console.log('💩 ~ file: App.tsx:55 ~ selectedCellConversionType', selectedCellConversionType);
+  const selectedCellConversionType = useRef<CellType | null>(null);
 
   // local storage items
   const [previousRun, setPrevRun] = useStickyState<PathfinderRunStatistics | null>(
@@ -73,8 +77,8 @@ const App = () => {
         gridCellDOMElementRefs,
         gridDimensions,
         selectedCellConversionType,
-        startNodeCoords,
-        endNodeCoords,
+        sourceNodeCoords,
+        destinationNodeCoords,
         setMazeGenerated
       );
     }
@@ -106,8 +110,8 @@ const App = () => {
         gridCellDOMElementRefs,
         gridDimensions,
         selectedCellConversionType,
-        startNodeCoords,
-        endNodeCoords,
+        sourceNodeCoords,
+        destinationNodeCoords,
         setMazeGenerated
       );
     }
@@ -115,7 +119,7 @@ const App = () => {
 
   /**
    *
-   * @param all - if flag is present, the graph is completely cleared
+   * @param all - if flag is passed, the graph is completely cleared
    */
   const clearGrid = (all: boolean = false) => {
     setChecked(false);
@@ -125,16 +129,21 @@ const App = () => {
   };
 
   const handleGridCellConversion = useCallback((row: number, col: number) => {
-    if (startNodeCoords.current && endNodeCoords.current) {
+    if (sourceNodeCoords.current && destinationNodeCoords.current) {
       convertToType(
         row,
         col,
         selectedCellConversionType,
-        startNodeCoords,
-        endNodeCoords,
+        sourceNodeCoords,
+        destinationNodeCoords,
         gridCellDOMElementRefs
       );
     }
+  }, []);
+
+  const resetCellConversion = useCallback(() => {
+    selectedCellConversionType.current = null;
+    setInternalSelectedCellConversionType(null);
   }, []);
 
   if (!grid) return null;
@@ -144,13 +153,13 @@ const App = () => {
       <header>
         <h1 className="text-6xl">Pathfinder Visualiser</h1>
       </header>
-      <div className="flex flex-col lg:flex-row gap-40 mt-10">
+      <div className="flex flex-col lg:flex-row gap-10 mt-10 w-full lg:gap-40">
         <PathfinderSelector
           currentPathfinder={currentPathFinder}
           setCurrentPathfinder={setCurrentPathFinder}
           grid={grid}
-          startNodeCoords={startNodeCoords}
-          endNodeCoords={endNodeCoords}
+          sourceNodeCoords={sourceNodeCoords}
+          destinationNodeCoords={destinationNodeCoords}
           gridCellDOMElementRefs={gridCellDOMElementRefs}
           currentPathFinder={currentPathFinder}
           currentRun={currentRun}
@@ -161,16 +170,26 @@ const App = () => {
           handleClearGridClick={() => clearGrid(true)}
           handleResetPathfinder={() => clearGrid()}
         />
-        <div className="shadow-inner p-6 rounded bg-snow0">
-          <StatsDisplay previous={previousRun} current={currentRun} />
-        </div>
+        {currentRun && (
+          <div className="shadow-xl border border-polar0 p-6 rounded ">
+            <StatsDisplay previous={previousRun} current={currentRun} />
+          </div>
+        )}
+      </div>
+      <div className="self-start mt-6">
+        <GridCellConversionControls
+          selectedCellConversionType={selectedCellConversionType}
+          internalSelectedCellConversionType={internalSelectedCellConversionType}
+          setInternalSelectedCellConversionType={setInternalSelectedCellConversionType}
+        />
       </div>
       <Grid
         grid={grid}
-        startNodeCoords={startNodeCoords}
-        endNodeCoords={endNodeCoords}
+        sourceNodeCoords={sourceNodeCoords}
+        destinationNodeCoords={destinationNodeCoords}
         gridCellDOMElementRefs={gridCellDOMElementRefs}
         handleGridCellConversion={handleGridCellConversion}
+        resetCellConversion={resetCellConversion}
       />
       {/* {currentPathFinder && (
         <Description details={details[currentPathFinder]}>

@@ -56,8 +56,8 @@ interface Props {
   currentPathfinder: string;
   setCurrentPathfinder: React.Dispatch<React.SetStateAction<string>>;
   grid: GridNode[][];
-  startNodeCoords: React.RefObject<Coordinates | null>;
-  endNodeCoords: React.RefObject<Coordinates | null>;
+  sourceNodeCoords: React.RefObject<Coordinates | null>;
+  destinationNodeCoords: React.RefObject<Coordinates | null>;
   gridCellDOMElementRefs: React.MutableRefObject<CoordToNodeDOMElementMap | null>;
   currentRun: PathfinderRunStatistics | null;
   setCurrentRun: React.Dispatch<React.SetStateAction<PathfinderRunStatistics | null>>;
@@ -84,8 +84,8 @@ const renderTooltipText = (infoObj: typeof availablePathfinders[0]['info']) => {
 export const PathfinderSelector = (props: Props) => {
   const {
     grid,
-    startNodeCoords,
-    endNodeCoords,
+    sourceNodeCoords: sourceNodeCoords,
+    destinationNodeCoords: destinationNodeCoords,
     gridCellDOMElementRefs,
     currentPathFinder,
     currentRun,
@@ -101,13 +101,19 @@ export const PathfinderSelector = (props: Props) => {
   const [hasRan, setHasRan] = useState<boolean>(false);
 
   const mapAlgoLabelToFunction: AlgoLabelToFunction = {
-    Bfs: () => bfs(grid, startNodeCoords.current!, endNodeCoords.current!, gridCellDOMElementRefs),
+    Bfs: () =>
+      bfs(grid, sourceNodeCoords.current!, destinationNodeCoords.current!, gridCellDOMElementRefs),
     Ucs: () =>
-      dijkstras(grid, startNodeCoords.current!, endNodeCoords.current!, gridCellDOMElementRefs),
+      dijkstras(
+        grid,
+        sourceNodeCoords.current!,
+        destinationNodeCoords.current!,
+        gridCellDOMElementRefs
+      ),
     Gbfs: () =>
-      gbfs(grid, startNodeCoords.current!, endNodeCoords.current!, gridCellDOMElementRefs),
+      gbfs(grid, sourceNodeCoords.current!, destinationNodeCoords.current!, gridCellDOMElementRefs),
     aStar: () =>
-      aStar(grid, startNodeCoords.current!, endNodeCoords.current!, gridCellDOMElementRefs)
+      aStar(grid, sourceNodeCoords.current!, destinationNodeCoords.current!, gridCellDOMElementRefs)
   };
 
   /**
@@ -115,7 +121,7 @@ export const PathfinderSelector = (props: Props) => {
    */
   const visualise = (): void => {
     // given we have what we need
-    if (grid && startNodeCoords.current && endNodeCoords.current && currentPathFinder) {
+    if (grid && sourceNodeCoords.current && destinationNodeCoords.current && currentPathFinder) {
       // call the selected algorithm
       const { visitedNodesInOrder, shortestPath, timer, costSoFar } =
         mapAlgoLabelToFunction[currentPathFinder]();
@@ -125,7 +131,7 @@ export const PathfinderSelector = (props: Props) => {
         timeTaken: timer,
         shortestPathLength: shortestPath.length - 2,
         totalMovementCost: costSoFar.get(
-          grid[endNodeCoords.current.row][endNodeCoords.current.col]
+          grid[destinationNodeCoords.current.row][destinationNodeCoords.current.col]
         )!
       };
 

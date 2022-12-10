@@ -1,35 +1,11 @@
-import { isEndNode, isStartNode } from '../../algorithms/shared';
+import { isDestinationNode, isSourceNode } from '../../algorithms/shared';
 import GridNode from '../../data_structures/Node';
 import {
+  CellType,
   Coordinates,
   CoordToNodeDOMElementMap,
   GridDimensions as GridDimensions
 } from '../../types';
-
-// enum GridCellType {
-//   Start = 'start',
-//   End = 'end',
-//   Wall = 'wall',
-//   Grass = 'grass',
-//   Visited = 'visited'
-// }
-
-// function updateStyles(domNode: HTMLElement, type: GridCellType) {
-//   switch (type) {
-//     case 'start':
-//       domNode.style.setProperty('background-color', '#22c55e');
-//       break;
-//     case 'end':
-//       domNode.style.setProperty('background-color', '#dc2626');
-//       break;
-//     case 'visited':
-//       domNode.classList.add('animate-pulse');
-//       break;
-
-//     default:
-//       break;
-//   }
-// }
 
 /**
  * Converts a node into wall or grass type by modifying
@@ -40,9 +16,9 @@ import {
 export const convertToType = (
   row: number,
   col: number,
-  conversionType: React.MutableRefObject<string | null>,
-  startNodeCoords: React.MutableRefObject<Coordinates | null>,
-  endNodeCoords: React.MutableRefObject<Coordinates | null>,
+  conversionType: React.MutableRefObject<CellType | null>,
+  sourceNodeCoords: React.MutableRefObject<Coordinates | null>,
+  destinationNodeCoords: React.MutableRefObject<Coordinates | null>,
   gridCellDOMElementRefs: React.MutableRefObject<CoordToNodeDOMElementMap | null>
 ): void => {
   // target node
@@ -52,8 +28,8 @@ export const convertToType = (
 
   const alreadyOccupied = (targetCell: HTMLTableCellElement) => {
     return (
-      targetCell.classList.contains('start') ||
-      targetCell.classList.contains('end') ||
+      targetCell.classList.contains('source') ||
+      targetCell.classList.contains('destination') ||
       targetCell.classList.contains('wall') ||
       targetCell.classList.contains('grass')
     );
@@ -67,39 +43,39 @@ export const convertToType = (
 
   if (!gridCellDOMElementRefs.current) return;
 
-  if (conversionType.current === 'start') {
+  if (conversionType.current === 'source') {
     // if start node already set, move it
-    if (startNodeCoords.current) {
+    if (sourceNodeCoords.current) {
       // get current start node and convert back to regular
-      const currentStartNode =
+      const currentsourceNode =
         gridCellDOMElementRefs.current[
-          `node-${startNodeCoords.current.row}-${startNodeCoords.current.col}`
+          `node-${sourceNodeCoords.current.row}-${sourceNodeCoords.current.col}`
         ];
-      currentStartNode.classList.remove('start');
-      currentStartNode.classList.add('regular');
+      currentsourceNode.classList.remove('source');
+      currentsourceNode.classList.add('regular');
     }
 
-    targetCell.classList.add('start');
-    startNodeCoords.current = { row: row, col: col };
+    targetCell.classList.add('source');
+    sourceNodeCoords.current = { row: row, col: col };
 
     return;
   }
 
-  if (conversionType.current === 'end') {
+  if (conversionType.current === 'destination') {
     // if end node already set, move it
-    if (endNodeCoords.current) {
+    if (destinationNodeCoords.current) {
       // get current end node and remove class
-      const currentEndNode =
+      const currentdestinationNode =
         gridCellDOMElementRefs.current[
-          `node-${endNodeCoords.current.row}-${endNodeCoords.current.col}`
+          `node-${destinationNodeCoords.current.row}-${destinationNodeCoords.current.col}`
         ];
 
-      currentEndNode.classList.remove('end');
-      currentEndNode.classList.add('regular');
+      currentdestinationNode.classList.remove('destination');
+      currentdestinationNode.classList.add('regular');
     }
 
-    targetCell.classList.add('end');
-    endNodeCoords.current = { row: row, col: col };
+    targetCell.classList.add('destination');
+    destinationNodeCoords.current = { row: row, col: col };
 
     return;
   }
@@ -117,7 +93,7 @@ export const coverInTerrain = (
   if (!gridCellDOMElementRefs.current) return;
 
   Object.values(gridCellDOMElementRefs.current).forEach((el: any) => {
-    if (!el.classList.contains('start') && !el.classList.contains('end')) {
+    if (!el.classList.contains('source') && !el.classList.contains('destination')) {
       el.classList.add('regular');
     }
   });
@@ -149,8 +125,8 @@ export const addWallsRandomly = (
       const randomBoolean = Math.random() >= 0.75;
       if (
         randomBoolean &&
-        !isStartNode(row, col, gridCellDOMElementRefs) &&
-        !isEndNode(row, col, gridCellDOMElementRefs)
+        !isSourceNode(row, col, gridCellDOMElementRefs) &&
+        !isDestinationNode(row, col, gridCellDOMElementRefs)
       ) {
         gridCellDOMElementRefs.current[`node-${row}-${col}`].classList.add('wall');
       }
@@ -188,7 +164,7 @@ export const displayDistances = (
 ): void => {
   [...costSoFar].forEach((mapping) => {
     const domNode = gridCellDOMElementRefs.current[`node-${mapping[0].row}-${mapping[0].col}`];
-    if (!domNode.classList.contains('start') && !domNode.classList.contains('end')) {
+    if (!domNode.classList.contains('source') && !domNode.classList.contains('destination')) {
       domNode.innerHTML = domNode.innerHTML ? null : mapping[1];
     }
   });
@@ -236,12 +212,11 @@ export const createMaze = (
   grid: GridNode[][],
   gridCellDOMElementRefs: React.MutableRefObject<CoordToNodeDOMElementMap | null>,
   gridDimensions: GridDimensions,
-  conversionType: React.MutableRefObject<string | null>,
-  startNodeCoords: React.MutableRefObject<Coordinates | null>,
-  endNodeCoords: React.MutableRefObject<Coordinates | null>,
+  conversionType: React.MutableRefObject<CellType | null>,
+  sourceNodeCoords: React.MutableRefObject<Coordinates | null>,
+  destinationNodeCoords: React.MutableRefObject<Coordinates | null>,
   setMazeGenerated: React.Dispatch<React.SetStateAction<boolean>>
 ): void => {
-  console.log('💩 ~ file: util.tsx:244 ~ conversionType', conversionType);
   if (!gridCellDOMElementRefs.current) return;
 
   // if maze already generated, clear previous
@@ -263,22 +238,22 @@ export const createMaze = (
 
   // add start and end nodes
   if (Object.keys(gridCellDOMElementRefs.current).length !== 0 && SN_COORDS && EN_COORDS) {
-    conversionType.current = 'start';
+    conversionType.current = 'source';
     convertToType(
       SN_COORDS.row,
       SN_COORDS.col,
       conversionType,
-      startNodeCoords,
-      endNodeCoords,
+      sourceNodeCoords,
+      destinationNodeCoords,
       gridCellDOMElementRefs
     );
-    conversionType.current = 'end';
+    conversionType.current = 'destination';
     convertToType(
       EN_COORDS.row,
       EN_COORDS.col,
       conversionType,
-      startNodeCoords,
-      endNodeCoords,
+      sourceNodeCoords,
+      destinationNodeCoords,
       gridCellDOMElementRefs
     );
   }

@@ -15,35 +15,35 @@ const pushToFrontier = (frontier: GridNode[], node: GridNode) => {
 export const bfs = (...args: PathfinderArgsTuple) => {
   checkArgs(...args);
 
-  const [grid, startNodeCoords, endNodeCoords, gridCellDOMElementRefs] = args;
+  const [grid, sourceNodeCoords, destinationNodeCoords, gridCellDOMElementRefs] = args;
 
   // uses to animating flood/frontier
   const visitedNodesInOrder: GridNode[] = [];
 
   // get logical start and end nodes by coordinates
-  const startNode: GridNode = grid[startNodeCoords.row][startNodeCoords.col];
-  const endNode: GridNode = grid[endNodeCoords.row][endNodeCoords.col];
+  const sourceNode: GridNode = grid[sourceNodeCoords.row][sourceNodeCoords.col];
+  const destinationNode: GridNode = grid[destinationNodeCoords.row][destinationNodeCoords.col];
 
   // clock performance
   let timer: number = -performance.now();
 
   // queue for traversing the grid
   const frontier: GridNode[] = [];
-  pushToFrontier(frontier, startNode);
+  pushToFrontier(frontier, sourceNode);
 
   // map preceding node to each node.
   const cameFrom = new CustomMap<GridNode, GridNode | null>();
-  cameFrom.put(startNode, null);
+  cameFrom.put(sourceNode, null);
 
   const costSoFar = new CustomMap<GridNode, number>();
-  costSoFar.put(startNode, 0);
+  costSoFar.put(sourceNode, 0);
 
   // keep on checking the queue until it's empty
   while (frontier && frontier.length) {
     // pop queue
     const current: GridNode | undefined = frontier.shift();
 
-    if (current === endNode) {
+    if (current === destinationNode) {
       break;
     }
 
@@ -73,7 +73,7 @@ export const bfs = (...args: PathfinderArgsTuple) => {
   timer += performance.now();
   console.log('Time: ' + (timer / 1000).toFixed(5) + ' sec.');
 
-  const shortestPath = reconstructPath(startNode, endNode, cameFrom);
+  const shortestPath = reconstructPath(sourceNode, destinationNode, cameFrom);
 
   return {
     visitedNodesInOrder,

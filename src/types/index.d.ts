@@ -7,7 +7,7 @@ export interface Coordinates {
 
 export type CoordToNodeDOMElementMap = Record<string, HTMLTableCellElement>;
 
-export type GridCellConversionTypes = 'start' | 'end' | 'wall' | 'grass';
+export type CellType = 'source' | 'destination' | 'wall' | 'grass';
 
 export interface GridDimensions {
   rows: number;
@@ -37,7 +37,7 @@ export interface DetailsArray {
 
 export type PathfinderArgsTuple = [
   grid: GridNode[][],
-  startNodeCoords: Coordinates,
-  endNodeCoords: Coordinates,
+  sourceNodeCoords: Coordinates,
+  destinationNodeCoords: Coordinates,
   gridCellDOMElementRefs: React.MutableRefObject<CoordToNodeDOMElementMap | null>
 ];

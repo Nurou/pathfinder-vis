@@ -9,14 +9,14 @@ export type MockRefs = {
 
 type ArgsTuple = [
   grid: GridNode[][],
-  startNodeCoords: Coordinates,
-  endNodeCoords: Coordinates,
+  sourceNodeCoords: Coordinates,
+  destinationNodeCoords: Coordinates,
   gridCellDOMElementRefs: React.MutableRefObject<CoordToNodeDOMElementMap | null>
 ];
 
 export const checkArgs = (...args: ArgsTuple) => {
-  const [grid, startNodeCoords, endNodeCoords, gridCellDOMElementRefs] = args;
-  if (!grid || !startNodeCoords || !endNodeCoords || !gridCellDOMElementRefs) {
+  const [grid, sourceNodeCoords, destinationNodeCoords, gridCellDOMElementRefs] = args;
+  if (!grid || !sourceNodeCoords || !destinationNodeCoords || !gridCellDOMElementRefs) {
     throw new Error('Missing arguments!');
   }
 
@@ -30,10 +30,10 @@ export const checkArgs = (...args: ArgsTuple) => {
   };
 
   if (
-    !between(startNodeCoords.row, MIN_ROW, MAX_ROW) ||
-    !between(startNodeCoords.col, MIN_COL, MAX_COL) ||
-    !between(endNodeCoords.row, MIN_ROW, MAX_ROW) ||
-    !between(endNodeCoords.col, MIN_COL, MAX_COL)
+    !between(sourceNodeCoords.row, MIN_ROW, MAX_ROW) ||
+    !between(sourceNodeCoords.col, MIN_COL, MAX_COL) ||
+    !between(destinationNodeCoords.row, MIN_ROW, MAX_ROW) ||
+    !between(destinationNodeCoords.col, MIN_COL, MAX_COL)
   ) {
     throw new Error('Coordinates out of bounds!');
   }
@@ -41,24 +41,22 @@ export const checkArgs = (...args: ArgsTuple) => {
 
 /**
  * Reconstructs the path from end node to start node if it exists
- * @param {number} startNode
- * @param {number} endNode
  */
 export const reconstructPath = (
-  startNode: GridNode,
-  endNode: GridNode,
+  sourceNode: GridNode,
+  destinationNode: GridNode,
   cameFrom?: CustomMap<GridNode, GridNode | null> | Map<GridNode, GridNode>
 ) => {
   // path starts out empty
   const path: GridNode[] = [];
 
   // end node was reached
-  if (cameFrom?.get(endNode) !== undefined) {
+  if (cameFrom?.get(destinationNode) !== undefined) {
     // start from goal
-    let current = endNode;
+    let current = destinationNode;
 
     // ends when start reached
-    while (current !== startNode) {
+    while (current !== sourceNode) {
       path.push(current);
       if (current) {
         current = cameFrom!.get(current)!;
@@ -66,29 +64,29 @@ export const reconstructPath = (
     }
 
     // include start node for visualisation
-    path.push(startNode);
+    path.push(sourceNode);
   }
 
   return path;
 };
 
-export const isStartNode = (
+export const isSourceNode = (
   row: number,
   col: number,
   gridCellDOMElementRefs: React.MutableRefObject<CoordToNodeDOMElementMap | null>
 ): boolean => {
   const nodeClassList: DOMTokenList | undefined =
     gridCellDOMElementRefs.current?.[`node-${row}-${col}`].classList;
-  return !!nodeClassList?.contains('start');
+  return !!nodeClassList?.contains('source');
 };
 
-export const isEndNode = (
+export const isDestinationNode = (
   row: number,
   col: number,
   gridCellDOMElementRefs: React.MutableRefObject<CoordToNodeDOMElementMap | null>
 ): boolean => {
   const nodeClassList = gridCellDOMElementRefs.current?.[`node-${row}-${col}`].classList;
-  return !!nodeClassList?.contains('end');
+  return !!nodeClassList?.contains('destination');
 };
 
 export const isGrass = (
@@ -112,9 +110,6 @@ export const isWall = (
 ): boolean => {
   const nodeClassList = gridCellDOMElementRefs.current?.[`node-${node.row}-${node.col}`].classList;
 
-  // for test/mocking
-  if (typeof nodeClassList?.contains == undefined || nodeClassList?.length === 0) return false;
-
   return !!nodeClassList?.contains('wall');
 };
 
@@ -131,9 +126,6 @@ export const getMovementCost = (
   const TERRAIN_COST = 1;
 
   const nodeClassList = gridCellDOMElementRefs.current?.[`node-${node.row}-${node.col}`].classList;
-
-  // for test/mocking
-  if (typeof nodeClassList?.contains == undefined || nodeClassList?.length === 0) return 0;
 
   return nodeClassList?.contains('grass') ? GRASS_COST : TERRAIN_COST;
 };

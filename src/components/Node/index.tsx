@@ -29,20 +29,38 @@ type NodeProps = {
   onMouseDown: (row: number, col: number) => void;
   onMouseEnter: (row: number, col: number) => void;
   onMouseUp: () => void;
+  onClick: () => void;
   gridCellDOMElementRefs: React.MutableRefObject<CoordToNodeDOMElementMap | null>;
 };
 
 export const NodeComponent = memo(
-  ({ row, col, onMouseDown, onMouseEnter, onMouseUp, gridCellDOMElementRefs }: NodeProps) => {
-    useTraceUpdate({ row, col, onMouseDown, onMouseEnter, onMouseUp, gridCellDOMElementRefs });
+  ({
+    row,
+    col,
+    onMouseDown,
+    onMouseEnter,
+    onMouseUp,
+    onClick,
+    gridCellDOMElementRefs
+  }: NodeProps) => {
+    useTraceUpdate({
+      row,
+      col,
+      onMouseDown,
+      onMouseEnter,
+      onMouseUp,
+      onClick,
+      gridCellDOMElementRefs
+    });
     return (
       <td
         className="w-8 h-8 bg-none rounded m-1"
         role="cell"
         ref={(el: HTMLTableCellElement) => handleRef(el, row, col, gridCellDOMElementRefs)}
-        onMouseDown={() => onMouseDown(row, col)}
-        onMouseEnter={() => onMouseEnter(row, col)}
-        onMouseUp={() => onMouseUp()}
+        onMouseDown={(e) => onMouseDown(row, col)}
+        onMouseEnter={(e) => onMouseEnter(row, col)}
+        onMouseUp={(e) => onMouseUp()}
+        onClick={onClick}
       ></td>
     );
   }
