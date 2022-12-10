@@ -1,4 +1,5 @@
 import { isDestinationNode, isSourceNode } from '../../algorithms/shared';
+import { CustomMap } from '../../data_structures/Map';
 import GridNode from '../../data_structures/Node';
 import {
   CellType,
@@ -160,13 +161,14 @@ export const getRandomArbitrary = (min: number, max: number): number => {
  * @param gridCellDOMElementRefs
  */
 export const displayDistances = (
-  costSoFar: any,
-  gridCellDOMElementRefs: React.MutableRefObject<any>
+  costSoFar: CustomMap<GridNode, number>,
+  gridCellDOMElementRefs: React.MutableRefObject<CoordToNodeDOMElementMap | null>
 ): void => {
-  [...costSoFar].forEach((mapping) => {
-    const domNode = gridCellDOMElementRefs.current[`node-${mapping[0].row}-${mapping[0].col}`];
+  return costSoFar.keySet().forEach((key) => {
+    const domNode = gridCellDOMElementRefs.current?.[`node-${key.row}-${key.col}`];
+    if (!domNode) return;
     if (!domNode.classList.contains('source') && !domNode.classList.contains('destination')) {
-      domNode.innerHTML = domNode.innerHTML ? null : mapping[1];
+      domNode.innerHTML = domNode.innerHTML ? '' : String(costSoFar.get(key));
     }
   });
 };

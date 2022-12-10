@@ -62,9 +62,7 @@ interface Props {
   currentRun: PathfinderRunStatistics | null;
   setCurrentRun: React.Dispatch<React.SetStateAction<PathfinderRunStatistics | null>>;
   setPrevRun: React.Dispatch<React.SetStateAction<PathfinderRunStatistics | null>>;
-  setCosts: React.Dispatch<
-    React.SetStateAction<Map<GridNode, number> | CustomMap<GridNode, number> | null>
-  >;
+  setCosts: React.Dispatch<React.SetStateAction<CustomMap<GridNode, number> | null>>;
   currentPathFinder?: string | null;
   handleGenerateMazeClick: () => void;
   handleClearGridClick: () => void;

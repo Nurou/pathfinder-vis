@@ -22,10 +22,6 @@ export const Grid = memo((props: GridProps): JSX.Element => {
   useTraceUpdate(props);
   let mouseIsPressed = true;
 
-  // setState not used due to avoid unnecessary grid re-renders
-  // TODO: move this state up to app since the component
-  // is memoized anyway and it's not passed as prop
-
   useEffect(() => {
     props.gridCellDOMElementRefs && coverInTerrain(props.gridCellDOMElementRefs);
   }, []);
@@ -59,7 +55,7 @@ export const Grid = memo((props: GridProps): JSX.Element => {
   }, []);
 
   return (
-    <table className="flex flex-col py-8 self-start">
+    <table className="flex flex-col self-start">
       <tbody>
         {props.grid.map((row: GridNode[], rowIdx: number) => (
           <tr key={rowIdx} className="flex flex-nowrap">

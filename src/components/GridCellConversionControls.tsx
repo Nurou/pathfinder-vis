@@ -2,15 +2,17 @@ import React from 'react';
 import { CellType } from '../types';
 import { TooltipWrapper } from './TooltipWrapper';
 
+type Props = {
+  selectedCellConversionType: React.MutableRefObject<CellType | null>;
+  internalSelectedCellConversionType: CellType | null;
+  setInternalSelectedCellConversionType: React.Dispatch<React.SetStateAction<CellType | null>>;
+};
+
 export const GridCellConversionControls = ({
   selectedCellConversionType,
   internalSelectedCellConversionType,
   setInternalSelectedCellConversionType
-}: {
-  selectedCellConversionType: React.MutableRefObject<CellType | null>;
-  internalSelectedCellConversionType: CellType | null;
-  setInternalSelectedCellConversionType: React.Dispatch<React.SetStateAction<CellType | null>>;
-}) => {
+}: Props) => {
   // selects if type not selected
   // deselects otherwise
   const handleClick = (type: CellType) => {
@@ -29,7 +31,7 @@ export const GridCellConversionControls = ({
       <div className="flex flex-col sm:flex-row gap-4">
         <button
           onClick={() => handleClick('source')}
-          className={`flex items-start justify-center bg-snow0 hover:bg-snow1 text-black p-3 rounded ${
+          className={`flex items-start justify-start bg-snow0 hover:bg-snow1 text-black p-3 rounded ${
             internalSelectedCellConversionType === 'source'
               ? 'border-2 border-source'
               : 'border-2 border-transparent'
@@ -40,7 +42,7 @@ export const GridCellConversionControls = ({
         </button>
         <button
           onClick={() => handleClick('destination')}
-          className={`flex items-start justify-center bg-snow0 hover:bg-snow1 text-black p-3 rounded ${
+          className={`flex items-start justify-start bg-snow0 hover:bg-snow1 text-black p-3 rounded ${
             internalSelectedCellConversionType === 'destination'
               ? 'border-2 border-destination'
               : 'border-2 border-transparent'
@@ -51,7 +53,7 @@ export const GridCellConversionControls = ({
         </button>
         <button
           onClick={() => handleClick('wall')}
-          className={`flex items-start justify-center bg-snow0 hover:bg-snow1 text-black p-3 rounded ${
+          className={`flex items-start justify-start bg-snow0 hover:bg-snow1 text-black p-3 rounded ${
             internalSelectedCellConversionType === 'wall'
               ? 'border-2 border-polar1'
               : 'border-2 border-transparent'
@@ -63,7 +65,7 @@ export const GridCellConversionControls = ({
         <TooltipWrapper tooltipText={'The movement cost of grass is 5x that of regular terrain.'}>
           <button
             onClick={() => handleClick('grass')}
-            className={`flex items-start justify-center bg-snow0 hover:bg-snow1 text-black p-3 rounded ${
+            className={`flex items-start justify-start bg-snow0 hover:bg-snow1 text-black p-3 rounded ${
               internalSelectedCellConversionType === 'grass'
                 ? 'border-2 border-grass'
                 : 'border-2 border-transparent'

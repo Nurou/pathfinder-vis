@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import Checkbox from './components/Checkbox';
-import ControlPanel from './components/ControlPanel';
+import { Switch } from './components/Switch';
+
 import { Grid } from './components/Graph/Graph';
 import {
   clear,
   convertToType,
   createMaze,
+  displayDistances,
   populateGrid,
   setNodeNeighbors
 } from './components/Graph/util';
@@ -17,9 +18,9 @@ import GridNode from './data_structures/Node';
 import { useStickyState } from './hooks/useStickyState';
 import { useWindowSize } from './hooks/useWindowResize';
 import {
+  CellType,
   Coordinates,
   CoordToNodeDOMElementMap,
-  CellType,
   GridDimensions,
   PathfinderRunStatistics
 } from './types';
@@ -44,12 +45,10 @@ const App = () => {
     };
   });
   const [mazeGenerated, setMazeGenerated] = useState<boolean>(false);
-  const [costs, setCosts] = useState<Map<GridNode, number> | CustomMap<GridNode, number> | null>(
-    null
-  );
+  const [movementCosts, setMovementCosts] = useState<CustomMap<GridNode, number> | null>(null);
   const [currentPathFinder, setCurrentPathFinder] = useState<string>(availablePathfinders[0].value);
-  // this is here (and not in checkbox component) so that it can be unchecked when the grid is cleared
-  const [checked, setChecked] = useState<boolean>(false);
+
+  const [showDistances, setShowDistances] = useState<boolean>(false);
 
   // only used to show the border around the selected button
   const [internalSelectedCellConversionType, setInternalSelectedCellConversionType] =
@@ -59,14 +58,8 @@ const App = () => {
   const selectedCellConversionType = useRef<CellType | null>(null);
 
   // local storage items
-  const [previousRun, setPrevRun] = useStickyState<PathfinderRunStatistics | null>(
-    null,
-    'previousRun'
-  );
-  const [currentRun, setCurrentRun] = useStickyState<PathfinderRunStatistics | null>(
-    null,
-    'currentRun'
-  );
+  const [previousRun, setPrevRun] = useState<PathfinderRunStatistics | null>(null);
+  const [currentRun, setCurrentRun] = useState<PathfinderRunStatistics | null>(null);
 
   // set up board on initial render
   useEffect(() => {
@@ -122,19 +115,13 @@ const App = () => {
    * @param all - if flag is passed, the graph is completely cleared
    */
   const clearGrid = (all: boolean = false) => {
-    setChecked(false);
+    setShowDistances(false);
     if (grid && gridCellDOMElementRefs.current != null) {
       clear(grid, gridCellDOMElementRefs, all);
     }
   };
 
   const handleGridCellConversion = useCallback((row: number, col: number) => {
-    console.log('triggered');
-    console.log(
-      '💩 ~ file: App.tsx:145 ~ selectedCellConversionType.curren',
-      selectedCellConversionType.current
-    );
-
     if (!selectedCellConversionType.current) return;
     if (sourceNodeCoords.current && destinationNodeCoords.current) {
       convertToType(
@@ -152,6 +139,13 @@ const App = () => {
     selectedCellConversionType.current = null;
     setInternalSelectedCellConversionType(null);
   }, []);
+
+  const handleCheckChange = (checked: boolean) => {
+    setShowDistances(checked);
+    if (movementCosts !== null) {
+      displayDistances(movementCosts, gridCellDOMElementRefs);
+    }
+  };
 
   if (!grid) return null;
 
@@ -172,23 +166,26 @@ const App = () => {
           currentRun={currentRun}
           setCurrentRun={setCurrentRun}
           setPrevRun={setPrevRun}
-          setCosts={setCosts}
+          setCosts={setMovementCosts}
           handleGenerateMazeClick={handleGenerateMazeClick}
           handleClearGridClick={() => clearGrid(true)}
           handleResetPathfinder={() => clearGrid()}
         />
         {currentRun && (
-          <div className="shadow-xl border border-polar0 p-6 rounded ">
+          <div className="shadow-xl border border-polar0 p-6 rounded max-w-md">
             <StatsDisplay previous={previousRun} current={currentRun} />
           </div>
         )}
       </div>
-      <div className="self-start mt-10">
+      <div className="flex items-center self-start mt-10">
         <GridCellConversionControls
           selectedCellConversionType={selectedCellConversionType}
           internalSelectedCellConversionType={internalSelectedCellConversionType}
           setInternalSelectedCellConversionType={setInternalSelectedCellConversionType}
         />
+      </div>
+      <div className="mt-10 mb-2">
+        {currentRun && <Switch checked={showDistances} onChange={handleCheckChange} />}
       </div>
       <Grid
         grid={grid}
@@ -198,32 +195,6 @@ const App = () => {
         handleGridCellConversion={handleGridCellConversion}
         resetCellConversion={resetCellConversion}
       />
-      {/* {currentPathFinder && (
-        <Description details={details[currentPathFinder]}>
-          <PathFinderSelector
-            currentPathfinder={currentPathFinder}
-            setCurrentPathfinder={setCurrentPathFinder}
-            availablePathfinders={availablePathfinders}
-          />
-        </Description>
-      )} */}
-      <ControlPanel>
-        {grid && (
-          <div>
-            <div>
-              <label>
-                <Checkbox
-                  costs={costs}
-                  gridCellDOMElementRefs={gridCellDOMElementRefs}
-                  checked={checked}
-                  setChecked={setChecked}
-                />
-                <span>Show Distances</span>
-              </label>
-            </div>
-          </div>
-        )}
-      </ControlPanel>
     </main>
   );
 };

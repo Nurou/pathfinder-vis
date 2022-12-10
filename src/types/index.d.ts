@@ -18,7 +18,7 @@ export interface ReturnedStats {
   visitedNodesInOrder: GridNode[];
   shortestPath: GridNode[];
   timer: number;
-  costSoFar: Map<GridNode, number> | CustomMap<GridNode, number>;
+  costSoFar: CustomMap<GridNode, number>;
 }
 
 export type DynamicFunctions = Record<string, () => ReturnedStats>;

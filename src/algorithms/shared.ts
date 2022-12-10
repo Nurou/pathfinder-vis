@@ -45,7 +45,7 @@ export const checkArgs = (...args: ArgsTuple) => {
 export const reconstructPath = (
   sourceNode: GridNode,
   destinationNode: GridNode,
-  cameFrom?: CustomMap<GridNode, GridNode | null> | Map<GridNode, GridNode>
+  cameFrom: CustomMap<GridNode, GridNode | null>
 ) => {
   // path starts out empty
   const path: GridNode[] = [];
