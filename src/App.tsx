@@ -129,6 +129,13 @@ const App = () => {
   };
 
   const handleGridCellConversion = useCallback((row: number, col: number) => {
+    console.log('triggered');
+    console.log(
+      '💩 ~ file: App.tsx:145 ~ selectedCellConversionType.curren',
+      selectedCellConversionType.current
+    );
+
+    if (!selectedCellConversionType.current) return;
     if (sourceNodeCoords.current && destinationNodeCoords.current) {
       convertToType(
         row,
@@ -176,7 +183,7 @@ const App = () => {
           </div>
         )}
       </div>
-      <div className="self-start mt-6">
+      <div className="self-start mt-10">
         <GridCellConversionControls
           selectedCellConversionType={selectedCellConversionType}
           internalSelectedCellConversionType={internalSelectedCellConversionType}

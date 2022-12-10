@@ -21,6 +21,7 @@ export const convertToType = (
   destinationNodeCoords: React.MutableRefObject<Coordinates | null>,
   gridCellDOMElementRefs: React.MutableRefObject<CoordToNodeDOMElementMap | null>
 ): void => {
+  if (!conversionType.current) return;
   // target node
   const targetCell = gridCellDOMElementRefs.current?.[`node-${row}-${col}`];
 
@@ -47,12 +48,12 @@ export const convertToType = (
     // if start node already set, move it
     if (sourceNodeCoords.current) {
       // get current start node and convert back to regular
-      const currentsourceNode =
+      const currentSourceNode =
         gridCellDOMElementRefs.current[
           `node-${sourceNodeCoords.current.row}-${sourceNodeCoords.current.col}`
         ];
-      currentsourceNode.classList.remove('source');
-      currentsourceNode.classList.add('regular');
+      currentSourceNode.classList.remove('source');
+      currentSourceNode.classList.add('regular');
     }
 
     targetCell.classList.add('source');
@@ -65,13 +66,13 @@ export const convertToType = (
     // if end node already set, move it
     if (destinationNodeCoords.current) {
       // get current end node and remove class
-      const currentdestinationNode =
+      const currentDestinationNode =
         gridCellDOMElementRefs.current[
           `node-${destinationNodeCoords.current.row}-${destinationNodeCoords.current.col}`
         ];
 
-      currentdestinationNode.classList.remove('destination');
-      currentdestinationNode.classList.add('regular');
+      currentDestinationNode.classList.remove('destination');
+      currentDestinationNode.classList.add('regular');
     }
 
     targetCell.classList.add('destination');
@@ -117,11 +118,11 @@ export const populateGrid = (gridDimensions: GridDimensions): GridNode[][] => {
 };
 
 export const addWallsRandomly = (
-  grid: GridNode[][] | null,
+  grid: GridNode[][],
   gridCellDOMElementRefs: React.MutableRefObject<any>
 ): void => {
-  for (let row = 0; row < grid!.length; row++) {
-    for (let col = 0; col < grid![row].length; col++) {
+  for (let row = 0; row < grid.length; row++) {
+    for (let col = 0; col < grid[row].length; col++) {
       const randomBoolean = Math.random() >= 0.75;
       if (
         randomBoolean &&
@@ -226,14 +227,14 @@ export const createMaze = (
 
   // restrict to LHS of grid
   const SN_COORDS: Coordinates = {
-    row: getRandomArbitrary(0, gridDimensions!.rows),
-    col: getRandomArbitrary(0, gridDimensions!.cols / 2)
+    row: getRandomArbitrary(0, gridDimensions.rows),
+    col: getRandomArbitrary(0, gridDimensions.cols / 2)
   };
 
   // restrict to RHS of grid
   const EN_COORDS: Coordinates = {
-    row: getRandomArbitrary(0, gridDimensions!.rows),
-    col: getRandomArbitrary(gridDimensions!.cols / 2, gridDimensions!.cols)
+    row: getRandomArbitrary(0, gridDimensions.rows),
+    col: getRandomArbitrary(gridDimensions.cols / 2, gridDimensions.cols)
   };
 
   // add start and end nodes
@@ -261,4 +262,6 @@ export const createMaze = (
   addWallsRandomly(grid, gridCellDOMElementRefs);
 
   setMazeGenerated(true);
+
+  conversionType.current = null;
 };

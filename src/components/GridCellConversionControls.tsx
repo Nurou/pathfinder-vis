@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { CellType } from '../types';
+import { TooltipWrapper } from './TooltipWrapper';
 
 export const GridCellConversionControls = ({
   selectedCellConversionType,
@@ -59,17 +60,19 @@ export const GridCellConversionControls = ({
           <span className="before:content-['con'] before:text-polar1  before:inline before:bg-polar1 before:rounded before:mx-3" />
           <span>wall</span>
         </button>
-        <button
-          onClick={() => handleClick('grass')}
-          className={`flex items-start justify-center bg-snow0 hover:bg-snow1 text-black p-3 rounded ${
-            internalSelectedCellConversionType === 'grass'
-              ? 'border-2 border-grass'
-              : 'border-2 border-transparent'
-          }`}
-        >
-          <span className="before:content-['con'] before:text-grass  before:inline before:bg-grass before:rounded before:mx-3" />
-          <span>grass</span>
-        </button>
+        <TooltipWrapper tooltipText={'The movement cost of grass is 5x that of regular terrain.'}>
+          <button
+            onClick={() => handleClick('grass')}
+            className={`flex items-start justify-center bg-snow0 hover:bg-snow1 text-black p-3 rounded ${
+              internalSelectedCellConversionType === 'grass'
+                ? 'border-2 border-grass'
+                : 'border-2 border-transparent'
+            }`}
+          >
+            <span className="before:content-['con'] before:text-grass  before:inline before:bg-grass before:rounded before:mx-3" />
+            <span>grass</span>
+          </button>
+        </TooltipWrapper>
       </div>
     </div>
   );

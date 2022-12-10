@@ -20,11 +20,11 @@ interface GridProps {
 
 export const Grid = memo((props: GridProps): JSX.Element => {
   useTraceUpdate(props);
+  let mouseIsPressed = true;
 
   // setState not used due to avoid unnecessary grid re-renders
   // TODO: move this state up to app since the component
   // is memoized anyway and it's not passed as prop
-  let mouseIsPressed = false;
 
   useEffect(() => {
     props.gridCellDOMElementRefs && coverInTerrain(props.gridCellDOMElementRefs);
