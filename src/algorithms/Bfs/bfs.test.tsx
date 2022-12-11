@@ -1,7 +1,7 @@
 import { beforeAll, describe, expect, test } from 'vitest';
 import { GridNode } from '../../data_structures/Node';
 import { bfs } from '.';
-import { setNodeNeighbors } from '../../components/Graph/util';
+import { setNodeNeighbors } from '../../util';
 import { MockRefs } from '../shared';
 
 const grid: GridNode[][] = [];

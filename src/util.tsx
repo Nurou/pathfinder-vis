@@ -1,12 +1,12 @@
-import { isDestinationNode, isSourceNode } from '../../algorithms/shared';
-import { CustomMap } from '../../data_structures/Map';
-import GridNode from '../../data_structures/Node';
+import { isDestinationNode, isSourceNode } from './algorithms/shared';
+import { CustomMap } from './data_structures/Map';
+import GridNode from './data_structures/Node';
 import {
   CellType,
   Coordinates,
   CoordToNodeDOMElementMap,
   GridDimensions as GridDimensions
-} from '../../types';
+} from './types';
 
 /**
  * Converts a node into wall or grass type by modifying
@@ -191,7 +191,7 @@ export const clear = (
       if (!isNaN(parseInt(domNode.innerHTML))) {
         domNode.innerHTML = '';
       }
-      // when clearing the whole graph
+      // when clearing the whole grid
       if (all) {
         domNode.classList.remove('visited', 'node-shortest-path', 'wall', 'grass');
         domNode.classList.add('regular');

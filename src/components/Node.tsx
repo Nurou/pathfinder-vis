@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 // import { useTraceUpdate } from '../../hooks/useTraceUpdate';
-import { CoordToNodeDOMElementMap } from '../../types';
+import { CoordToNodeDOMElementMap } from '../types';
 
 /**
  *

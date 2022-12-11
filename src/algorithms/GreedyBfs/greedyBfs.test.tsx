@@ -1,6 +1,6 @@
 import { beforeAll, expect, test } from 'vitest';
 import { GridNode } from '../../data_structures/Node';
-import { setNodeNeighbors } from '../../components/Graph/util';
+import { setNodeNeighbors } from '../../util';
 import { gbfs } from '.';
 import { MockRefs } from '../shared';
 

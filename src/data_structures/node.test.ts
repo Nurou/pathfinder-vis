@@ -1,5 +1,5 @@
 import { beforeAll, beforeEach, describe, expect, test } from 'vitest';
-import { setNodeNeighbors, populateGrid } from './../components/Graph/util';
+import { setNodeNeighbors, populateGrid } from '../util';
 
 let grid: any = [];
 const GRID_ROWS = 20;

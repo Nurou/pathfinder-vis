@@ -1,7 +1,7 @@
 import { beforeAll, expect, test } from 'vitest';
 import { dijkstras } from '.';
 import { GridNode } from '../../data_structures/Node';
-import { setNodeNeighbors } from '../../components/Graph/util';
+import { setNodeNeighbors } from '../../util';
 import { MockRefs } from '../shared';
 
 const grid: GridNode[][] = [];

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Switch } from './components/Switch';
 
-import { Grid } from './components/Graph/Graph';
+import { Grid } from './components/Grid';
 import {
   clear,
   convertToType,
@@ -9,7 +9,7 @@ import {
   displayDistances,
   populateGrid,
   setNodeNeighbors
-} from './components/Graph/util';
+} from './util';
 import { GridCellConversionControls } from './components/GridCellConversionControls';
 import { PathfinderSelector } from './components/PathfinderSelector';
 import StatsDisplay from './components/StatsDisplay';

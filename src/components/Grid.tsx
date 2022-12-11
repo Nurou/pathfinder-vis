@@ -1,9 +1,9 @@
 import React, { memo, useCallback, useEffect } from 'react';
-import GridNode from '../../data_structures/Node';
-import { NodeComponent } from '../Node';
-import { useTraceUpdate } from '../../hooks/useTraceUpdate';
-import { coverInTerrain } from './util';
-import { Coordinates, CoordToNodeDOMElementMap } from '../../types';
+import GridNode from '../data_structures/Node';
+import { NodeComponent } from './Node';
+// import { useTraceUpdate } from '../../hooks/useTraceUpdate';
+import { coverInTerrain } from '../util';
+import { Coordinates, CoordToNodeDOMElementMap } from '../types';
 
 interface GridProps {
   grid: GridNode[][];
@@ -15,9 +15,8 @@ interface GridProps {
 }
 
 /**
- * Renders the logical nodes as div elements
+ * Renders the logical nodes as HTML elements
  */
-
 export const Grid = memo((props: GridProps): JSX.Element => {
   // useTraceUpdate(props);
   let mouseIsPressed = true;
