@@ -52,7 +52,7 @@ const App = () => {
 
   // only used to show the border around the selected button
   const [internalSelectedCellConversionType, setInternalSelectedCellConversionType] =
-    useState<CellType | null>(null);
+    useState<CellType | null>('source');
 
   const gridCellDOMElementRefs = useRef<CoordToNodeDOMElementMap | null>(null);
   const selectedCellConversionType = useRef<CellType | null>(null);
@@ -108,6 +108,7 @@ const App = () => {
         setMazeGenerated
       );
     }
+    setMovementCosts(null);
   };
 
   /**
@@ -168,8 +169,14 @@ const App = () => {
           setPrevRun={setPrevRun}
           setCosts={setMovementCosts}
           handleGenerateMazeClick={handleGenerateMazeClick}
-          handleClearGridClick={() => clearGrid(true)}
-          handleResetPathfinder={() => clearGrid()}
+          handleClearGridClick={() => {
+            clearGrid(true);
+            setMovementCosts(null);
+          }}
+          handleResetPathfinder={() => {
+            clearGrid();
+            setMovementCosts(null);
+          }}
         />
         {currentRun && (
           <div className="shadow-xl border border-polar0 p-6 rounded max-w-md">
@@ -184,8 +191,8 @@ const App = () => {
           setInternalSelectedCellConversionType={setInternalSelectedCellConversionType}
         />
       </div>
-      <div className="mt-10 mb-2">
-        {currentRun && <Switch checked={showDistances} onChange={handleCheckChange} />}
+      <div className={`mt-10 mb-2 ${!movementCosts && 'invisible'} `}>
+        <Switch checked={showDistances} onChange={handleCheckChange} />
       </div>
       <Grid
         grid={grid}

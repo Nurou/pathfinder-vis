@@ -27,7 +27,7 @@ export const GridCellConversionControls = ({
 
   return (
     <div className="flex flex-col justify-center items-baseline gap-4">
-      <span className="pr-3 font-bold">Add to grid:</span>
+      <span className="pr-3 font-bold">Add/move cells:</span>
       <div className="flex flex-col sm:flex-row gap-4">
         <button
           onClick={() => handleClick('source')}

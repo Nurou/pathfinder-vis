@@ -14,8 +14,8 @@ module.exports = {
         polar1: '#434C5E',
         polar2: '#3B4252',
         polar3: '#2E3440',
-        grass: '#8fbcbb',
-        source: '#22c55e',
+        grass: '#22c55e',
+        source: '#8fbcbb',
         success: '#22c55e',
         danger: '#dc2626',
         destination: '#dc2626'

@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { useTraceUpdate } from '../../hooks/useTraceUpdate';
+// import { useTraceUpdate } from '../../hooks/useTraceUpdate';
 import { CoordToNodeDOMElementMap } from '../../types';
 
 /**
@@ -43,19 +43,18 @@ export const NodeComponent = memo(
     onClick,
     gridCellDOMElementRefs
   }: NodeProps) => {
-    useTraceUpdate({
-      row,
-      col,
-      onMouseDown,
-      onMouseEnter,
-      onMouseUp,
-      onClick,
-      gridCellDOMElementRefs
-    });
+    // useTraceUpdate({
+    //   row,
+    //   col,
+    //   onMouseDown,
+    //   onMouseEnter,
+    //   onMouseUp,
+    //   onClick,
+    //   gridCellDOMElementRefs
+    // });
     return (
       <td
-        className="w-8 h-8 bg-none rounded m-1"
-        role="cell"
+        className="flex justify-center items-center w-8 h-8 bg-none rounded m-[2px]"
         ref={(el: HTMLTableCellElement) => handleRef(el, row, col, gridCellDOMElementRefs)}
         onMouseDown={(e) => onMouseDown(row, col)}
         onMouseEnter={(e) => onMouseEnter(row, col)}

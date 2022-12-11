@@ -19,7 +19,7 @@ interface GridProps {
  */
 
 export const Grid = memo((props: GridProps): JSX.Element => {
-  useTraceUpdate(props);
+  // useTraceUpdate(props);
   let mouseIsPressed = true;
 
   useEffect(() => {
