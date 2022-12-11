@@ -52,7 +52,7 @@ const App = () => {
 
   // only used to show the border around the selected button
   const [internalSelectedCellConversionType, setInternalSelectedCellConversionType] =
-    useState<CellType | null>('source');
+    useState<CellType | null>(null);
 
   const gridCellDOMElementRefs = useRef<CoordToNodeDOMElementMap | null>(null);
   const selectedCellConversionType = useRef<CellType | null>(null);

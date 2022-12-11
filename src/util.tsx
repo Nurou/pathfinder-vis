@@ -265,5 +265,5 @@ export const createMaze = (
 
   setMazeGenerated(true);
 
-  conversionType.current = 'source';
+  conversionType.current = null;
 };
