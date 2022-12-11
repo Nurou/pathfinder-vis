@@ -27,7 +27,7 @@ export const TooltipWrapper = ({
             )}
           >
             {tooltipText}
-            <Tooltip.Arrow className="fill-current text-white dark:text-polar3" />
+            <Tooltip.Arrow className="fill-current text-white " />
           </Tooltip.Content>
         </Tooltip.Portal>
       </Tooltip.Root>
