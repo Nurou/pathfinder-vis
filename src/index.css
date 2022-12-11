@@ -1,27 +1,32 @@
-import { createGlobalStyle } from 'styled-components';
-// import space mono from font source
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-export const GlobalStyle = createGlobalStyle`
-  body {
-    font-family: 'Space Mono', sans-serif;
-    background-color: #ECEFF4
+body {
+  background-color: #f8fafc;
+}
 
-  }
+.regular {
+  background-color: #f5f5f4;
+}
 
-  .regular, .start, .end {
-    background-color: #E5E9F0;
-  } 
+.destination {
+  background-color: #dc2626;
+}
 
-  .wall {
-    background-color: #4C566A;
-  }
+.source {
+  background-color: #8fbcbb;
+}
 
-  .grass {
-    background-color: #8FBCBB;
-  }
+.wall {
+  background-color: #4c566a;
+}
 
+.grass {
+  background-color: #22c55e;
+}
 
-.node-visited {
+.visited {
   animation-name: visitedAnimation;
   animation-duration: 1.5s;
   animation-timing-function: ease-out;
@@ -38,12 +43,11 @@ export const GlobalStyle = createGlobalStyle`
 
   50% {
     transform: scale(0.8);
-
   }
 
   100% {
     transform: scale(1);
-    background-color: #D8DEE9;
+    background-color: #d6d3d1;
   }
 }
 
@@ -60,15 +64,10 @@ export const GlobalStyle = createGlobalStyle`
 
 @keyframes shortestPath {
   0% {
-  box-shadow: none;
+    box-shadow: none;
   }
-
- 
 
   100% {
-    box-shadow: 0 0 0 4px #2E3440;
+    box-shadow: 0 0 0 4px #2e3440;
   }
-
 }
-
-`;

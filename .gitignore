@@ -32,3 +32,4 @@ react-app-env.d.ts
 
 dist
 
+.pnpm-debug.log

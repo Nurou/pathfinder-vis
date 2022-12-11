@@ -5,7 +5,9 @@ export interface Coordinates {
   col: number;
 }
 
-export type CoordToNodeDOMElementMap = Record<string, HTMLElement>;
+export type CoordToNodeDOMElementMap = Record<string, HTMLTableCellElement>;
+
+export type CellType = 'source' | 'destination' | 'wall' | 'grass';
 
 export interface GridDimensions {
   rows: number;
@@ -16,21 +18,15 @@ export interface ReturnedStats {
   visitedNodesInOrder: GridNode[];
   shortestPath: GridNode[];
   timer: number;
-  costSoFar: Map<GridNode, number> | CustomMap<GridNode, number>;
+  costSoFar: CustomMap<GridNode, number>;
 }
 
 export type DynamicFunctions = Record<string, () => ReturnedStats>;
-export interface StatItems {
+export interface PathfinderRunStatistics {
   pathfinder: string;
   shortestPathLength: number;
   timeTaken: number;
   totalMovementCost: number;
-}
-
-export interface StatProps {
-  previous?: StatItems;
-  current?: StatItems;
-  children?: JSX.Element;
 }
 
 export type AnimationSpeed = 'fast' | 'medium' | 'slow';
@@ -39,9 +35,9 @@ export interface DetailsArray {
   [k: string]: Details;
 }
 
-export interface Details {
-  title: string;
-  description: string;
-  weighted: boolean;
-  guarantee: boolean;
-}
+export type PathfinderArgsTuple = [
+  grid: GridNode[][],
+  sourceNodeCoords: Coordinates,
+  destinationNodeCoords: Coordinates,
+  gridCellDOMElementRefs: React.MutableRefObject<CoordToNodeDOMElementMap | null>
+];

@@ -1,41 +1,28 @@
 import React, { memo, useCallback, useEffect } from 'react';
-import GridNode from '../../data_structures/Node';
-import { TableGrid, GridRow } from './styles';
-import { NodeComponent } from '../Node';
-import { useTraceUpdate } from '../../hooks/useTraceUpdate';
-import { coverInTerrain, convertToType } from './util';
+import GridNode from '../data_structures/Node';
+import { NodeComponent } from './Node';
+// import { useTraceUpdate } from '../../hooks/useTraceUpdate';
+import { coverInTerrain } from '../util';
+import { Coordinates, CoordToNodeDOMElementMap } from '../types';
 
 interface GridProps {
   grid: GridNode[][];
-  conversionType: any;
-  startNodeCoords: any;
-  endNodeCoords: any;
-  gridCellDOMElementRefs: React.MutableRefObject<any>;
+  sourceNodeCoords: React.MutableRefObject<Coordinates | null>;
+  destinationNodeCoords: React.MutableRefObject<Coordinates | null>;
+  gridCellDOMElementRefs: React.MutableRefObject<CoordToNodeDOMElementMap | null>;
+  resetCellConversion: () => void;
+  handleGridCellConversion: (row: number, col: number) => void;
 }
 
 /**
- * Renders the logical nodes as div elements
+ * Renders the logical nodes as HTML elements
  */
-
-export const Graph = memo((props: GridProps): JSX.Element => {
-  useTraceUpdate(props);
-
-  // setState not used due to avoid unnecessary grid re-renders
-  let mouseIsPressed = false;
+export const Grid = memo((props: GridProps): JSX.Element => {
+  // useTraceUpdate(props);
+  let mouseIsPressed = true;
 
   useEffect(() => {
     props.gridCellDOMElementRefs && coverInTerrain(props.gridCellDOMElementRefs);
-  }, []);
-
-  const handleConversion = useCallback((row: number, col: number) => {
-    convertToType(
-      row,
-      col,
-      props.conversionType,
-      props.startNodeCoords,
-      props.endNodeCoords,
-      props.gridCellDOMElementRefs!
-    );
   }, []);
 
   /**
@@ -45,7 +32,7 @@ export const Graph = memo((props: GridProps): JSX.Element => {
    */
   const handleMouseDown = useCallback((row: number, col: number): void => {
     mouseIsPressed = true;
-    handleConversion(row, col);
+    props.handleGridCellConversion(row, col);
   }, []);
 
   /**
@@ -62,15 +49,15 @@ export const Graph = memo((props: GridProps): JSX.Element => {
    */
   const handleMouseEnter = useCallback((row: number, col: number) => {
     if (mouseIsPressed) {
-      handleConversion(row, col);
+      props.handleGridCellConversion(row, col);
     }
   }, []);
 
   return (
-    <TableGrid>
+    <table className="flex flex-col self-start">
       <tbody>
         {props.grid.map((row: GridNode[], rowIdx: number) => (
-          <GridRow key={rowIdx} columns={props.grid[0].length}>
+          <tr key={rowIdx} className="flex flex-nowrap">
             {row.map((node: GridNode) => {
               const { row, col } = node;
               return (
@@ -79,15 +66,16 @@ export const Graph = memo((props: GridProps): JSX.Element => {
                   col={col}
                   row={row}
                   gridCellDOMElementRefs={props.gridCellDOMElementRefs}
-                  onMouseEnter={(row, col) => handleMouseEnter(row, col)}
-                  onMouseDown={(row, col) => handleMouseDown(row, col)}
+                  onMouseEnter={(row: number, col: number) => handleMouseEnter(row, col)}
+                  onMouseDown={(row: number, col: number) => handleMouseDown(row, col)}
                   onMouseUp={() => handleMouseUp()}
+                  onClick={props.resetCellConversion}
                 />
               );
             })}
-          </GridRow>
+          </tr>
         ))}
       </tbody>
-    </TableGrid>
+    </table>
   );
 });

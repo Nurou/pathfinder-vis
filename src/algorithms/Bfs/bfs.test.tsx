@@ -1,10 +1,11 @@
 import { beforeAll, describe, expect, test } from 'vitest';
 import { GridNode } from '../../data_structures/Node';
 import { bfs } from '.';
-import { setNodeNeighbors } from '../../components/Graph/util';
+import { setNodeNeighbors } from '../../util';
+import { MockRefs } from '../shared';
 
-const grid: any = [];
-const mockRefs: any = { current: {} };
+const grid: GridNode[][] = [];
+const mockRefs: MockRefs = { current: {} };
 
 describe('verify initial state of grid', () => {
   /* Runs before all tests */
@@ -17,7 +18,7 @@ describe('verify initial state of grid', () => {
         // add a node for each row column
         const newNode = new GridNode(row, col);
         currentRow.push(newNode);
-        mockRefs.current[`node-${row}-${col}`] = { classList: [] };
+        mockRefs.current[`node-${row}-${col}`] = document.createElement('td');
       }
       grid.push(currentRow);
     }
@@ -37,8 +38,8 @@ describe('verify initial state of grid', () => {
         { row: 10, col: 10 },
         {
           current: {
-            'node--3-400': { classList: [] },
-            'node-10-10': { classList: [] }
+            'node--3-400': document.createElement('td'),
+            'node-10-10': document.createElement('td')
           }
         }
       )

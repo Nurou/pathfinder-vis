@@ -1,11 +1,10 @@
 import { GridNode } from '../../data_structures/Node';
-import { reconstructPath, checkArgs, isWall, getMovementCost } from '../util';
-import { Coordinates } from '../../types';
+import { reconstructPath, checkArgs, isWall, getMovementCost } from '../shared';
+import { Coordinates, CoordToNodeDOMElementMap, PathfinderArgsTuple } from '../../types';
 import { CustomMap } from '../../data_structures/Map';
 
 /* logical implementation of BFS
  */
-
 const pushToFrontier = (frontier: GridNode[], node: GridNode) => {
   let currentLength = frontier.length;
   frontier[currentLength] = node;
@@ -13,47 +12,38 @@ const pushToFrontier = (frontier: GridNode[], node: GridNode) => {
   frontier.length = currentLength;
 };
 
-/**
- *  A simple breadth-first search implementation
- * @param {array} grid grid holding all the logical nodes
- * @param {object} startNodeCoords
- * @param {object} endNodeCoords
- */
-export const bfs = (
-  grid: GridNode[][],
-  startNodeCoords: Coordinates,
-  endNodeCoords: Coordinates,
-  gridCellDOMElementRefs?: React.MutableRefObject<any> | object
-) => {
-  checkArgs(grid, startNodeCoords, endNodeCoords);
+export const bfs = (...args: PathfinderArgsTuple) => {
+  checkArgs(...args);
+
+  const [grid, sourceNodeCoords, destinationNodeCoords, gridCellDOMElementRefs] = args;
 
   // uses to animating flood/frontier
   const visitedNodesInOrder: GridNode[] = [];
 
   // get logical start and end nodes by coordinates
-  const startNode: GridNode = grid[startNodeCoords.row][startNodeCoords.col];
-  const endNode: GridNode = grid[endNodeCoords.row][endNodeCoords.col];
+  const sourceNode: GridNode = grid[sourceNodeCoords.row][sourceNodeCoords.col];
+  const destinationNode: GridNode = grid[destinationNodeCoords.row][destinationNodeCoords.col];
 
   // clock performance
   let timer: number = -performance.now();
 
   // queue for traversing the grid
   const frontier: GridNode[] = [];
-  pushToFrontier(frontier, startNode);
+  pushToFrontier(frontier, sourceNode);
 
   // map preceding node to each node.
   const cameFrom = new CustomMap<GridNode, GridNode | null>();
-  cameFrom.put(startNode, null);
+  cameFrom.put(sourceNode, null);
 
   const costSoFar = new CustomMap<GridNode, number>();
-  costSoFar.put(startNode, 0);
+  costSoFar.put(sourceNode, 0);
 
   // keep on checking the queue until it's empty
   while (frontier && frontier.length) {
     // pop queue
     const current: GridNode | undefined = frontier.shift();
-    // early exit conditional
-    if (current === endNode) {
+
+    if (current === destinationNode) {
       break;
     }
 
@@ -83,7 +73,7 @@ export const bfs = (
   timer += performance.now();
   console.log('Time: ' + (timer / 1000).toFixed(5) + ' sec.');
 
-  const shortestPath = reconstructPath(startNode, endNode, cameFrom);
+  const shortestPath = reconstructPath(sourceNode, destinationNode, cameFrom);
 
   return {
     visitedNodesInOrder,
