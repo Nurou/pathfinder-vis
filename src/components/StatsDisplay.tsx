@@ -25,7 +25,7 @@ const StatsDisplay = ({ previous, current }: Props) => {
   }, [previous, current]);
 
   return (
-    <section>
+    <section className="w-[325px]">
       <div className="flex flex-col gap-4 mt-2">
         <span>Pathfinder: {current?.pathfinder}</span>
         {current?.timeTaken && (

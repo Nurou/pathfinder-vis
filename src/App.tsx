@@ -15,7 +15,6 @@ import { PathfinderSelector } from './components/PathfinderSelector';
 import StatsDisplay from './components/StatsDisplay';
 import { CustomMap } from './data_structures/Map';
 import GridNode from './data_structures/Node';
-import { useStickyState } from './hooks/useStickyState';
 import { useWindowSize } from './hooks/useWindowResize';
 import {
   CellType,
@@ -44,6 +43,7 @@ const App = () => {
       cols: Math.round(width / 50)
     };
   });
+
   const [mazeGenerated, setMazeGenerated] = useState<boolean>(false);
   const [movementCosts, setMovementCosts] = useState<CustomMap<GridNode, number> | null>(null);
   const [currentPathFinder, setCurrentPathFinder] = useState<string>(availablePathfinders[0].value);

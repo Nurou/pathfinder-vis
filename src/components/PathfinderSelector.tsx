@@ -178,10 +178,12 @@ export const PathfinderSelector = (props: Props) => {
         <span className="text-lg font-bold">Visualisation speed:</span>
         <Slider onChangeCb={setVisualisationSpeed} value={visualisationSpeed} />
         <button
-          className="bg-polar1 hover:bg-polar2 text-white py-2 px-4 rounded mt-4"
+          className="rounded-xl border-none p-0 cursor-pointer outline-offset-4 bg-polar3 active:translate-y-[2px] mt-4"
           onClick={() => visualise()}
         >
-          Visualise
+          <span className="block text-xl py-[12px] px-[42px] rounded-xl bg-polar0 text-white -translate-y-[6px] active:-translate-y-[2px]">
+            Visualise
+          </span>
         </button>
         <div className="flex flex-wrap justify-start  max-w-fit pt-1 gap-1 my-2 ">
           <TooltipWrapper tooltipText="Reset pathfinder">
