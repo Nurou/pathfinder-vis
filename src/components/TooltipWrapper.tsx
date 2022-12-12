@@ -22,7 +22,7 @@ export const TooltipWrapper = ({
               'radix-side-bottom:animate-slide-up-fade',
               'radix-side-left:animate-slide-right-fade',
               'inline-flex items-center rounded-md px-4 py-2.5',
-              'bg-white dark:bg-polar3',
+              'bg-polar3',
               'text-white'
             )}
           >

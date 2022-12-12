@@ -97,6 +97,7 @@ export const PathfinderSelector = (props: Props) => {
 
   const [visualisationSpeed, setVisualisationSpeed] = useState(80);
   const [hasRan, setHasRan] = useState<boolean>(false);
+  const [gridNeedsClearing, setGridNeedsClearing] = useState(false);
 
   const mapAlgoLabelToFunction: AlgoLabelToFunction = {
     Bfs: () =>
@@ -115,12 +116,11 @@ export const PathfinderSelector = (props: Props) => {
   };
 
   /**
-   * determines which algorithm to run based on user selection
+   * determines which pathfinder to run based on user selection
    */
-  const visualise = (): void => {
-    // given we have what we need
+  const visualise = () => {
     if (grid && sourceNodeCoords.current && destinationNodeCoords.current && currentPathFinder) {
-      // call the selected algorithm
+      // call the selected pathfinder
       const { visitedNodesInOrder, shortestPath, timer, costSoFar } =
         mapAlgoLabelToFunction[currentPathFinder]();
 
@@ -162,7 +162,11 @@ export const PathfinderSelector = (props: Props) => {
                   id={pathfinder.value}
                   name="pathfinder"
                   value={pathfinder.value}
-                  onChange={(e) => props.setCurrentPathfinder(e.target.value)}
+                  onChange={(e) => {
+                    props.setCurrentPathfinder(e.target.value);
+                    handleResetPathfinder();
+                    setGridNeedsClearing(false);
+                  }}
                   checked={props.currentPathfinder === pathfinder.value}
                 />
                 <label htmlFor={pathfinder.value}>{pathfinder.label}</label>
@@ -177,23 +181,36 @@ export const PathfinderSelector = (props: Props) => {
       <div className="flex flex-col ">
         <span className="text-lg font-bold">Visualisation speed:</span>
         <Slider onChangeCb={setVisualisationSpeed} value={visualisationSpeed} />
-        <button
-          className="rounded-xl border-none p-0 cursor-pointer outline-offset-4 bg-polar3 active:translate-y-[2px] mt-4"
-          onClick={() => visualise()}
-        >
-          <span className="block text-xl py-[12px] px-[42px] rounded-xl bg-polar0 text-white -translate-y-[6px] active:-translate-y-[2px]">
-            Visualise
-          </span>
-        </button>
-        <div className="flex flex-wrap justify-start  max-w-fit pt-1 gap-1 my-2 ">
-          <TooltipWrapper tooltipText="Reset pathfinder">
+        {!gridNeedsClearing ? (
+          <button
+            className="rounded-xl border-none p-0 cursor-pointer outline-offset-4 bg-polar3 active:translate-y-[2px] mt-4"
+            onClick={() => {
+              setGridNeedsClearing(true);
+              visualise();
+            }}
+          >
+            <span className="block text-xl py-[12px] px-[42px] rounded-xl bg-polar0 text-white -translate-y-[6px] active:-translate-y-[2px]">
+              Visualise
+            </span>
+          </button>
+        ) : (
+          <TooltipWrapper tooltipText="Clears previous run">
             <button
-              className="bg-polar1 hover:bg-polar2 text-white py-2 px-4 rounded mt-4 flex items-center justify-center gap-2"
-              onClick={handleResetPathfinder}
+              // className="bg-polar1 hover:bg-polar2 text-white py-2 px-4 rounded mt-4 flex items-center justify-center gap-2"
+              className="rounded-xl border-none p-0 cursor-pointer outline-offset-4 bg-polar3 active:translate-y-[2px] mt-4"
+              onClick={() => {
+                setGridNeedsClearing(false);
+                handleResetPathfinder();
+              }}
             >
-              <RefreshCw size={20} strokeWidth={1.5} color="white" />
+              <span className="flex justify-center items-center gap-4 text-xl py-[12px] px-[42px] rounded-xl bg-polar0 text-white -translate-y-[6px] active:-translate-y-[2px]">
+                <span>Clear</span>
+                <RefreshCw size={20} strokeWidth={1.5} color="white" />
+              </span>
             </button>
           </TooltipWrapper>
+        )}
+        <div className="flex flex-wrap justify-start  max-w-fit pt-1 gap-1 my-2 ">
           <TooltipWrapper tooltipText="Regenerate maze">
             <button
               className="bg-polar1 hover:bg-polar2 text-white py-2 px-4 rounded mt-4 flex items-center justify-center gap-2"
@@ -202,7 +219,7 @@ export const PathfinderSelector = (props: Props) => {
               <Grid size={20} strokeWidth={1.5} color="white" />
             </button>
           </TooltipWrapper>
-          <TooltipWrapper tooltipText="Clear grid">
+          <TooltipWrapper tooltipText="Clear whole grid">
             <button
               className="bg-polar1 hover:bg-polar2 text-white py-2 px-4 rounded mt-4 flex items-center justify-center gap-2"
               onClick={handleClearGridClick}
