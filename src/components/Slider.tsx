@@ -13,7 +13,6 @@ export const Slider = (props: Props) => {
       defaultValue={[props.value]}
       max={100}
       step={1}
-      aria-label="visualisation speed"
       className="relative flex h-5 w-64 touch-none items-center"
       onValueChange={(value: [number]) => {
         props.onChangeCb(value[0]);
@@ -23,6 +22,7 @@ export const Slider = (props: Props) => {
         <SliderPrimitive.Range className="absolute h-full rounded-full bg-polar3" />
       </SliderPrimitive.Track>
       <SliderPrimitive.Thumb
+        aria-label="visualisation speed slider"
         className={cx(
           'block h-5 w-5 rounded-full bg-polar3',
           'focus:outline-none focus-visible:ring focus-visible:ring-polar2 focus-visible:ring-opacity-75'

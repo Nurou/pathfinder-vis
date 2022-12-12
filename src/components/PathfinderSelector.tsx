@@ -212,6 +212,7 @@ export const PathfinderSelector = (props: Props) => {
         <div className="flex flex-wrap justify-start  max-w-fit pt-1 gap-1 my-2 ">
           <TooltipWrapper tooltipText="Regenerate maze">
             <button
+              aria-label="Generate maze"
               className="bg-polar1 hover:bg-polar2 text-white py-2 px-4 rounded mt-4 flex items-center justify-center gap-2"
               onClick={handleGenerateMazeClick}
             >
@@ -220,6 +221,7 @@ export const PathfinderSelector = (props: Props) => {
           </TooltipWrapper>
           <TooltipWrapper tooltipText="Clear whole grid">
             <button
+              aria-label="Clear grid"
               className="bg-polar1 hover:bg-polar2 text-white py-2 px-4 rounded mt-4 flex items-center justify-center gap-2"
               onClick={handleClearGridClick}
             >
