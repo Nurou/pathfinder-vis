@@ -22,7 +22,7 @@ module.exports = {
       }
     },
     fontFamily: {
-      sans: ['Space Mono', ...defaultTheme.fontFamily.sans]
+      // sans: ['Space Mono', ...defaultTheme.fontFamily.sans]
     },
     keyframes: {
       wiggle: {

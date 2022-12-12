@@ -2,8 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  @font-face {
+    font-family: 'Space Mono';
+    font-weight: 400;
+    src: url(../public/fonts/space-mono-all-400-normal.woff) format('woff');
+  }
+  @font-face {
+    font-family: 'Space Mono';
+    font-weight: 700;
+    src: url(../public/fonts/space-mono-all-700-normal.woff) format('woff');
+  }
+}
+
 body {
   background-color: #f8fafc;
+  font-family: 'Space Mono';
 }
 
 .regular {
