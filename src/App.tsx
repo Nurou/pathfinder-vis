@@ -158,9 +158,9 @@ const App = () => {
   if (!grid) return null;
 
   return (
-    <main className="flex flex-col justify-center items-start overflow-hidden py-20 px-10">
+    <main className="flex flex-col justify-center items-start overflow-hidden py-20 px-10 bg-gradient-to-r from-snow0 to-snow2 bg-[length:400%_400%] animate-gradient">
       <header>
-        <h1 className="text-6xl">Pathfinder Visualiser</h1>
+        <h1 className="text-6xl ">Pathfinder Visualiser</h1>
       </header>
       <div className="flex flex-col lg:flex-row gap-10 mt-10 w-full lg:gap-40">
         <PathfinderSelector

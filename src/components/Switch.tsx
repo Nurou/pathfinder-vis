@@ -11,7 +11,7 @@ export const Switch = ({ onChange, checked }: Props) => {
   return (
     <form>
       <div className="flex items-center mt-4">
-        <label className="pr-4" htmlFor="display-movement-costs">
+        <label className="pr-4 font-bold" htmlFor="display-movement-costs">
           Show movement costs
         </label>
         <SwitchPrimitive.Root

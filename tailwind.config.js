@@ -19,19 +19,25 @@ module.exports = {
         success: '#22c55e',
         danger: '#dc2626',
         destination: '#dc2626'
+      },
+      animation: {
+        wiggle: 'wiggle 1s ease-in-out infinite',
+        gradient: 'gradient 10s ease infinite;'
+      },
+      keyframes: {
+        wiggle: {
+          '0%, 100%': { transform: 'rotate(-1deg)' },
+          '50%': { transform: 'rotate(1deg)' }
+        },
+        gradient: {
+          '0%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
+          '100%': { backgroundPosition: '0% 50%' }
+        }
       }
     },
     fontFamily: {
-      // sans: ['Space Mono', ...defaultTheme.fontFamily.sans]
-    },
-    keyframes: {
-      wiggle: {
-        '0%, 100%': { transform: 'rotate(-1deg)' },
-        '50%': { transform: 'rotate(1deg)' }
-      }
-    },
-    animation: {
-      wiggle: 'wiggle 1s ease-in-out infinite'
+      sans: ['Space Mono', ...defaultTheme.fontFamily.sans]
     }
   },
 

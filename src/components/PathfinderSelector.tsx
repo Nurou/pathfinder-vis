@@ -157,7 +157,7 @@ export const PathfinderSelector = (props: Props) => {
             {availablePathfinders.map((pathfinder) => (
               <div key={pathfinder.label} className="flex gap-4 justify-start items-center ">
                 <input
-                  className="h-6 w-6 accent-snow2 "
+                  className="h-6 w-6 accent-white"
                   type="radio"
                   id={pathfinder.value}
                   name="pathfinder"

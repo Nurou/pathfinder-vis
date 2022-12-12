@@ -18,7 +18,7 @@ export const Slider = (props: Props) => {
         props.onChangeCb(value[0]);
       }}
     >
-      <SliderPrimitive.Track className="relative h-1 w-full grow rounded-full bg-snow2">
+      <SliderPrimitive.Track className="relative h-1 w-full grow rounded-full bg-white">
         <SliderPrimitive.Range className="absolute h-full rounded-full bg-polar3" />
       </SliderPrimitive.Track>
       <SliderPrimitive.Thumb
