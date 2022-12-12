@@ -14,13 +14,11 @@ const handleRef = (
   col: number,
   gridCellDOMElementRefs: React.MutableRefObject<any>
 ) => {
-  // get existing refs
-  const newRefs = { ...gridCellDOMElementRefs.current };
+  const nextRefs = { ...gridCellDOMElementRefs.current };
 
-  // add ref to new element
-  newRefs[`node-${row}-${col}`] = el;
+  nextRefs[`node-${row}-${col}`] = el;
 
-  gridCellDOMElementRefs.current = newRefs;
+  gridCellDOMElementRefs.current = nextRefs;
 };
 
 type NodeProps = {
@@ -29,18 +27,18 @@ type NodeProps = {
   onMouseDown: (row: number, col: number) => void;
   onMouseEnter: (row: number, col: number) => void;
   onMouseUp: () => void;
-  onClick: () => void;
+  resetCellConversion: () => void;
   gridCellDOMElementRefs: React.MutableRefObject<CoordToNodeDOMElementMap | null>;
 };
 
-export const NodeComponent = memo(
+export const GridCell = memo(
   ({
     row,
     col,
     onMouseDown,
     onMouseEnter,
     onMouseUp,
-    onClick,
+    resetCellConversion,
     gridCellDOMElementRefs
   }: NodeProps) => {
     // useTraceUpdate({
@@ -54,12 +52,15 @@ export const NodeComponent = memo(
     // });
     return (
       <td
+        role="gridcell"
+        tabIndex={0}
         className="flex justify-center items-center w-8 h-8 bg-none rounded m-[2px]"
         ref={(el: HTMLTableCellElement) => handleRef(el, row, col, gridCellDOMElementRefs)}
         onMouseDown={(e) => onMouseDown(row, col)}
         onMouseEnter={(e) => onMouseEnter(row, col)}
         onMouseUp={(e) => onMouseUp()}
-        onClick={onClick}
+        onClick={resetCellConversion}
+        onFocus={(e) => onMouseEnter(row, col)}
       ></td>
     );
   }

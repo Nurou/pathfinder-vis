@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useEffect } from 'react';
 import GridNode from '../data_structures/Node';
-import { NodeComponent } from './Node';
+import { GridCell } from './GridCell';
 // import { useTraceUpdate } from '../../hooks/useTraceUpdate';
 import { coverInTerrain } from '../util';
 import { Coordinates, CoordToNodeDOMElementMap } from '../types';
@@ -12,7 +12,36 @@ interface GridProps {
   gridCellDOMElementRefs: React.MutableRefObject<CoordToNodeDOMElementMap | null>;
   resetCellConversion: () => void;
   handleGridCellConversion: (row: number, col: number) => void;
+  tableRef: React.RefObject<HTMLTableElement>;
 }
+
+const handleKeyDown = (event: React.KeyboardEvent<HTMLTableElement>, enterKeyCb: () => void) => {
+  const currentCell = event.target as HTMLTableCellElement;
+  const table = currentCell.offsetParent as HTMLTableElement | null;
+  const currentCellParentRow = currentCell.parentNode as HTMLTableRowElement | null;
+
+  if (!currentCell || !table || !currentCellParentRow) return;
+
+  let cellToFocus: HTMLTableCellElement | null = null;
+
+  if (event.code == 'ArrowLeft') {
+    cellToFocus = table.rows[currentCellParentRow?.rowIndex].cells[currentCell.cellIndex - 1];
+    cellToFocus?.focus();
+  } else if (event.code == 'ArrowRight') {
+    cellToFocus = table.rows[currentCellParentRow?.rowIndex].cells[currentCell.cellIndex + 1];
+    cellToFocus?.focus();
+  } else if (event.code == 'ArrowUp') {
+    cellToFocus = table.rows[currentCellParentRow?.rowIndex - 1].cells[currentCell.cellIndex];
+    cellToFocus?.focus();
+  } else if (event.code == 'ArrowDown') {
+    cellToFocus = table.rows[currentCellParentRow?.rowIndex + 1].cells[currentCell.cellIndex];
+    cellToFocus?.focus();
+  } else if (event.code == 'Escape') {
+    currentCell.blur();
+  } else if (event.code == 'Enter') {
+    enterKeyCb();
+  }
+};
 
 /**
  * Renders the logical nodes as HTML elements
@@ -54,14 +83,18 @@ export const Grid = memo((props: GridProps): JSX.Element => {
   }, []);
 
   return (
-    <table className="flex flex-col self-start">
+    <table
+      ref={props.tableRef}
+      className="flex flex-col self-start"
+      onKeyDown={(event) => handleKeyDown(event, props.resetCellConversion)}
+    >
       <tbody>
         {props.grid.map((row: GridNode[], rowIdx: number) => (
           <tr key={rowIdx} className="flex flex-nowrap">
             {row.map((node: GridNode) => {
               const { row, col } = node;
               return (
-                <NodeComponent
+                <GridCell
                   key={`${row}-${col}`}
                   col={col}
                   row={row}
@@ -69,7 +102,7 @@ export const Grid = memo((props: GridProps): JSX.Element => {
                   onMouseEnter={(row: number, col: number) => handleMouseEnter(row, col)}
                   onMouseDown={(row: number, col: number) => handleMouseDown(row, col)}
                   onMouseUp={() => handleMouseUp()}
-                  onClick={props.resetCellConversion}
+                  resetCellConversion={props.resetCellConversion}
                 />
               );
             })}
