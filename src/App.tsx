@@ -31,16 +31,20 @@ const availablePathfinders = [
   { value: 'aStar', label: 'A*' }
 ];
 
+const WIDTH_DIVISOR = 45;
+const ROWS = 20;
+
 const App = () => {
   const [grid, setGrid] = useState<GridNode[][] | null>(null);
   const sourceNodeCoords = useRef<Coordinates | null>(null);
   const destinationNodeCoords = useRef<Coordinates | null>(null);
+  const tableRef = useRef<HTMLTableElement>(null);
   const [gridDimensions, setGridDimensions] = useState<GridDimensions>(() => {
     // initialise grid dimensions based on device width
     const width = document.body.getClientRects()[0].width;
     return {
-      rows: 20,
-      cols: Math.round(width / 50)
+      rows: ROWS,
+      cols: Math.round(width / WIDTH_DIVISOR)
     };
   });
 
@@ -83,8 +87,11 @@ const App = () => {
    * */
   useWindowSize((dimensions) => {
     if (!dimensions.height || !dimensions.width) return;
-    setGridDimensions({ rows: 20, cols: Math.round(dimensions.width / 45) });
+    setGridDimensions({ rows: ROWS, cols: Math.round(dimensions.width / WIDTH_DIVISOR) });
+    setGrid(populateGrid(gridDimensions));
   });
+
+  // useFocusWithArrowKeys(tableRef);
 
   // grid initialised after visual is rendered
   useLayoutEffect(() => {
@@ -195,6 +202,7 @@ const App = () => {
         <Switch checked={showDistances} onChange={handleCheckChange} />
       </div>
       <Grid
+        tableRef={tableRef}
         grid={grid}
         sourceNodeCoords={sourceNodeCoords}
         destinationNodeCoords={destinationNodeCoords}
