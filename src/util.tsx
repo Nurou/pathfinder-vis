@@ -151,8 +151,12 @@ export const setNodeNeighbors = (grid: GridNode[][]): void => {
 /**
  * Returns a random number between min (inclusive) and max (exclusive)
  */
-export const getRandomArbitrary = (min: number, max: number): number => {
-  return Math.floor(Math.random() * (max - min) + min);
+export const getRandomIntBetween = (min: number, max: number, excluded?: number): number => {
+  let n = Math.floor(Math.random() * (max - min) + min);
+  if (n === excluded) {
+    n++;
+  }
+  return n;
 };
 
 /**
@@ -227,20 +231,18 @@ export const createMaze = (
     clear(grid, gridCellDOMElementRefs, true);
   }
 
-  // restrict to LHS of grid
   const SN_COORDS: Coordinates = {
-    row: getRandomArbitrary(0, gridDimensions.rows),
-    col: getRandomArbitrary(0, gridDimensions.cols / 2)
+    row: getRandomIntBetween(0, gridDimensions.rows),
+    col: getRandomIntBetween(0, gridDimensions.cols)
   };
 
-  // restrict to RHS of grid
-  const EN_COORDS: Coordinates = {
-    row: getRandomArbitrary(0, gridDimensions.rows),
-    col: getRandomArbitrary(gridDimensions.cols / 2, gridDimensions.cols)
+  const DN_COORDS: Coordinates = {
+    row: getRandomIntBetween(0, gridDimensions.rows, SN_COORDS.row),
+    col: getRandomIntBetween(0, gridDimensions.cols, SN_COORDS.col)
   };
 
-  // add start and end nodes
-  if (Object.keys(gridCellDOMElementRefs.current).length !== 0 && SN_COORDS && EN_COORDS) {
+  // add source and destination nodes
+  if (Object.keys(gridCellDOMElementRefs.current).length !== 0 && SN_COORDS && DN_COORDS) {
     conversionType.current = 'source';
     convertToType(
       SN_COORDS.row,
@@ -252,8 +254,8 @@ export const createMaze = (
     );
     conversionType.current = 'destination';
     convertToType(
-      EN_COORDS.row,
-      EN_COORDS.col,
+      DN_COORDS.row,
+      DN_COORDS.col,
       conversionType,
       sourceNodeCoords,
       destinationNodeCoords,
