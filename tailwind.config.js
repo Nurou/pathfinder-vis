@@ -23,6 +23,15 @@ module.exports = {
     },
     fontFamily: {
       sans: ['Space Mono', ...defaultTheme.fontFamily.sans]
+    },
+    keyframes: {
+      wiggle: {
+        '0%, 100%': { transform: 'rotate(-1deg)' },
+        '50%': { transform: 'rotate(1deg)' }
+      }
+    },
+    animation: {
+      wiggle: 'wiggle 1s ease-in-out infinite'
     }
   },
 

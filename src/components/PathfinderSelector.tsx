@@ -183,7 +183,7 @@ export const PathfinderSelector = (props: Props) => {
         <Slider onChangeCb={setVisualisationSpeed} value={visualisationSpeed} />
         {!gridNeedsClearing ? (
           <button
-            className="rounded-xl border-none p-0 cursor-pointer outline-offset-4 bg-polar3 active:translate-y-[2px] mt-4"
+            className="rounded-xl border-none p-0 cursor-pointer outline-offset-4 bg-polar3 active:translate-y-[2px] mt-4 animate-wiggle"
             onClick={() => {
               setGridNeedsClearing(true);
               visualise();
@@ -196,7 +196,6 @@ export const PathfinderSelector = (props: Props) => {
         ) : (
           <TooltipWrapper tooltipText="Clears previous run">
             <button
-              // className="bg-polar1 hover:bg-polar2 text-white py-2 px-4 rounded mt-4 flex items-center justify-center gap-2"
               className="rounded-xl border-none p-0 cursor-pointer outline-offset-4 bg-polar3 active:translate-y-[2px] mt-4"
               onClick={() => {
                 setGridNeedsClearing(false);
