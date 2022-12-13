@@ -9,7 +9,6 @@ const mockRefs: MockRefs = { current: {} };
 const GRID_ROWS = 20;
 const GRID_COLS = 30;
 
-/* Runs before all tests */
 beforeAll(() => {
   for (let row = 0; row < GRID_ROWS; row++) {
     const currentRow = [];

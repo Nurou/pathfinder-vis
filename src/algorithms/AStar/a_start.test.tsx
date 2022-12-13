@@ -8,7 +8,6 @@ const grid: GridNode[][] = [];
 const mockRefs: MockRefs = { current: {} };
 
 describe('verify initial state of grid', () => {
-  /* Runs before all tests */
   beforeAll(() => {
     const GRID_ROWS = 20;
     const GRID_COLS = 30;

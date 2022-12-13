@@ -19,22 +19,19 @@ const handleKeyDown = (event: React.KeyboardEvent<HTMLTableElement>, enterKeyCb:
   const currentCell = event.target as HTMLTableCellElement;
   const table = currentCell.offsetParent as HTMLTableElement | null;
   const currentCellParentRow = currentCell.parentNode as HTMLTableRowElement | null;
-
   if (!table || !currentCellParentRow) return;
-
   let cellToFocus: HTMLTableCellElement | null = null;
-
   if (event.code == 'ArrowLeft') {
-    cellToFocus = table.rows[currentCellParentRow.rowIndex].cells[currentCell.cellIndex - 1];
+    cellToFocus = table.rows[currentCellParentRow.rowIndex]?.cells[currentCell.cellIndex - 1];
     cellToFocus?.focus();
   } else if (event.code == 'ArrowRight') {
-    cellToFocus = table.rows[currentCellParentRow.rowIndex].cells[currentCell.cellIndex + 1];
+    cellToFocus = table.rows[currentCellParentRow.rowIndex]?.cells[currentCell.cellIndex + 1];
     cellToFocus?.focus();
   } else if (event.code == 'ArrowUp') {
-    cellToFocus = table.rows[currentCellParentRow.rowIndex - 1].cells[currentCell.cellIndex];
+    cellToFocus = table.rows[currentCellParentRow.rowIndex - 1]?.cells[currentCell.cellIndex];
     cellToFocus?.focus();
   } else if (event.code == 'ArrowDown') {
-    cellToFocus = table.rows[currentCellParentRow.rowIndex + 1].cells[currentCell.cellIndex];
+    cellToFocus = table.rows[currentCellParentRow.rowIndex + 1]?.cells[currentCell.cellIndex];
     cellToFocus?.focus();
   } else if (event.code == 'Escape') {
     currentCell.blur();

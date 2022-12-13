@@ -22,13 +22,10 @@ export const convertToType = (
   destinationNodeCoords: React.MutableRefObject<Coordinates | null>,
   gridCellDOMElementRefs: React.MutableRefObject<CoordToNodeDOMElementMap | null>
 ): void => {
-  console.log('💩 ~ file: util.tsx:25 ~ col', col);
-  console.log('💩 ~ file: util.tsx:25 ~ row', row);
   if (!conversionType.current) return;
   // target node
   const targetCell = gridCellDOMElementRefs.current?.[`node-${row}-${col}`];
 
-  console.log('💩 ~ file: util.tsx:29 ~ targetCell', targetCell);
   if (!targetCell) return;
 
   const alreadyOccupied = (targetCell: HTMLTableCellElement) => {
