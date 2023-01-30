@@ -6,7 +6,7 @@ A web app that helps you visualise the differences between some of the most comm
 
 In the project directory, you can run:
 
-### pnpm start`
+### `pnpm start`
 
 Runs the app in the development mode.<br />
 
